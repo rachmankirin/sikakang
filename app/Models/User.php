@@ -45,4 +45,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the krs for the user.
+     */
+    public function krs()
+    {
+        return $this->hasMany(Krs::class, 'mahasiswa_user_id');
+    }
+
+    /**
+     * Get the mahasiswa detail associated with the user.
+     */
+    public function mahasiswaDetail()
+    {
+        return $this->hasOne(MahasiswaDetail::class, 'user_id');
+    }
 }

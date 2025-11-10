@@ -43,16 +43,34 @@
                 <button @click="openMenu === 1 ? openMenu = null : openMenu = 1"
                     class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
                     <img src="{{ url('images/Group.svg') }}" alt="">
-                    <span class="ms-7 flex-1 text-left">Dashboard</span>
+                    <span class="ms-7 flex-1 text-left">Perkuliahan</span>
                     <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 1 }" fill="none"
                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
                 <ul x-show="openMenu === 1" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Ringkasan</a></li>
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Statistik</a></li>
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Laporan</a></li>
+                    <li><a href="/dashboard"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
+                    </li>
+                    <li><a href="krs"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
+                            Studi</a></li>
+                    <li><a href="#"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
+                            Kuliah</a></li>
+                    <li><a href="hasil"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
+                            Studi</a></li>
+                    <li><a href="#"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
+                            Akhir</a></li>
+                    <li><a href="#"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
+                    </li>
+                    <li><a href="#"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('tagihan') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
+                    </li>
                 </ul>
             </li>
 

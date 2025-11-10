@@ -7,12 +7,16 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 
-    <title>Bootstrap demo</title>
+    <title></title>
 </head>
 
 <body>
     <x-sidebar></x-sidebar>
-    <h1>Hello, world!</h1>
+    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <main>
+            {{ $slot }}
+        </main>
+    </div>
 </body>
 
 </html>

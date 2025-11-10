@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HasilStudiController;
+use App\Http\Controllers\KrsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,3 +23,5 @@ Route::get('/dashboard', function () {
     // Pastikan nama view sesuai path sebenarnya (folder 'Dashboard')
     return view('Dashboard.dashboard_mahasiswa', compact('labels', 'ips'));
 });
+Route::get('/krs', [KrsController::class, 'index']);
+Route::get('/hasil', [HasilStudiController::class, 'index']);

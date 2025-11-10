@@ -14,7 +14,7 @@
 <body class="bg-gray-50 text-gray-800">
     <div class="flex h-screen">
         {{-- Sidebar --}}
-        <x-sidebar />
+        @include('components.sidebar.sidebar')
 
         {{-- Main content --}}
         <main class="flex-1 ml-0 sm:ml-64 p-4 sm:p-6 overflow-y-auto">

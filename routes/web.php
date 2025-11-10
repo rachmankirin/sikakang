@@ -8,6 +8,10 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('auth.login');
 });
+Route::get('/pengumuman', function () {
+    return view('pages.pengumuman');
+});
+
 
 Route::get('/dashboard', function () {
     // Contoh data dinamis untuk chart IPS

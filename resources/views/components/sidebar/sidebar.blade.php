@@ -56,7 +56,7 @@
                     <li><a href="krs"
                             class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
                             Studi</a></li>
-                    <li><a href="#"
+                    <li><a href="/jadwal"
                             class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
                             Kuliah</a></li>
                     <li><a href="hasil"

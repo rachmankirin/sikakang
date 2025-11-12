@@ -26,6 +26,23 @@ Route::get('/dashboard', function () {
 });
 Route::get('/krs', [KrsController::class, 'index']);
 Route::get('/hasil', [HasilStudiController::class, 'index']);
+Route::get('/jadwal', function () {
+    return view('Dashboard.jadwal_kuliah');
+});
+
+// Routes untuk detail jadwal
+Route::get('/jadwal/detail/{kode}', function ($kode) {
+    return view('Dashboard.jadwal_detail', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
+    return view('Dashboard.jadwal_detail_rps', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
+    return view('Dashboard.jadwal_detail', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
+    return view('Dashboard.jadwal_detail_rekap', compact('kode'));
+});
 
 // Route::middleware(['auth', 'verified'])->group(function () {
 //     // ... route lainnya

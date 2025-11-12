@@ -36,7 +36,11 @@
 
         <p class="text-center text-[#FFE05E] my-5 font-semibold text-lg">Main Menu</p>
 
-        <ul class="space-y-2 font-medium" x-data="{ openMenu: null }">
+        @php
+            $perkuliahanOpen = Request::is('dashboard*') || Request::is('krs*') || Request::is('hasil*') || Request::is('registrasi*') || Request::routeIs('tagihan.*');
+        @endphp
+
+        <ul class="space-y-2 font-medium" x-data="{ openMenu: {{ $perkuliahanOpen ? 1 : 0 }} }">
 
             <!-- Dashboard -->
             <li class="text-slate-500">
@@ -50,26 +54,26 @@
                     </svg>
                 </button>
                 <ul x-show="openMenu === 1" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                    <li><a href="/dashboard"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
+            <li><a href="/dashboard"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
                     </li>
-                    <li><a href="krs"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
+            <li><a href="/krs"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
                             Studi</a></li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
+            <li><a href="#"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
                             Kuliah</a></li>
-                    <li><a href="hasil"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
+            <li><a href="/hasil"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
                             Studi</a></li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
+            <li><a href="#"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
                             Akhir</a></li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
+            <li><a href="#"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
                     </li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('tagihan') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
+            <li><a href="{{ route('tagihan.index') }}"
+                class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('tagihan.*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
                     </li>
                 </ul>
             </li>

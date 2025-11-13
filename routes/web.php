@@ -114,3 +114,5 @@ Route::get('/mycourse', function () {
 Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
+
+Route::view('/tagihan', 'tagihan.tagihan_mahasiwa')->name('tagihan.index');

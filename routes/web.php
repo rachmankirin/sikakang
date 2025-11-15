@@ -3,6 +3,7 @@
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -85,3 +86,7 @@ Route::get('/mycourse', function () {
 Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
+
+
+Route::get('/registration/detail', [RegistrationController::class, 'detail'])
+    ->name('registration.registrasi');

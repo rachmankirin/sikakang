@@ -4,6 +4,7 @@ use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
     return view('pages.pengumuman');
@@ -115,4 +116,6 @@ Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
 
-Route::view('/tagihan', 'tagihan.tagihan_mahasiwa')->name('tagihan.index');
+
+Route::get('/registration/detail', [RegistrationController::class, 'detail'])
+    ->name('registration.registrasi');

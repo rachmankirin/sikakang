@@ -69,8 +69,8 @@
             <li><a href="#"
                 class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
                             Akhir</a></li>
-            <li><a href="#"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
+                    <li><a href="/registration/detail"
+                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
                     </li>
             <li><a href="{{ route('tagihan.index') }}"
                 class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('tagihan.*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
@@ -90,7 +90,7 @@
                     </svg>
                 </button>
                 <ul x-show="openMenu === 2" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a></li>
+                    <li><a href="/mycourse" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a></li>
                 </ul>
             </li>
 

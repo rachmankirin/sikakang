@@ -56,7 +56,7 @@
                     <li><a href="krs"
                             class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
                             Studi</a></li>
-                    <li><a href="#"
+                    <li><a href="/jadwal"
                             class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
                             Kuliah</a></li>
                     <li><a href="hasil"
@@ -110,7 +110,8 @@
             <hr class="text-slate-500 mt-5 mb-5">
             <li class="flex items-center p-2">
                 <img src="{{ url('images/profile.svg') }}" alt="" srcset="">
-                <a href="/profile/mahasiswa" class="ms-7 text-slate-500 text-left {{ Request::is('profile/mahasiswa') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                <a href="/profile/mahasiswa"
+                    class="ms-7 text-slate-500 text-left {{ Request::is('profile/mahasiswa') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
                     Profile
                 </a>
             </li>

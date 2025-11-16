@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.pengumuman');
 });
 Route::get('/login', function () {
     return view('auth.login');
@@ -26,7 +27,35 @@ Route::get('/dashboard', function () {
 });
 Route::get('/krs', [KrsController::class, 'index']);
 Route::get('/hasil', [HasilStudiController::class, 'index']);
+Route::get('/jadwal', function () {
+    return view('Dashboard.jadwal_kuliah');
+});
 
+// Routes untuk detail jadwal
+Route::get('/jadwal/detail/{kode}', function ($kode) {
+    return view('Dashboard.jadwal_detail', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
+    return view('Dashboard.jadwal_detail_rps', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
+    return view('Dashboard.jadwal_detail', compact('kode'));
+});
+Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
+    return view('Dashboard.jadwal_detail_rekap', compact('kode'));
+});
+
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     // ... route lainnya
+
+//     // Route untuk Dashboard Dosen
+//     Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
+// });
+Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
+
+Route::get('/dosen/dashboard', function () {
+    return view('Dashboard.dashboard_dosen');
+});
 Route::get('/dosen', function () {
     return view('Profile.Profile_dosen');
 });

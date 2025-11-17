@@ -31,6 +31,29 @@ Route::get('/jadwal', function () {
     return view('Dashboard.jadwal_kuliah');
 });
 
+<<<<<<< HEAD
+=======
+Route::get('/dashboard-admin', function () {
+    return view('Dashboard.dashboard_admin');
+});
+Route::get('/dashboard-admin/dosen', function () {
+    return view('Dashboard.dashboard_admin_dosen');
+});
+
+Route::get('/dashboard-admin/mahasiswa', function () {
+    return view('Dashboard.dashboard_admin_mahasiswa');
+});
+
+Route::get('/dashboard-admin/fakultas', function () {
+    return view('Dashboard.dashboard_admin_fakultas');
+});
+
+Route::get('/dashboard-admin/prodi', function () {
+    return view('Dashboard.dashboard_admin_prodi');
+});
+
+
+>>>>>>> a315d8a (add dashboard admin)
 // Routes untuk detail jadwal
 Route::get('/jadwal/detail/{kode}', function ($kode) {
     return view('Dashboard.jadwal_detail', compact('kode'));
@@ -115,7 +138,10 @@ Route::get('/mycourse', function () {
 Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
+<<<<<<< HEAD
 
 
 Route::get('/registration/detail', [RegistrationController::class, 'detail'])
     ->name('registration.registrasi');
+=======
+>>>>>>> a315d8a (add dashboard admin)

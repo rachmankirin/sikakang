@@ -11,6 +11,17 @@
             
             <!-- Left: Course Info -->
             <div class="flex-1">
+<<<<<<< HEAD
+=======
+                <!-- Back Button -->
+                <a href="/mycourse" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span class="font-medium">Back to Courses</span>
+                </a>
+
+>>>>>>> a315d8a (add dashboard admin)
                 <!-- Course Title -->
                 <h1 class="text-3xl font-bold text-gray-800 mb-3">PEMROGRAMAN WEB</h1>
                 
@@ -93,6 +104,7 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Course Content Sections (TARUH DISINI) -->
         <div class="space-y-4">
             
@@ -102,10 +114,21 @@
                 <label for="section1" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
                     <div class="flex items-center gap-3">
                         <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+=======
+        <!-- Course Content Sections -->
+        <div class="space-y-4">
+            
+            <!-- Section 1 - Collapsed -->
+            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
+                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-gray-600 transform rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+>>>>>>> a315d8a (add dashboard admin)
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                         <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
                     </div>
+<<<<<<< HEAD
                 </label>
                 
                 <!-- Content -->
@@ -124,6 +147,16 @@
                 <label for="section2" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
                     <div class="flex items-center gap-3">
                         <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+=======
+                </button>
+            </div>
+
+            <!-- Section 2 - With Assignment -->
+            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
+                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+>>>>>>> a315d8a (add dashboard admin)
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                         <div class="text-left">
@@ -131,6 +164,7 @@
                             <p class="text-sm text-gray-500">Kumpulkan tugas anda</p>
                         </div>
                     </div>
+<<<<<<< HEAD
                     <button onclick="event.preventDefault(); event.stopPropagation();" class="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
                         Kumpulkan
                     </button>
@@ -191,6 +225,49 @@
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc.
                         </p>
                     </div>
+=======
+                    <button class="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
+                        Kumpulkan
+                    </button>
+                </button>
+            </div>
+
+            <!-- Section 3 - Expanded with Content -->
+            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
+                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                        <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
+                    </div>
+                </button>
+                
+                <!-- Expanded Content -->
+                <div class="px-5 pb-5 pt-2">
+                    <p class="text-gray-600 leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc. Sed sagittis auctor sodales. Nullam imperdiet malesuada risus, eget tristique felis. Integer ultrices vestibulum elit quis consequat. Mauris facilisis quis ipsum imperdiet eleifend. Vivamus eget velit luctus, congue justo ut, aliquam elit. Donec blandit leo quam, nec blandit sem convallis et. Morbi ultrices enim lobortis tortor scelerisque sodales.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Section 4 - Another Expanded -->
+            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
+                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                        <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
+                    </div>
+                </button>
+                
+                <!-- Expanded Content -->
+                <div class="px-5 pb-5 pt-2">
+                    <p class="text-gray-600 leading-relaxed">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc. Sed sagittis auctor sodales. Nullam imperdiet malesuada risus, eget tristique felis. Integer ultrices vestibulum elit quis consequat. Mauris facilisis quis ipsum imperdiet eleifend. Vivamus eget velit luctus, congue justo ut, aliquam elit. Donec blandit leo quam, nec blandit sem convallis et. Morbi ultrices enim lobortis tortor scelerisque sodales.
+                    </p>
+>>>>>>> a315d8a (add dashboard admin)
                 </div>
             </div>
 
@@ -198,4 +275,10 @@
 
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+<!-- Alpine.js for Accordion (Optional) -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+>>>>>>> a315d8a (add dashboard admin)
 </x-app-layout>

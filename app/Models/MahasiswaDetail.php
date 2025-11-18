@@ -12,6 +12,7 @@ class MahasiswaDetail extends Model
     protected $table = 'mahasiswa_details';
     protected $primaryKey = 'user_id';
     public $incrementing = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'nim',

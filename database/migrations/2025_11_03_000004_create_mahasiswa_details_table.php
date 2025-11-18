@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign('dosen_pa_id')
                 ->references('user_id')->on('users')
                 ->onDelete('set null');
+            
+            $table->timestamps();
         });
     }
 

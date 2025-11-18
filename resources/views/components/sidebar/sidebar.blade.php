@@ -36,131 +36,112 @@
 
         <p class="text-center text-[#FFE05E] my-5 font-semibold text-lg">Main Menu</p>
 
-<<<<<<< HEAD
         @php
-            $perkuliahanOpen = Request::is('dashboard*') || Request::is('krs*') || Request::is('hasil*') || Request::is('registrasi*') || Request::routeIs('tagihan.*');
-        @endphp
+            $perkuliahanOpen =
+                Request::is('dashboard*') ||
+                Request::is('krs*') ||
+                Request::is('hasil*') ||
+                Request::is('registrasi*') ||
+                Request::routeIs('tagihan.*');
+        @endphp <ul class="space-y-2 font-medium" x-data="{ openMenu: {{ $perkuliahanOpen ? 1 : 0 }} }">
 
-        <ul class="space-y-2 font-medium" x-data="{ openMenu: {{ $perkuliahanOpen ? 1 : 0 }} }">
-=======
-        <ul class="space-y-2 font-medium" x-data="{ openMenu: null }">
->>>>>>> a315d8a (add dashboard admin)
+            <ul class="space-y-2 font-medium" x-data="{ openMenu: null }">
 
-            <!-- Dashboard -->
-            <li class="text-slate-500">
-                <button @click="openMenu === 1 ? openMenu = null : openMenu = 1"
-                    class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
-                    <img src="{{ url('images/Group.svg') }}" alt="">
-                    <span class="ms-7 flex-1 text-left">Perkuliahan</span>
-                    <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 1 }" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <ul x-show="openMenu === 1" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-<<<<<<< HEAD
-            <li><a href="/dashboard"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
-                    </li>
-            <li><a href="/krs"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
-                            Studi</a></li>
-            <li><a href="#"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
-                            Kuliah</a></li>
-            <li><a href="/hasil"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
-                            Studi</a></li>
-            <li><a href="#"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
-                            Akhir</a></li>
-                    <li><a href="/registration/detail"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
-                    </li>
-            <li><a href="{{ route('tagihan.index') }}"
-                class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('tagihan.*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
-=======
-                    <li><a href="/dashboard"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
-                    </li>
-                    <li><a href="krs"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
-                            Studi</a></li>
-                    <li><a href="/jadwal"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
-                            Kuliah</a></li>
-                    <li><a href="hasil"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
-                            Studi</a></li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
-                            Akhir</a></li>
-                    <li><a href="#"
-                            class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
-                    </li>
-                    <li><a href="#"
+                <!-- Dashboard -->
+                <li class="text-slate-500">
+                    <button @click="openMenu === 1 ? openMenu = null : openMenu = 1"
+                        class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Perkuliahan</span>
+                        <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 1 }" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <ul x-show="openMenu === 1" x-collapse class="pl-14 space-y-1 text-sm mt-1">
+                        <li><a href="/dashboard"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Dashboard</a>
+                        </li>
+                        <li><a href="/krs"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('krs') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Rencana
+                                Studi</a></li>
+                        <li><a href="#"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('jadwal') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Jadwal
+                                Kuliah</a></li>
+                        <li><a href="/hasil"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
+                                Studi</a></li>
+                        <li><a href="#"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
+                                Akhir</a></li>
+                        <li><a href="/registration/detail"
+                                class="block py-1 hover:text-[#FFE05E] {{ Request::is('registrasi') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Registrasi</a>
+                        </li>
+                        {{-- <li><a href="{{ route('tagihan.index') }}"
+                        class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('tagihan.*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
+                    ======= --}}
+
+                        {{-- <li><a href="#"
                             class="block py-1 hover:text-[#FFE05E] {{ Request::is('tagihan') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tagihan</a>
->>>>>>> a315d8a (add dashboard admin)
-                    </li>
-                </ul>
-            </li>
 
-            <!-- Tugas -->
-            <li class="text-slate-500">
-                <button @click="openMenu === 2 ? openMenu = null : openMenu = 2"
-                    class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
-                    <img src="{{ url('images/tugas.svg') }}" alt="" width="20">
-                    <span class="ms-7 flex-1 text-left">Tugas</span>
-                    <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 2 }" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <ul x-show="openMenu === 2" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-<<<<<<< HEAD
-                    <li><a href="/mycourse" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a></li>
-=======
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a></li>
->>>>>>> a315d8a (add dashboard admin)
-                </ul>
-            </li>
+                    </li> --}}
+                    </ul>
+                </li>
 
-            <!-- Pengajuan Surat -->
-            <li class="text-slate-500">
-                <button @click="openMenu === 3 ? openMenu = null : openMenu = 3"
-                    class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
-                    <img src="{{ url('images/Frame.svg') }}" alt="">
-                    <span class="ms-7 flex-1 text-left">Pengajuan Surat</span>
-                    <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 3 }" fill="none"
-                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <ul x-show="openMenu === 3" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Buat Surat</a></li>
-                    <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Riwayat Surat</a></li>
-                </ul>
-            </li>
+                <!-- Tugas -->
+                <li class="text-slate-500">
+                    <button @click="openMenu === 2 ? openMenu = null : openMenu = 2"
+                        class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
+                        <img src="{{ url('images/tugas.svg') }}" alt="" width="20">
+                        <span class="ms-7 flex-1 text-left">Tugas</span>
+                        <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 2 }" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <ul x-show="openMenu === 2" x-collapse class="pl-14 space-y-1 text-sm mt-1">
+                        <li><a href="/mycourse" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a>
+                        </li>
+                        =======
+                        <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Tugas Kuliah</a></li>
 
-            <hr class="text-slate-500 mt-5 mb-5">
-            <li class="flex items-center p-2">
-                <img src="{{ url('images/profile.svg') }}" alt="" srcset="">
-                <a href="/profile/mahasiswa"
-                    class="ms-7 text-slate-500 text-left {{ Request::is('profile/mahasiswa') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
-                    Profile
-                </a>
-            </li>
-            <li class="flex items-center p-2">
-                <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
-                <a href="#" class="ms-7 text-slate-500 text-left hover:text-red-500">
-                    Sign-Out
-                </a>
-            </li>
+                    </ul>
+                </li>
 
-<<<<<<< HEAD
-        </ul>
-=======
->>>>>>> a315d8a (add dashboard admin)
+                <!-- Pengajuan Surat -->
+                <li class="text-slate-500">
+                    <button @click="openMenu === 3 ? openMenu = null : openMenu = 3"
+                        class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
+                        <img src="{{ url('images/Frame.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Pengajuan Surat</span>
+                        <svg class="w-4 h-4 transition" :class="{ 'rotate-180': openMenu === 3 }" fill="none"
+                            stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <ul x-show="openMenu === 3" x-collapse class="pl-14 space-y-1 text-sm mt-1">
+                        <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Buat Surat</a></li>
+                        <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Riwayat Surat</a></li>
+                    </ul>
+                </li>
+
+                <hr class="text-slate-500 mt-5 mb-5">
+                <li class="flex items-center p-2">
+                    <img src="{{ url('images/profile.svg') }}" alt="" srcset="">
+                    <a href="/profile/mahasiswa"
+                        class="ms-7 text-slate-500 text-left {{ Request::is('profile/mahasiswa') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        Profile
+                    </a>
+                </li>
+                <li class="flex items-center p-2">
+                    <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
+                    <a href="#" class="ms-7 text-slate-500 text-left hover:text-red-500">
+                        Sign-Out
+                    </a>
+                </li>
+
+            </ul>
+
     </div>
 </aside>
 

@@ -16,16 +16,17 @@ return new class extends Migration
             $table->string('nim')->nullable();
             $table->unsignedBigInteger('dosen_pa_id')->nullable();
             $table->string('angkatan')->nullable();
+            $table->string('fakultas')->nullable();
             $table->string('program_studi')->nullable();
             $table->enum('status_mahasiswa', ['aktif', 'cuti', 'nonaktif', 'lulus'])->nullable();
 
             $table->foreign('user_id')
-                  ->references('user_id')->on('users')
-                  ->onDelete('cascade');
+                ->references('user_id')->on('users')
+                ->onDelete('cascade');
 
             $table->foreign('dosen_pa_id')
-                  ->references('user_id')->on('users')
-                  ->onDelete('set null');
+                ->references('user_id')->on('users')
+                ->onDelete('set null');
         });
     }
 

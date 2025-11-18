@@ -11,13 +11,15 @@ class DosenDetail extends Model
     use HasFactory;
 
     protected $table = 'dosen_details';
-    protected $primaryKey = 'user_id';
-    public $incrementing = false;
+    protected $primaryKey = 'dosen_id';  // fix di sini
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'nidn',
         'jabatan_fungsional',
         'bidang_keahlian',
+        'user_id'
     ];
 
     /**

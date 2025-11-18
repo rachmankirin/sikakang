@@ -3,6 +3,7 @@
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
+use App\Http\Controllers\MhsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
 
@@ -30,19 +31,12 @@ Route::get('/hasil', [HasilStudiController::class, 'index']);
 Route::get('/jadwal', function () {
     return view('Dashboard.jadwal_kuliah');
 });
-
-<<<<<<< HEAD
-=======
 Route::get('/dashboard-admin', function () {
     return view('Dashboard.dashboard_admin');
 });
-Route::get('/dashboard-admin/dosen', function () {
-    return view('Dashboard.dashboard_admin_dosen');
-});
+Route::resource('/dashboard-admin/dosen', DosenController::class);
 
-Route::get('/dashboard-admin/mahasiswa', function () {
-    return view('Dashboard.dashboard_admin_mahasiswa');
-});
+Route::resource('/dashboard-admin/mahasiswa', MhsController::class);
 
 Route::get('/dashboard-admin/fakultas', function () {
     return view('Dashboard.dashboard_admin_fakultas');
@@ -53,7 +47,6 @@ Route::get('/dashboard-admin/prodi', function () {
 });
 
 
->>>>>>> a315d8a (add dashboard admin)
 // Routes untuk detail jadwal
 Route::get('/jadwal/detail/{kode}', function ($kode) {
     return view('Dashboard.jadwal_detail', compact('kode'));
@@ -138,10 +131,7 @@ Route::get('/mycourse', function () {
 Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
-<<<<<<< HEAD
 
 
 Route::get('/registration/detail', [RegistrationController::class, 'detail'])
     ->name('registration.registrasi');
-=======
->>>>>>> a315d8a (add dashboard admin)

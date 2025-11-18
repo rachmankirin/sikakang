@@ -19,10 +19,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'users';
+    protected $primaryKey = 'user_id';  // fix di sini
+    public $incrementing = true;
+    protected $keyType = 'int';
+
+
     protected $fillable = [
-        'name',
+
+        'nama_lengkap',
         'email',
-        'password',
+        'role',
     ];
 
     /**
@@ -67,7 +74,7 @@ class User extends Authenticatable
     /**
      * Get the dosen detail associated with the user.
      */
-    public function dosenDetail(): HasOne
+    public function dosenDetail()
     {
         return $this->hasOne(DosenDetail::class, 'user_id');
     }

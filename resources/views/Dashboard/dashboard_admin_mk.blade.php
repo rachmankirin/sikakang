@@ -151,7 +151,6 @@
                             prodi: "Teknik Informatika",
                             angkatan: "2023",
                             kelas: "A",
-                            jenjang: "S1",
                             status: "Aktif",
                             waktu: "Senin, 08:00 - 10:30",
                             kapasitas: 40,
@@ -166,7 +165,6 @@
                             prodi: "Teknik Informatika",
                             angkatan: "2023",
                             kelas: "B",
-                            jenjang: "S1",
                             status: "Aktif",
                             waktu: "Selasa, 13:00 - 15:30",
                             kapasitas: 40,
@@ -181,7 +179,6 @@
                             prodi: "Sistem Informasi",
                             angkatan: "2022",
                             kelas: "A",
-                            jenjang: "S1",
                             status: "Aktif",
                             waktu: "Rabu, 09:00 - 12:00",
                             kapasitas: 50,
@@ -196,7 +193,6 @@
                             prodi: "Ilmu Komputer",
                             angkatan: "2021",
                             kelas: "Internasional",
-                            jenjang: "S1",
                             status: "Aktif",
                             waktu: "Kamis, 10:00 - 12:30",
                             kapasitas: 30,
@@ -211,7 +207,6 @@
                             prodi: "Teknik Elektro",
                             angkatan: "2022",
                             kelas: "C",
-                            jenjang: "S1",
                             status: "Nonaktif",
                             waktu: "Jumat, 08:00 - 11:00",
                             kapasitas: 45,
@@ -293,7 +288,7 @@
                             <div> <label for="kode" class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label> <input type="text" id="kode" name="kode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required> </div>
                             <div> <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Mata Kuliah</label> <input type="text" id="nama" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required> </div>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div> <label for="sks" class="block text-sm font-medium text-gray-700 mb-1">SKS</label>
                                 <select id="sks" name="sks" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
                                     <option value="">Pilih SKS</option>
@@ -314,13 +309,6 @@
                                     <option value="6">Semester 6</option>
                                     <option value="7">Semester 7</option>
                                     <option value="8">Semester 8</option>
-                                </select> </div>
-                            <div> <label for="jenjang" class="block text-sm font-medium text-gray-700 mb-1">Jenjang</label> <select id="jenjang" name="jenjang" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
-                                    <option value="">Pilih Jenjang</option>
-                                    <option value="D3">D3</option>
-                                    <option value="S1">S1</option>
-                                    <option value="S2">S2</option>
-                                    <option value="S3">S3</option>
                                 </select> </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -433,76 +421,60 @@
                         });
                     }
 
-                    // FUNGSI BARU: Generate Input Waktu & Kapasitas Kelas
+                    // Function to generate class time inputs dynamically
                     function generateClassTimeInputs(count) {
                         const container = document.getElementById('classTimeInputs');
                         if (!container) return;
-
-                        container.innerHTML =
-                            `<h4 class="font-bold text-sm text-gray-700">Detail Kelas (Waktu & Kapasitas):</h4>`;
-
-                        if (count > 0) {
-                            // Header kolom dalam input modal
-                            const header = `
-                                <div class="grid grid-cols-4 gap-2 text-xs font-semibold text-gray-600 mb-1 border-b pb-1">
-                                    <div class="col-span-1">Hari</div>
-                                    <div class="col-span-1">Mulai</div>
-                                    <div class="col-span-1">Selesai</div>
-                                    <div class="col-span-1">Kapasitas</div>
+                        
+                        container.innerHTML = '<h4 class="text-sm font-semibold text-gray-700 mb-2">Waktu dan Kapasitas Per Kelas</h4>';
+                        
+                        for (let i = 0; i < count; i++) {
+                            const kelasName = String.fromCharCode(65 + i); // A, B, C, ...
+                            const kelasDiv = document.createElement('div');
+                            kelasDiv.className = 'p-3 border border-gray-200 rounded-lg bg-white';
+                            kelasDiv.innerHTML = `
+                                <h5 class="text-sm font-medium text-gray-700 mb-2">Kelas ${kelasName}</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Hari</label>
+                                        <select name="waktu_hari_${kelasName}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                            <option value="">Pilih Hari</option>
+                                            ${daysOptions.map(day => `<option value="${day}">${day}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Jam Mulai</label>
+                                        <input type="time" name="waktu_mulai_${kelasName}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Jam Selesai</label>
+                                        <input type="time" name="waktu_selesai_${kelasName}" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Kapasitas</label>
+                                        <input type="number" name="kapasitas_${kelasName}" min="10" max="100" value="40" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" required>
+                                    </div>
                                 </div>
                             `;
-                            container.innerHTML += header;
-
-                            for (let i = 0; i < count; i++) {
-                                const namaKelas = String.fromCharCode(65 + i);
-
-                                // Opsi Hari
-                                let dayOptionsHtml = daysOptions.map(day =>
-                                    `<option value="${day}">${day}</option>`
-                                ).join('');
-
-                                const inputHtml = `
-                                    <div class="space-y-1">
-                                        <label class="block text-xs font-semibold text-gray-600">Kelas ${namaKelas}</label>
-                                        <div class="grid grid-cols-4 gap-2">
-                                            <select name="waktu_hari_${namaKelas}" required
-                                                class="col-span-1 px-2 py-2 border border-yellow-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm">
-                                                <option value="">Pilih Hari</option>
-                                                ${dayOptionsHtml}
-                                            </select>
-                                            <input type="time" name="waktu_mulai_${namaKelas}" required
-                                                class="col-span-1 px-2 py-2 border border-yellow-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
-                                                title="Jam Mulai">
-                                            <input type="time" name="waktu_selesai_${namaKelas}" required
-                                                class="col-span-1 px-2 py-2 border border-yellow-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
-                                                title="Jam Selesai">
-                                            <input type="number" name="kapasitas_${namaKelas}" required min="10" max="100" value="40"
-                                                class="col-span-1 px-2 py-2 border border-yellow-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-sm"
-                                                placeholder="Kapasitas" title="Kapasitas Kelas">
-                                        </div>
-                                    </div>
-                                `;
-                                container.innerHTML += inputHtml;
-                            }
+                            container.appendChild(kelasDiv);
                         }
                     }
 
-
-                    // --- Render Tables ---
-
+                    // Render table (with header and data)
                     function renderTable() {
                         dataTableBody.innerHTML = '';
+
                         // 1. Render Table Header
                         if (currentChannel === 'matakuliah') {
                             tableHead.innerHTML = `
                                 <tr>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Mata Kuliah</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mata Kuliah</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKS</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Semester</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas & Waktu</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kapasitas</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dosen Pengampu</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dosen</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Angkatan</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -623,7 +595,9 @@
                         // Channel buttons
                         channelBtns.forEach(btn => {
                             btn.addEventListener('click', function() {
-                                const channel = this.id.replace('Btn', '');
+                                let channel = this.id.replace('Btn', '');
+                                // Pastikan channel hanya 'matakuliah' atau 'kurikulum'
+                                if (channel !== 'matakuliah' && channel !== 'kurikulum') return;
                                 switchChannel(channel);
                                 channelBtns.forEach(b => b.classList.remove('active-channel'));
                                 this.classList.add('active-channel');
@@ -790,8 +764,7 @@
                                     angkatan: formData.get('angkatan'),
                                     kelas: namaKelas,
                                     waktu: waktuFormatted,
-                                    kapasitas: kapasitasKelas, // Simpan Kapasitas
-                                    jenjang: formData.get('jenjang'),
+                                    kapasitas: kapasitasKelas,
                                     deskripsi: formData.get('deskripsi'),
                                     status: formData.get('status')
                                 };

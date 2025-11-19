@@ -11,8 +11,6 @@
             
             <!-- Left: Course Info -->
             <div class="flex-1">
-<<<<<<< HEAD
-=======
                 <!-- Back Button -->
                 <a href="/mycourse" class="inline-flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-6">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +19,6 @@
                     <span class="font-medium">Back to Courses</span>
                 </a>
 
->>>>>>> a315d8a (add dashboard admin)
                 <!-- Course Title -->
                 <h1 class="text-3xl font-bold text-gray-800 mb-3">PEMROGRAMAN WEB</h1>
                 
@@ -69,15 +66,15 @@
                 <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-5">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="text-lg font-bold text-gray-700">Course Progress</h3>
-                        <span class="text-2xl font-bold text-gray-800">30%</span>
+                        <span id="progressPercentage" class="text-2xl font-bold text-gray-800">0%</span>
                     </div>
                     
                     <!-- Progress Bar -->
                     <div class="w-full bg-gray-200 rounded-full h-3 mb-3">
-                        <div class="bg-blue-500 h-3 rounded-full transition-all duration-300" style="width: 30%"></div>
+                        <div id="progressBar" class="bg-blue-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     
-                    <p class="text-sm text-gray-600">12 of 16 lessons completed</p>
+                    <p id="progressText" class="text-sm text-gray-600">0 of 4 assignments completed</p>
                 </div>
             </div>
 
@@ -104,170 +101,252 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-        <!-- Course Content Sections (TARUH DISINI) -->
-        <div class="space-y-4">
-            
-            <!-- Section 1 -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <input type="checkbox" id="section1" class="peer hidden">
-                <label for="section1" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-=======
         <!-- Course Content Sections -->
-        <div class="space-y-4">
+        <div class="space-y-4" id="courseContent">
             
             <!-- Section 1 - Collapsed -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+            <div class="section-item bg-white border-2 border-yellow-200 rounded-xl overflow-hidden transform opacity-0 translate-y-4 transition-all duration-500">
+                <button class="section-toggle w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors" data-section="1">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transform rotate-0 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
->>>>>>> a315d8a (add dashboard admin)
+                        <svg class="arrow-icon w-5 h-5 text-gray-600 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                         <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
                     </div>
-<<<<<<< HEAD
-                </label>
-                
-                <!-- Content -->
-                <div class="max-h-0 overflow-hidden peer-checked:max-h-screen transition-all duration-300">
-                    <div class="px-5 pb-5 pt-2">
-                        <p class="text-gray-600 leading-relaxed">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc. Sed sagittis auctor sodales. Nullam imperdiet malesuada risus, eget tristique felis.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section 2 - Pengumpulan Tugas -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <input type="checkbox" id="section2" class="peer hidden">
-                <label for="section2" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-=======
                 </button>
-            </div>
-
-            <!-- Section 2 - With Assignment -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
->>>>>>> a315d8a (add dashboard admin)
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                        <div class="text-left">
-                            <h3 class="text-lg font-bold text-gray-800">Pengumpulan tugas</h3>
-                            <p class="text-sm text-gray-500">Kumpulkan tugas anda</p>
-                        </div>
-                    </div>
-<<<<<<< HEAD
-                    <button onclick="event.preventDefault(); event.stopPropagation();" class="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
-                        Kumpulkan
-                    </button>
-                </label>
-                
-                <div class="max-h-0 overflow-hidden peer-checked:max-h-screen transition-all duration-300">
+                <div class="section-content hidden">
                     <div class="px-5 pb-5 pt-2">
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Upload File</label>
-                                <input type="file" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-100 file:text-gray-700 hover:file:bg-yellow-200">
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Materi pertemuan pertama mengenai pengenalan pemrograman web dan dasar-dasar HTML.
+                        </p>
+                        
+                        <!-- Upload Assignment Section -->
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Tugas Pertemuan 1</h4>
+                            <p class="text-sm text-gray-600 mb-4">Upload tugas Anda dalam format PDF atau file dokumen lainnya (Max: 10MB)</p>
+                            
+                            <!-- File Upload Area (Show when no file uploaded) -->
+                            <div class="upload-area space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
+                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip" 
+                                           class="file-input block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-100 file:text-gray-700 hover:file:bg-yellow-200 cursor-pointer">
+                                </div>
+                                <button class="submit-btn w-full px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
+                                    Kumpulkan Tugas
+                                </button>
                             </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Keterangan</label>
-                                <textarea rows="4" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-400" placeholder="Tulis keterangan tugas..."></textarea>
+
+                            <!-- Submitted File Info (Hidden by default, show after submit) -->
+                            <div class="submitted-file hidden">
+                                <div class="bg-white border border-yellow-300 rounded-lg p-4 mb-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <div>
+                                                <p class="filename font-semibold text-gray-800 text-sm">tugas_web_1.pdf</p>
+                                                <p class="text-xs text-gray-500">Dikumpulkan pada 20 Nov 2025, 14:30</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Terkirim</span>
+                                    </div>
+                                </div>
+                                <button class="change-file-btn w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Ganti File
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 3 -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <input type="checkbox" id="section3" class="peer hidden">
-                <label for="section3" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
+            <!-- Section 2 - PERTEMUAN 2 -->
+            <div class="section-item bg-white border-2 border-yellow-200 rounded-xl overflow-hidden transform opacity-0 translate-y-4 transition-all duration-500">
+                <button class="section-toggle w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors" data-section="2">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="arrow-icon w-5 h-5 text-gray-600 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                         <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 2</h3>
                     </div>
-                </label>
-                
-                <div class="max-h-0 overflow-hidden peer-checked:max-h-screen transition-all duration-300">
+                </button>
+                <div class="section-content hidden">
                     <div class="px-5 pb-5 pt-2">
-                        <p class="text-gray-600 leading-relaxed">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc.
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            Pembahasan CSS dasar: selectors, properties, dan styling halaman web.
                         </p>
+                        
+                        <!-- Upload Assignment Section -->
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Tugas Pertemuan 2</h4>
+                            <p class="text-sm text-gray-600 mb-4">Upload tugas Anda dalam format PDF atau file dokumen lainnya (Max: 10MB)</p>
+                            
+                            <!-- File Upload Area (Show when no file uploaded) -->
+                            <div class="upload-area space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
+                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip" 
+                                           class="file-input block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-100 file:text-gray-700 hover:file:bg-yellow-200 cursor-pointer">
+                                </div>
+                                <button class="submit-btn w-full px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
+                                    Kumpulkan Tugas
+                                </button>
+                            </div>
+
+                            <!-- Submitted File Info (Hidden by default, show after submit) -->
+                            <div class="submitted-file hidden">
+                                <div class="bg-white border border-yellow-300 rounded-lg p-4 mb-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <div>
+                                                <p class="filename font-semibold text-gray-800 text-sm">tugas_web_2.pdf</p>
+                                                <p class="text-xs text-gray-500">Dikumpulkan pada 20 Nov 2025, 14:30</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Terkirim</span>
+                                    </div>
+                                </div>
+                                <button class="change-file-btn w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Ganti File
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Section 4 -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <input type="checkbox" id="section4" class="peer hidden">
-                <label for="section4" class="flex items-center justify-between p-5 hover:bg-gray-50 transition-colors cursor-pointer">
+            <!-- Section 3 - PERTEMUAN 3 -->
+            <div class="section-item bg-white border-2 border-yellow-200 rounded-xl overflow-hidden transform opacity-0 translate-y-4 transition-all duration-500">
+                <button class="section-toggle w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors" data-section="3">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transition-transform duration-200 peer-checked:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="arrow-icon w-5 h-5 text-gray-600 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                         <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 3</h3>
                     </div>
-                </label>
+                </button>
                 
-                <div class="max-h-0 overflow-hidden peer-checked:max-h-screen transition-all duration-300">
+                <div class="section-content hidden">
                     <div class="px-5 pb-5 pt-2">
-                        <p class="text-gray-600 leading-relaxed">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc.
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            JavaScript fundamental: variabel, tipe data, operator, dan struktur kontrol.
                         </p>
-                    </div>
-=======
-                    <button class="px-6 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
-                        Kumpulkan
-                    </button>
-                </button>
-            </div>
+                        
+                        <!-- Upload Assignment Section -->
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Tugas Pertemuan 3</h4>
+                            <p class="text-sm text-gray-600 mb-4">Upload tugas Anda dalam format PDF atau file dokumen lainnya (Max: 10MB)</p>
+                            
+                            <!-- File Upload Area (Show when no file uploaded) -->
+                            <div class="upload-area space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
+                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip" 
+                                           class="file-input block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-100 file:text-gray-700 hover:file:bg-yellow-200 cursor-pointer">
+                                </div>
+                                <button class="submit-btn w-full px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
+                                    Kumpulkan Tugas
+                                </button>
+                            </div>
 
-            <!-- Section 3 - Expanded with Content -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                        <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
+                            <!-- Submitted File Info (Hidden by default, show after submit) -->
+                            <div class="submitted-file hidden">
+                                <div class="bg-white border border-yellow-300 rounded-lg p-4 mb-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <div>
+                                                <p class="filename font-semibold text-gray-800 text-sm">tugas_web_3.pdf</p>
+                                                <p class="text-xs text-gray-500">Dikumpulkan pada 20 Nov 2025, 14:30</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Terkirim</span>
+                                    </div>
+                                </div>
+                                <button class="change-file-btn w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Ganti File
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </button>
-                
-                <!-- Expanded Content -->
-                <div class="px-5 pb-5 pt-2">
-                    <p class="text-gray-600 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc. Sed sagittis auctor sodales. Nullam imperdiet malesuada risus, eget tristique felis. Integer ultrices vestibulum elit quis consequat. Mauris facilisis quis ipsum imperdiet eleifend. Vivamus eget velit luctus, congue justo ut, aliquam elit. Donec blandit leo quam, nec blandit sem convallis et. Morbi ultrices enim lobortis tortor scelerisque sodales.
-                    </p>
                 </div>
             </div>
 
-            <!-- Section 4 - Another Expanded -->
-            <div class="bg-white border-2 border-yellow-200 rounded-xl overflow-hidden">
-                <button class="w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors">
+            <!-- Section 4 - PERTEMUAN 4 -->
+            <div class="section-item bg-white border-2 border-yellow-200 rounded-xl overflow-hidden transform opacity-0 translate-y-4 transition-all duration-500">
+                <button class="section-toggle w-full flex items-center justify-between p-5 hover:bg-gray-50 transition-colors" data-section="4">
                     <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5 text-gray-600 transform rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="arrow-icon w-5 h-5 text-gray-600 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
-                        <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 1</h3>
+                        <h3 class="text-lg font-bold text-gray-800">PERTEMUAN 4</h3>
                     </div>
                 </button>
                 
-                <!-- Expanded Content -->
-                <div class="px-5 pb-5 pt-2">
-                    <p class="text-gray-600 leading-relaxed">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae neque fermentum magna suscipit elementum eu quis nunc. Sed sagittis auctor sodales. Nullam imperdiet malesuada risus, eget tristique felis. Integer ultrices vestibulum elit quis consequat. Mauris facilisis quis ipsum imperdiet eleifend. Vivamus eget velit luctus, congue justo ut, aliquam elit. Donec blandit leo quam, nec blandit sem convallis et. Morbi ultrices enim lobortis tortor scelerisque sodales.
-                    </p>
->>>>>>> a315d8a (add dashboard admin)
+                <div class="section-content hidden">
+                    <div class="px-5 pb-5 pt-2">
+                        <p class="text-gray-600 leading-relaxed mb-4">
+                            DOM Manipulation dan Event Handling dalam JavaScript untuk interaksi web yang dinamis.
+                        </p>
+                        
+                        <!-- Upload Assignment Section -->
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-800 mb-3">Tugas Pertemuan 4</h4>
+                            <p class="text-sm text-gray-600 mb-4">Upload tugas Anda dalam format PDF atau file dokumen lainnya (Max: 10MB)</p>
+                            
+                            <!-- File Upload Area (Show when no file uploaded) -->
+                            <div class="upload-area space-y-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
+                                    <input type="file" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx,.zip" 
+                                           class="file-input block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-yellow-100 file:text-gray-700 hover:file:bg-yellow-200 cursor-pointer">
+                                </div>
+                                <button class="submit-btn w-full px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold rounded-lg transition-colors">
+                                    Kumpulkan Tugas
+                                </button>
+                            </div>
+
+                            <!-- Submitted File Info (Hidden by default, show after submit) -->
+                            <div class="submitted-file hidden">
+                                <div class="bg-white border border-yellow-300 rounded-lg p-4 mb-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <div>
+                                                <p class="filename font-semibold text-gray-800 text-sm">tugas_web_4.pdf</p>
+                                                <p class="text-xs text-gray-500">Dikumpulkan pada 20 Nov 2025, 14:30</p>
+                                            </div>
+                                        </div>
+                                        <span class="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Terkirim</span>
+                                    </div>
+                                </div>
+                                <button class="change-file-btn w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                    </svg>
+                                    Ganti File
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -275,10 +354,105 @@
 
     </div>
 </div>
-<<<<<<< HEAD
-=======
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Entrance animation for sections (staggered)
+        const sections = document.querySelectorAll('.section-item');
+        sections.forEach((section, index) => {
+            setTimeout(() => {
+                section.classList.remove('opacity-0', 'translate-y-4');
+                section.classList.add('opacity-100', 'translate-y-0');
+            }, index * 100);
+        });
+
+        // Accordion toggle functionality
+        document.querySelectorAll('.section-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const sectionItem = this.closest('.section-item');
+                const content = sectionItem.querySelector('.section-content');
+                const arrow = this.querySelector('.arrow-icon');
+                
+                if (content.classList.contains('hidden')) {
+                    // Open
+                    content.classList.remove('hidden');
+                    arrow.classList.add('rotate-180');
+                } else {
+                    // Close
+                    content.classList.add('hidden');
+                    arrow.classList.remove('rotate-180');
+                }
+            });
+        });
+
+        // Update progress bar
+        function updateProgress() {
+            const totalAssignments = 4;
+            const submittedAssignments = document.querySelectorAll('.submitted-file:not(.hidden)').length;
+            const percentage = Math.round((submittedAssignments / totalAssignments) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressPercentage').textContent = percentage + '%';
+            document.getElementById('progressText').textContent = `${submittedAssignments} of ${totalAssignments} assignments completed`;
+        }
+
+        // File upload and change functionality
+        document.querySelectorAll('.submit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const uploadSection = this.closest('.bg-yellow-50');
+                const fileInput = uploadSection.querySelector('.file-input');
+                const uploadArea = uploadSection.querySelector('.upload-area');
+                const submittedArea = uploadSection.querySelector('.submitted-file');
+                const filenameDisplay = uploadSection.querySelector('.filename');
+
+                if (fileInput.files.length > 0) {
+                    const fileName = fileInput.files[0].name;
+                    
+                    // Update filename in submitted area
+                    if (filenameDisplay) {
+                        filenameDisplay.textContent = fileName;
+                    }
+
+                    // Hide upload area, show submitted area
+                    uploadArea.classList.add('hidden');
+                    submittedArea.classList.remove('hidden');
+
+                    // Update progress bar
+                    updateProgress();
+
+                    // Show success message
+                    alert('Tugas berhasil dikumpulkan!');
+                } else {
+                    alert('Silakan pilih file terlebih dahulu!');
+                }
+            });
+        });
+
+        // Change file button functionality
+        document.querySelectorAll('.change-file-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const uploadSection = this.closest('.bg-yellow-50');
+                const uploadArea = uploadSection.querySelector('.upload-area');
+                const submittedArea = uploadSection.querySelector('.submitted-file');
+                const fileInput = uploadSection.querySelector('.file-input');
+
+                // Show upload area, hide submitted area
+                submittedArea.classList.add('hidden');
+                uploadArea.classList.remove('hidden');
+
+                // Reset file input
+                fileInput.value = '';
+
+                // Update progress bar
+                updateProgress();
+            });
+        });
+
+        // Initialize progress on page load
+        updateProgress();
+    });
+</script>
 
 <!-- Alpine.js for Accordion (Optional) -->
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
->>>>>>> a315d8a (add dashboard admin)
 </x-app-layout>

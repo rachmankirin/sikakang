@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('tahun_ajar')->nullable();
             $table->enum('semester', ['ganjil', 'genap'])->nullable();
             $table->integer('kapasitas')->nullable();
-            $table->time('jam_mulai');
-            $table->time('jam_selesai');
-            $table->string('hari');
+            $table->time('jam_mulai')->nullable();
+            $table->time('jam_selesai')->nullable();
+            $table->string('hari')->nullable();
             $table->timestamps();
 
             $table->foreign('mk_id')

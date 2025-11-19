@@ -16,6 +16,8 @@ class MataKuliah extends Model
         'kode_mk',
         'nama_mk',
         'sks',
+        'semester',
+        'prodi',
         'deskripsi',
     ];
 

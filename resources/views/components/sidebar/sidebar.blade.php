@@ -37,6 +37,72 @@
         <p class="text-center text-[#FFE05E] my-5 font-semibold text-lg">Main Menu</p>
 
         @php
+            $role = optional(auth()->user())->role;
+            $isAdmin = $role === 'admin';
+        @endphp
+
+        @if($isAdmin)
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="/dashboard-admin"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Dashboard Admin</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dashboard-admin/dosen"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin/dosen*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Kelola Dosen</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dashboard-admin/mahasiswa"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin/mahasiswa*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Kelola Mahasiswa</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dashboard-admin/prodi"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin/prodi*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Kelola Prodi</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dashboard-admin/fakultas"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin/fakultas*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Kelola Fakultas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dashboard-admin/mk"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dashboard-admin/mk*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Kelola Mata Kuliah</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.surat.index') }}"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::routeIs('admin.surat.*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Frame.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Verifikasi Surat</span>
+                    </a>
+                </li>
+
+                <hr class="text-slate-500 mt-5 mb-5">
+                <li class="flex items-center p-2">
+                    <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
+                    <a href="#" class="ms-7 text-slate-500 text-left hover:text-red-500">Sign-Out</a>
+                </li>
+            </ul>
+
+        @else
+
+        @php
             $perkuliahanOpen =
                 Request::is('dashboard*') ||
                 Request::is('krs*') ||
@@ -44,9 +110,12 @@
                 Request::is('jadwal*') ||
                 Request::is('registration*') ||
                 Request::is('tagihan*');
+            
+            $pengajuanSuratOpen =
+                Request::routeIs('surat.*');
         @endphp
 
-        <ul class="space-y-2 font-medium" x-data="{ openMenu: {{ $perkuliahanOpen ? 1 : 0 }} }">
+        <ul class="space-y-2 font-medium" x-data="{ openMenu: {{ $perkuliahanOpen ? 1 : ($pengajuanSuratOpen ? 3 : 0) }} }">
 
                 <!-- Dashboard -->
                 <li class="text-slate-500">
@@ -112,8 +181,8 @@
                         </svg>
                     </button>
                     <ul x-show="openMenu === 3" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                        <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Buat Surat</a></li>
-                        <li><a href="#" class="block py-1 hover:text-[#FFE05E]">Riwayat Surat</a></li>
+                        <li><a href="{{ route('surat.create') }}" class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('surat.create') ? 'text-[#FFE05E] font-semibold' : '' }}">Buat Surat</a></li>
+                        <li><a href="{{ route('surat.riwayat') }}" class="block py-1 hover:text-[#FFE05E] {{ Request::routeIs('surat.riwayat') || Request::routeIs('surat.show') ? 'text-[#FFE05E] font-semibold' : '' }}">Riwayat Surat</a></li>
                     </ul>
                 </li>
 
@@ -139,3 +208,5 @@
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
+
+@endif

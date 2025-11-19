@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama_mk')->nullable();
             $table->integer('sks')->nullable();
             $table->string('semester')->nullable();
-            $table->string('prodi');
+            $table->string('prodi')->nullable();
             $table->text('deskripsi')->nullable();
 
             $table->timestamps();

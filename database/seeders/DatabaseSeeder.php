@@ -8,6 +8,8 @@ use App\Models\MahasiswaDetail;
 use App\Models\MataKuliah;
 use App\Models\Kelas;
 use App\Models\Krs;
+use App\Models\JenisSurat;
+use App\Models\PengajuanSurat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -110,6 +112,8 @@ class DatabaseSeeder extends Seeder
             'kode_mk' => 'RIK42213',
             'nama_mk' => 'Pemrograman Web',
             'sks' => 3,
+            'semester' => '5',
+            'prodi' => 'Informatika',
             'deskripsi' => 'Mata kuliah yang mempelajari tentang pemrograman web',
         ]);
 
@@ -117,6 +121,8 @@ class DatabaseSeeder extends Seeder
             'kode_mk' => 'RIK42113',
             'nama_mk' => 'E-Commerce',
             'sks' => 3,
+            'semester' => '5',
+            'prodi' => 'Informatika',
             'deskripsi' => 'Mata kuliah yang mempelajari tentang e-commerce',
         ]);
 
@@ -124,6 +130,8 @@ class DatabaseSeeder extends Seeder
             'kode_mk' => 'RIK42207',
             'nama_mk' => 'Sistem Basis Data',
             'sks' => 3,
+            'semester' => '3',
+            'prodi' => 'Informatika',
             'deskripsi' => 'Mata kuliah yang mempelajari tentang basis data',
         ]);
 
@@ -131,6 +139,8 @@ class DatabaseSeeder extends Seeder
             'kode_mk' => 'RIK42203',
             'nama_mk' => 'Sistem Operasi',
             'sks' => 3,
+            'semester' => '5',
+            'prodi' => 'Informatika',
             'deskripsi' => 'Mata kuliah yang mempelajari tentang sistem operasi',
         ]);
 
@@ -138,6 +148,8 @@ class DatabaseSeeder extends Seeder
             'kode_mk' => 'RIK42208',
             'nama_mk' => 'Internet of Things',
             'sks' => 3,
+            'semester' => '5',
+            'prodi' => 'Informatika',
             'deskripsi' => 'Mata kuliah yang mempelajari tentang IoT',
         ]);
 
@@ -147,8 +159,11 @@ class DatabaseSeeder extends Seeder
             'dosen_pengampu_id' => $dosen1->user_id,
             'nama_kelas' => 'C-24',
             'tahun_ajar' => '2024/2025',
-            'semester' => 'Ganjil',
+            'semester' => 'ganjil',
             'kapasitas' => 40,
+            'jam_mulai' => '10:00:00',
+            'jam_selesai' => '12:00:00',
+            'hari' => 'Rabu',
         ]);
 
         $kelasEcommerce = Kelas::create([
@@ -156,8 +171,11 @@ class DatabaseSeeder extends Seeder
             'dosen_pengampu_id' => $dosen2->user_id,
             'nama_kelas' => 'A-24',
             'tahun_ajar' => '2024/2025',
-            'semester' => 'Ganjil',
+            'semester' => 'ganjil',
             'kapasitas' => 40,
+            'jam_mulai' => '08:00:00',
+            'jam_selesai' => '10:00:00',
+            'hari' => 'Jumat',
         ]);
 
         $kelasBasdat = Kelas::create([
@@ -165,8 +183,11 @@ class DatabaseSeeder extends Seeder
             'dosen_pengampu_id' => $dosen3->user_id,
             'nama_kelas' => 'B-24',
             'tahun_ajar' => '2024/2025',
-            'semester' => 'Ganjil',
+            'semester' => 'ganjil',
             'kapasitas' => 40,
+            'jam_mulai' => '13:00:00',
+            'jam_selesai' => '15:00:00',
+            'hari' => 'Senin',
         ]);
 
         // Create KRS for Mahasiswa
@@ -196,6 +217,62 @@ class DatabaseSeeder extends Seeder
             'kelas_id' => $kelasPemweb->kelas_id,
             'status_krs' => 'diambil',
             'tanggal_ambil' => now(),
+        ]);
+
+        // Create Jenis Surat
+        $jsAktif = JenisSurat::create([
+            'nama_surat' => 'Surat Keterangan Aktif Kuliah',
+            'persyaratan' => 'KTM aktif, Bukti pembayaran UKT semester berjalan',
+            'estimasi_hari' => 3,
+        ]);
+
+        $jsMagang = JenisSurat::create([
+            'nama_surat' => 'Surat Pengantar Magang',
+            'persyaratan' => 'Transkrip nilai minimal 100 SKS, Surat permohonan dari perusahaan',
+            'estimasi_hari' => 5,
+        ]);
+
+        JenisSurat::create([
+            'nama_surat' => 'Surat Keterangan Lulus',
+            'persyaratan' => 'Ijazah, Transkrip nilai akhir, Surat bebas perpustakaan',
+            'estimasi_hari' => 7,
+        ]);
+
+        JenisSurat::create([
+            'nama_surat' => 'Surat Izin Penelitian',
+            'persyaratan' => 'Proposal penelitian yang telah disetujui pembimbing, KTM aktif',
+            'estimasi_hari' => 4,
+        ]);
+
+        JenisSurat::create([
+            'nama_surat' => 'Surat Rekomendasi Beasiswa',
+            'persyaratan' => 'IPK minimal 3.00, Transkrip nilai, Surat permohonan beasiswa',
+            'estimasi_hari' => 5,
+        ]);
+
+        JenisSurat::create([
+            'nama_surat' => 'Surat Keterangan Cuti Akademik',
+            'persyaratan' => 'Surat permohonan cuti, Surat persetujuan orang tua, Bukti alasan cuti',
+            'estimasi_hari' => 3,
+        ]);
+
+        // Sample Pengajuan Surat
+        PengajuanSurat::create([
+            'mahasiswa_user_id' => $mahasiswa1->user_id,
+            'jenis_surat_id' => $jsAktif->jenis_surat_id,
+            'dosen_pa_id' => $dosen3->user_id,
+            'status_pengajuan' => 'menunggu',
+            'keperluan' => 'Untuk keperluan administrasi beasiswa internal kampus.',
+            'tanggal_keperluan' => now()->addDays(7),
+        ]);
+
+        PengajuanSurat::create([
+            'mahasiswa_user_id' => $mahasiswa2->user_id,
+            'jenis_surat_id' => $jsMagang->jenis_surat_id,
+            'dosen_pa_id' => $dosen1->user_id,
+            'status_pengajuan' => 'menunggu',
+            'keperluan' => 'Pengantar permohonan magang di PT Maju Jaya.',
+            'tanggal_keperluan' => now()->addDays(14),
         ]);
 
         $this->command->info('Database seeded successfully!');

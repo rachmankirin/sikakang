@@ -20,6 +20,9 @@ class Kelas extends Model
         'tahun_ajar',
         'semester',
         'kapasitas',
+        'jam_mulai',
+        'jam_selesai',
+        'hari',
     ];
 
     /**

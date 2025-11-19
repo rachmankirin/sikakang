@@ -6,6 +6,8 @@ use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\MhsController;
+use App\Http\Controllers\PengajuanSuratController;
+use App\Http\Controllers\AdminPengajuanSuratController;
 use App\Http\Controllers\ProdiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
@@ -138,3 +140,15 @@ Route::get('/registration/detail', [RegistrationController::class, 'detail'])
 Route::get('/tagihan', function () {
     return view('tagihan.tagihan_mahasiwa');
 })->name('tagihan.tagihan_mahasiswa');
+
+// Routes untuk Pengajuan Surat
+Route::get('/surat/riwayat', [PengajuanSuratController::class, 'index'])->name('surat.riwayat');
+Route::get('/surat/buat', [PengajuanSuratController::class, 'create'])->name('surat.create');
+Route::post('/surat', [PengajuanSuratController::class, 'store'])->name('surat.store');
+Route::get('/surat/{id}', [PengajuanSuratController::class, 'show'])->name('surat.show');
+Route::delete('/surat/{id}', [PengajuanSuratController::class, 'destroy'])->name('surat.destroy');
+
+// Admin - Verifikasi Pengajuan Surat
+Route::get('/dashboard-admin/pengajuan-surat', [AdminPengajuanSuratController::class, 'index'])->name('admin.surat.index');
+Route::post('/dashboard-admin/pengajuan-surat/{id}/approve', [AdminPengajuanSuratController::class, 'approve'])->name('admin.surat.approve');
+Route::post('/dashboard-admin/pengajuan-surat/{id}/reject', [AdminPengajuanSuratController::class, 'reject'])->name('admin.surat.reject');

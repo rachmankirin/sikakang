@@ -133,4 +133,8 @@ Route::get('/incourse', function () {
 Route::resource('/dashboard-admin/prodi', ProdiController::class);
 
 Route::get('/registration/detail', [RegistrationController::class, 'detail'])
-    ->name('registration.registrasi');
+    ->name('registration.detail');
+
+Route::get('/tagihan', function () {
+    return view('tagihan.tagihan_mahasiwa');
+})->name('tagihan.tagihan_mahasiswa');

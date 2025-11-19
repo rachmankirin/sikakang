@@ -115,12 +115,14 @@
                                             <i class="fas fa-edit"></i>
                                         </button>
 
-                                        {{-- <form action="{{ route('dosen', $dsn->id) }}" method="POST" class="inline">
-                                            @csrf @method('DELETE')
+                                        <form action="{{ route('dosen.destroy', $dsn->user_id) }}" method="POST"
+                                            class="inline">
+                                            @csrf
+                                            @method('DELETE')
                                             <button class="text-red-600" onclick="return confirm('Hapus data?')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form> --}}
+                                        </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -165,7 +167,8 @@
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Pangkat</label>
-                        <input type="text" name="pangkat" id="pangkat" class="w-full border rounded-lg px-3 py-2">
+                        <input type="text" name="pangkat" id="pangkat"
+                            class="w-full border rounded-lg px-3 py-2">
                     </div>
 
                     <div>

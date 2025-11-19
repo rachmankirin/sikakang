@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\HasilStudiController;
 use App\Http\Controllers\KrsController;
+use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\MhsController;
+use App\Http\Controllers\ProdiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
+use App\Models\Fakultas;
 
 Route::get('/', function () {
     return view('pages.pengumuman');
@@ -38,15 +42,9 @@ Route::resource('/dashboard-admin/dosen', DosenController::class);
 
 Route::resource('/dashboard-admin/mahasiswa', MhsController::class);
 
-Route::get('/dashboard-admin/fakultas', function () {
-    return view('Dashboard.dashboard_admin_fakultas');
-});
+Route::resource('/dashboard-admin/fakultas', FakultasController::class);
 
-Route::get('/dashboard-admin/prodi', function () {
-    return view('Dashboard.dashboard_admin_prodi');
-});
-
-
+Route::resource('/dashboard-admin/mk', MataKuliahController::class);
 // Routes untuk detail jadwal
 Route::get('/jadwal/detail/{kode}', function ($kode) {
     return view('Dashboard.jadwal_detail', compact('kode'));
@@ -132,6 +130,7 @@ Route::get('/incourse', function () {
     return view('courses.detailcourse');
 });
 
+Route::resource('/dashboard-admin/prodi', ProdiController::class);
 
 Route::get('/registration/detail', [RegistrationController::class, 'detail'])
     ->name('registration.registrasi');

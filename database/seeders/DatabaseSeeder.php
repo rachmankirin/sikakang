@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\DosenDetail;
 use App\Models\MahasiswaDetail;
+use App\Models\Fakultas;
+use App\Models\Prodi;
 use App\Models\MataKuliah;
 use App\Models\Kelas;
 use App\Models\Krs;
@@ -74,6 +76,34 @@ class DatabaseSeeder extends Seeder
             'bidang_keahlian' => 'Basis Data',
         ]);
 
+        // Create Fakultas
+        $fakultasTeknik = Fakultas::create([
+            'fakultas' => 'Fakultas Teknik',
+        ]);
+
+        $fakultasEkonomi = Fakultas::create([
+            'fakultas' => 'Fakultas Ekonomi',
+        ]);
+
+        // Create Prodi
+        $prodiInformatika = Prodi::create([
+            'code' => 'IF001',
+            'name' => 'Informatika',
+            'fakultas_id' => $fakultasTeknik->id,
+        ]);
+
+        $prodiSistemInformasi = Prodi::create([
+            'code' => 'SI001',
+            'name' => 'Sistem Informasi',
+            'fakultas_id' => $fakultasTeknik->id,
+        ]);
+
+        $prodiManajemen = Prodi::create([
+            'code' => 'MN001',
+            'name' => 'Manajemen',
+            'fakultas_id' => $fakultasEkonomi->id,
+        ]);
+
         // Create Mahasiswa Users
         $mahasiswa1 = User::create([
             'nama_lengkap' => 'JAYNUDIN MALIK',
@@ -113,7 +143,7 @@ class DatabaseSeeder extends Seeder
             'nama_mk' => 'Pemrograman Web',
             'sks' => 3,
             'semester' => '5',
-            'prodi' => 'Informatika',
+            'id_prodi' => $prodiInformatika->id,
             'deskripsi' => 'Mata kuliah yang mempelajari tentang pemrograman web',
         ]);
 
@@ -122,7 +152,7 @@ class DatabaseSeeder extends Seeder
             'nama_mk' => 'E-Commerce',
             'sks' => 3,
             'semester' => '5',
-            'prodi' => 'Informatika',
+            'id_prodi' => $prodiInformatika->id,
             'deskripsi' => 'Mata kuliah yang mempelajari tentang e-commerce',
         ]);
 
@@ -131,7 +161,7 @@ class DatabaseSeeder extends Seeder
             'nama_mk' => 'Sistem Basis Data',
             'sks' => 3,
             'semester' => '3',
-            'prodi' => 'Informatika',
+            'id_prodi' => $prodiInformatika->id,
             'deskripsi' => 'Mata kuliah yang mempelajari tentang basis data',
         ]);
 
@@ -140,7 +170,7 @@ class DatabaseSeeder extends Seeder
             'nama_mk' => 'Sistem Operasi',
             'sks' => 3,
             'semester' => '5',
-            'prodi' => 'Informatika',
+            'id_prodi' => $prodiInformatika->id,
             'deskripsi' => 'Mata kuliah yang mempelajari tentang sistem operasi',
         ]);
 
@@ -149,7 +179,7 @@ class DatabaseSeeder extends Seeder
             'nama_mk' => 'Internet of Things',
             'sks' => 3,
             'semester' => '5',
-            'prodi' => 'Informatika',
+            'id_prodi' => $prodiInformatika->id,
             'deskripsi' => 'Mata kuliah yang mempelajari tentang IoT',
         ]);
 

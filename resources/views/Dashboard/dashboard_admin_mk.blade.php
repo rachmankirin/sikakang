@@ -121,7 +121,9 @@
                         id="closeModal" class="text-gray-400 hover:text-gray-600"> <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <form id="dataForm" class="p-4 space-y-4"> <input type="hidden" id="editId" name="id">
+                <form id="dataForm" action="{{ route('mk.store') }}" method="POST" class="p-4 space-y-4"> 
+                    @csrf
+                    <input type="hidden" id="editId" name="id">
                     <div id="formContent" class="space-y-4">
                     </div>
                     <div class="flex justify-end space-x-3 pt-4 sticky bottom-0 bg-white pb-2"> <button type="button"
@@ -134,6 +136,9 @@
             </div>
         </div>
         <script>
+            // Data dari database (Laravel)
+            const dbMataKuliah = @json($mataKuliah ?? []);
+            
             document.getElementById('viewSelector').addEventListener('change', function() {
                 window.location.href = this.value;
             });
@@ -141,77 +146,45 @@
                 function() {
                     // Sample data for demonstration
                     const sampleData = {
-                        matakuliah: [{
-                            id: 1,
-                            kode: "TI101",
-                            nama: "Algoritma dan Pemrograman",
-                            sks: 3,
-                            semester: "1",
-                            dosen: "Dr. Ahmad Wijaya, M.Kom.",
-                            prodi: "Teknik Informatika",
-                            angkatan: "2023",
-                            kelas: "A",
-                            status: "Aktif",
-                            waktu: "Senin, 08:00 - 10:30",
-                            kapasitas: 40,
-                            deskripsi: "Mata kuliah dasar pemrograman dan algoritma"
-                        }, {
-                            id: 2,
-                            kode: "TI101",
-                            nama: "Algoritma dan Pemrograman",
-                            sks: 3,
-                            semester: "1",
-                            dosen: "Dr. Ahmad Wijaya, M.Kom.",
-                            prodi: "Teknik Informatika",
-                            angkatan: "2023",
-                            kelas: "B",
-                            status: "Aktif",
-                            waktu: "Selasa, 13:00 - 15:30",
-                            kapasitas: 40,
-                            deskripsi: "Mata kuliah dasar pemrograman dan algoritma"
-                        }, {
-                            id: 3,
-                            kode: "SI201",
-                            nama: "Basis Data",
-                            sks: 4,
-                            semester: "3",
-                            dosen: "Prof. Budi Santoso, Ph.D.",
-                            prodi: "Sistem Informasi",
-                            angkatan: "2022",
-                            kelas: "A",
-                            status: "Aktif",
-                            waktu: "Rabu, 09:00 - 12:00",
-                            kapasitas: 50,
-                            deskripsi: "Konsep dan implementasi sistem basis data"
-                        }, {
-                            id: 4,
-                            kode: "IK301",
-                            nama: "Machine Learning",
-                            sks: 3,
-                            semester: "5",
-                            dosen: "Dr. Maya Sari, M.Sc.",
-                            prodi: "Ilmu Komputer",
-                            angkatan: "2021",
-                            kelas: "Internasional",
-                            status: "Aktif",
-                            waktu: "Kamis, 10:00 - 12:30",
-                            kapasitas: 30,
-                            deskripsi: "Pengenalan machine learning dan aplikasinya"
-                        }, {
-                            id: 5,
-                            kode: "TE401",
-                            nama: "Jaringan Komputer",
-                            sks: 4,
-                            semester: "4",
-                            dosen: "Ir. Rizki Pratama, M.T.",
-                            prodi: "Teknik Elektro",
-                            angkatan: "2022",
-                            kelas: "C",
-                            status: "Nonaktif",
-                            waktu: "Jumat, 08:00 - 11:00",
-                            kapasitas: 45,
-                            deskripsi: "Fundamental jaringan komputer dan protokol"
-                        }],
+                        matakuliah: dbMataKuliah.length > 0 ? dbMataKuliah.flatMap(mk => {
+                            // Jika ada kelas, buat entry per kelas
+                            if (mk.kelas && mk.kelas.length > 0) {
+                                return mk.kelas.map(kelas => ({
+                                    id: kelas.kelas_id,
+                                    kode: mk.kode_mk,
+                                    nama: mk.nama_mk,
+                                    sks: mk.sks,
+                                    semester: mk.semester,
+                                    dosen: kelas.dosen_pengampu ? kelas.dosen_pengampu.nama_lengkap : '-',
+                                    prodi: mk.prodi ? mk.prodi.name : '-',
+                                    angkatan: kelas.nama_kelas ? kelas.nama_kelas.split('-')[1] : '-',
+                                    kelas: kelas.nama_kelas ? kelas.nama_kelas.split('-')[0] : '-',
+                                    status: 'Aktif',
+                                    waktu: kelas.hari && kelas.jam_mulai && kelas.jam_selesai 
+                                        ? `${kelas.hari}, ${kelas.jam_mulai} - ${kelas.jam_selesai}` 
+                                        : '-',
+                                    kapasitas: kelas.kapasitas || 0,
+                                    deskripsi: mk.deskripsi || '-'
+                                }));
+                            } else {
+                                // Jika belum ada kelas, tampilkan data MK saja
+                                return [{
+                                    id: mk.mk_id,
+                                    kode: mk.kode_mk,
+                                    nama: mk.nama_mk,
+                                    sks: mk.sks,
+                                    semester: mk.semester,
+                                    dosen: '-',
+                                    prodi: mk.prodi ? mk.prodi.name : '-',
+                                    angkatan: '-',
+                                    kelas: '-',
+                                    status: 'Aktif',
+                                    waktu: '-',
+                                    kapasitas: 0,
+                                    deskripsi: mk.deskripsi || '-'
+                                }];
+                            }
+                        }) : [],
                         // Data Kurikulum
                         kurikulum: [{
                             id: 101,
@@ -284,9 +257,11 @@
 
                     // Template MK memiliki placeholder waktu
                     const formMK = `
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div> <label for="kode" class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label> <input type="text" id="kode" name="kode" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required> </div>
-                            <div> <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Mata Kuliah</label> <input type="text" id="nama" name="nama" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required> </div>
+                        <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                            <p class="text-sm text-blue-700"><i class="fas fa-info-circle mr-2"></i>Kode Mata Kuliah akan di-generate otomatis oleh sistem (format: MK + 5 digit angka)</p>
+                        </div>
+                        <div class="grid grid-cols-1 gap-4">
+                            <div> <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Mata Kuliah</label> <input type="text" id="nama" name="nama_mk" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required> </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div> <label for="sks" class="block text-sm font-medium text-gray-700 mb-1">SKS</label>
@@ -312,16 +287,17 @@
                                 </select> </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div> <label for="dosen" class="block text-sm font-medium text-gray-700 mb-1">Dosen Pengampu</label> <select id="dosen" name="dosen" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
+                            <div> <label for="dosen" class="block text-sm font-medium text-gray-700 mb-1">Dosen Pengampu</label> <select id="dosen" name="dosen_pengampu_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
                                     <option value="">Pilih Dosen</option>
+                                    @foreach($dosen as $d)
+                                        <option value="{{ $d->user_id }}">{{ $d->nama_lengkap }}</option>
+                                    @endforeach
                                 </select> </div>
-                            <div> <label for="prodi" class="block text-sm font-medium text-gray-700 mb-1">Program Studi</label> <select id="prodi" name="prodi" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
+                            <div> <label for="prodi" class="block text-sm font-medium text-gray-700 mb-1">Program Studi</label> <select id="prodi" name="id_prodi" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
                                     <option value="">Pilih Program Studi</option>
-                                    <option value="Teknik Informatika">Teknik Informatika</option>
-                                    <option value="Sistem Informasi">Sistem Informasi</option>
-                                    <option value="Ilmu Komputer">Ilmu Komputer</option>
-                                    <option value="Teknik Elektro">Teknik Elektro</option>
-                                    <option value="Manajemen">Manajemen</option>
+                                    @foreach($prodi as $p)
+                                        <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                    @endforeach
                                 </select> </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -642,8 +618,8 @@
 
                         // Form submission
                         dataForm.addEventListener('submit', function(e) {
-                            e.preventDefault();
-                            saveData();
+                            // Submit form langsung ke server (real database insert)
+                            // Validasi akan dilakukan di controller
                         });
 
                         // Edit and delete buttons (delegated)

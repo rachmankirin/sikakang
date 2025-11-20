@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MataKuliah extends Model
 {
@@ -17,9 +18,17 @@ class MataKuliah extends Model
         'nama_mk',
         'sks',
         'semester',
-        'prodi',
+        'id_prodi',
         'deskripsi',
     ];
+
+    /**
+     * Get the prodi that owns the mata kuliah.
+     */
+    public function prodi(): BelongsTo
+    {
+        return $this->belongsTo(Prodi::class, 'id_prodi');
+    }
 
     /**
      * Get the kelas for the mata kuliah.

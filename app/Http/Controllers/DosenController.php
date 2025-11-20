@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 class DosenController extends Controller
 {
     /**
+     * Dashboard for dosen role.
+     */
+    public function dashboard()
+    {
+        return view('Dashboard.dashboard_dosen');
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index()

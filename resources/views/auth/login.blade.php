@@ -23,16 +23,28 @@
                 <img src="{{ url('images/untirta.png') }}" alt="" width="70px">
             </div>
             <h2 class="text-center font-bold text-2xl">Universitas<br />Sultan Ageng Tirtayasa</h2>
-            <form action="" class="p-10">
+            
+            <!-- Menampilkan Error Validasi -->
+            @if ($errors->any())
+                <div class="mx-10 mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('login.perform') }}" method="POST" class="p-10">
                 @csrf
-                <label for="username" class=" text-lg">Username</label><br>
-                <input type="text" placeholder="Masukkan Username"
+                <label for="email" class=" text-lg">Email</label><br>
+                <input type="email" name="email" id="email" placeholder="Masukkan Email" value="{{ old('email') }}"
                     class="border-2 border-[#FFE05E] text-xl py-3 px-3 w-full rounded-lg mb-8 placeholder:italic
                             focus:outline-none focus:ring-0 focus:border-[#fed531]">
 
 
                 <label for="password" class="text-lg">Password</label><br>
-                <input type="password" placeholder="Masukkan Password"
+                <input type="password" name="password" id="password" placeholder="Masukkan Password"
                     class="border-2 border-[#FFE05E] text-xl py-3 px-3 w-full rounded-lg mb-8 placeholder:italic
                             focus:outline-none focus:ring-0 focus:border-[#fed531]">
                 <button type="submit"

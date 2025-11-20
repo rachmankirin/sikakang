@@ -39,6 +39,7 @@
         @php
             $role = optional(auth()->user())->role;
             $isAdmin = $role === 'admin';
+            $isDosen = $role === 'dosen';
         @endphp
 
         @if($isAdmin)
@@ -96,7 +97,36 @@
                 <hr class="text-slate-500 mt-5 mb-5">
                 <li class="flex items-center p-2">
                     <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
-                    <a href="#" class="ms-7 text-slate-500 text-left hover:text-red-500">Sign-Out</a>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full js-logout-form">
+                        @csrf
+                        <button type="submit" class="ms-7 text-slate-500 text-left hover:text-red-500 w-full">Sign-Out</button>
+                    </form>
+                </li>
+            </ul>
+
+        @elseif($isDosen)
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="/dosen/dashboard"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dosen/dashboard') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Dashboard Dosen</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/dosen"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('dosen') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/profile.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Profile</span>
+                    </a>
+                </li>
+                <hr class="text-slate-500 mt-5 mb-5">
+                <li class="flex items-center p-2">
+                    <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
+                    <form method="POST" action="{{ route('logout') }}" class="w-full js-logout-form">
+                        @csrf
+                        <button type="submit" class="ms-7 text-slate-500 text-left hover:text-red-500 w-full">Sign-Out</button>
+                    </form>
                 </li>
             </ul>
 
@@ -196,17 +226,41 @@
                 </li>
                 <li class="flex items-center p-2">
                     <img src="{{ url('images/logout.svg') }}" alt="" srcset="">
-                    <a href="#" class="ms-7 text-slate-500 text-left hover:text-red-500">
-                        Sign-Out
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}" class="w-full js-logout-form">
+                        @csrf
+                        <button type="submit" class="ms-7 text-slate-500 text-left hover:text-red-500 w-full">Sign-Out</button>
+                    </form>
                 </li>
 
             </ul>
+        @endif
 
     </div>
 </aside>
 
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
-
-@endif
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.js-logout-form').forEach((form) => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Keluar dari sesi?',
+                    text: 'Anda akan diarahkan ke halaman login.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, keluar',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>

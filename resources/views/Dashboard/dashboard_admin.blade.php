@@ -1,9 +1,5 @@
 <x-app-layout>
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard Mahasiswa</title>
+    @push('scripts')
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
@@ -23,9 +19,9 @@
                 transition: all 0.2s ease-out;
             }
         </style>
-    </head>
+    @endpush
 
-    <body class="bg-gray-50">
+    <div class="bg-gray-50 min-h-screen">
         <!-- Top Navigation Bar -->
         <nav class="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
             <div class="flex justify-between items-center">
@@ -47,11 +43,11 @@
                     <div class="flex items-center space-x-2">
                         <div class="flex flex-col items-end">
                             <span
-                                class="text-sm font-medium text-gray-700">{{ Auth::user()->nama_lengkap ?? 'Mahasiswa' }}</span>
-                            <span class="text-xs text-gray-500">Mahasiswa Informatika</span>
+                                class="text-sm font-medium text-gray-700">{{ Auth::user()->nama_lengkap ?? 'Admin' }}</span>
+                            <span class="text-xs text-gray-500">Administrator</span>
                         </div>
-                        <a href="/profile/mahasiswa" class="relative">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80"
+                        <a href="#" class="relative">
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=F59E0B&color=fff"
                                 alt="Profile Picture"
                                 class="w-10 h-10 rounded-full object-cover border-2 border-yellow-400">
                         </a>
@@ -61,7 +57,7 @@
         </nav>
 
         <!-- Main Content -->
-        <div class="p-4 sm:p-6 bg-gray-50 min-h-screen">
+        <div class="p-4 sm:p-6">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-x-6 md:gap-y-6">
                 {{-- Header --}}
                 <div
@@ -142,112 +138,112 @@
 
             </div>
         </div>
+    </div>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const canvas = document.getElementById('ipsChart');
-                if (!canvas || !window.Chart) return;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('ipsChart');
+            if (!canvas || !window.Chart) return;
 
-                // Allow passing dynamic data from controller; fallback to demo values
-                const labels = ['Semester 1', 'Semester 2', 'Semester 3'];
-                const values = [4.0, 4.0, 0.0];
+            // Allow passing dynamic data from controller; fallback to demo values
+            const labels = ['Semester 1', 'Semester 2', 'Semester 3'];
+            const values = [4.0, 4.0, 0.0];
 
-                // Headroom to prevent top clipping of data labels
-                const numericValues = (Array.isArray(values) ? values : []).map(v => Number(v)).filter(v => Number
-                    .isFinite(v));
-                const dataMax = numericValues.length ? Math.max(...numericValues) : 4;
-                const ySuggestedMax = Math.max(4, dataMax + 0.3);
+            // Headroom to prevent top clipping of data labels
+            const numericValues = (Array.isArray(values) ? values : []).map(v => Number(v)).filter(v => Number
+                .isFinite(v));
+            const dataMax = numericValues.length ? Math.max(...numericValues) : 4;
+            const ySuggestedMax = Math.max(4, dataMax + 0.3);
 
-                if (window.ChartDataLabels) {
-                    Chart.register(window.ChartDataLabels);
-                }
+            if (window.ChartDataLabels) {
+                Chart.register(window.ChartDataLabels);
+            }
 
-                new Chart(canvas, {
-                    type: 'line',
-                    data: {
-                        labels,
-                        datasets: [{
-                            label: 'IPS',
-                            data: values,
-                            borderColor: '#F59E0B', // amber-500
-                            backgroundColor: 'rgba(245, 158, 11, 0.15)',
-                            borderWidth: 3,
-                            tension: 0, // straight segments (no curve)
-                            stepped: false,
-                            spanGaps: true,
-                            pointBackgroundColor: '#F59E0B',
-                            pointBorderColor: '#F59E0B',
-                            pointRadius: 0, // hide point markers to match reference
-                            hitRadius: 8,
-                            pointHoverRadius: 4,
-                            fill: false,
-                        }]
+            new Chart(canvas, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'IPS',
+                        data: values,
+                        borderColor: '#F59E0B', // amber-500
+                        backgroundColor: 'rgba(245, 158, 11, 0.15)',
+                        borderWidth: 3,
+                        tension: 0, // straight segments (no curve)
+                        stepped: false,
+                        spanGaps: true,
+                        pointBackgroundColor: '#F59E0B',
+                        pointBorderColor: '#F59E0B',
+                        pointRadius: 0, // hide point markers to match reference
+                        hitRadius: 8,
+                        pointHoverRadius: 4,
+                        fill: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'nearest',
+                        intersect: false
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        interaction: {
-                            mode: 'nearest',
-                            intersect: false
+                    layout: {
+                        padding: {
+                            top: 28,
+                            right: 8,
+                            bottom: 8,
+                            left: 8
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
                         },
-                        layout: {
-                            padding: {
-                                top: 28,
-                                right: 8,
-                                bottom: 8,
-                                left: 8
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) =>
+                                    `${ctx.parsed.y?.toFixed ? ctx.parsed.y.toFixed(1) : ctx.parsed.y}`
                             }
                         },
-                        plugins: {
-                            legend: {
-                                display: false
+                        datalabels: {
+                            backgroundColor: '#FDE68A', // amber-200
+                            borderColor: '#F59E0B',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            color: '#92400E',
+                            anchor: 'end',
+                            align: 'top',
+                            offset: 8,
+                            padding: {
+                                top: 2,
+                                bottom: 2,
+                                left: 6,
+                                right: 6
                             },
-                            tooltip: {
-                                callbacks: {
-                                    label: (ctx) =>
-                                        `${ctx.parsed.y?.toFixed ? ctx.parsed.y.toFixed(1) : ctx.parsed.y}`
-                                }
-                            },
-                            datalabels: {
-                                backgroundColor: '#FDE68A', // amber-200
-                                borderColor: '#F59E0B',
-                                borderWidth: 1,
-                                borderRadius: 6,
-                                color: '#92400E',
-                                anchor: 'end',
-                                align: 'top',
-                                offset: 8,
-                                padding: {
-                                    top: 2,
-                                    bottom: 2,
-                                    left: 6,
-                                    right: 6
-                                },
-                                formatter: (v) => (typeof v === 'number' ? v.toFixed(1) : v)
-                            },
+                            formatter: (v) => (typeof v === 'number' ? v.toFixed(1) : v)
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                min: 0,
-                                max: 4.0,
-                                ticks: {
-                                    stepSize: 1,
-                                    callback: (v) => (typeof v === 'number' && v.toFixed ? v.toFixed(1) : v)
-                                },
-                                grid: {
-                                    color: 'rgba(0,0,0,0.06)'
-                                }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            min: 0,
+                            max: 4.0,
+                            ticks: {
+                                stepSize: 1,
+                                callback: (v) => (typeof v === 'number' && v.toFixed ? v.toFixed(1) : v)
                             },
-                            x: {
-                                grid: {
-                                    display: false
-                                }
+                            grid: {
+                                color: 'rgba(0,0,0,0.06)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
                             }
                         }
                     }
-                });
+                }
             });
-        </script>
-    </body>
+        });
+    </script>
 </x-app-layout>

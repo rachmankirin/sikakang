@@ -1,7 +1,4 @@
 <x-app-layout>
-@section('title', 'Detail Registrasi Mahasiswa')
-
-@section('content')
 <div class="min-h-screen bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
@@ -60,13 +57,62 @@
         </div>
 
         <!-- Payment Status Card -->
-        <div class="bg-gradient-to-br from-red-400 to-red-500 rounded-2xl shadow-lg p-8 text-center text-white">
-            <div class="mb-6">
+        <div class="bg-gradient-to-br from-red-400 to-red-500 rounded-2xl shadow-lg p-8 text-center text-white transition-all duration-300 hover:shadow-2xl hover:scale-[1.01]">
+            <div class="mb-6 animate-fade-in">
                 <h3 class="text-2xl font-bold mb-2">Deskripsi Pembayaran</h3>
                 <p class="text-red-100">Registrasi 2024/2025</p>
             </div>
             
             <!-- Icon -->
             <div class="flex justify-center mb-6">
-                <div class="bg-white bg-opacity-20 rounded-xl p-6 backdrop-blur-sm">
+                <div class="bg-white rounded-full p-8 shadow-xl transition-transform duration-300 hover:scale-110 hover:rotate-12">
+                    <!-- X Icon (Silang) - Lebih besar dan jelas -->
+                    <svg class="w-32 h-32 text-red-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Status Text -->
+            <div class="animate-fade-in-delay">
+                <h4 class="text-xl font-bold mb-2">Pembayaran Belum Lunas</h4>
+                <p class="text-red-100 mb-4">Silakan selesaikan pembayaran untuk mengaktifkan registrasi Anda</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Animations -->
+<style>
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fade-in-delay {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .animate-fade-in {
+        animation: fade-in 0.6s ease-out;
+    }
+    
+    .animate-fade-in-delay {
+        animation: fade-in-delay 0.8s ease-out 0.2s backwards;
+    }
+</style>
+
 </x-app-layout>

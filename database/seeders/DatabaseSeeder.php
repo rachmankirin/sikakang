@@ -7,8 +7,6 @@ use App\Models\DosenDetail;
 use App\Models\MahasiswaDetail;
 use App\Models\Fakultas;
 use App\Models\Prodi;
-use App\Models\MataKuliah;
-use App\Models\Kelas;
 use App\Models\JenisSurat;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -279,79 +277,8 @@ class DatabaseSeeder extends Seeder
             'status_mahasiswa' => 'Aktif',
         ]);
 
-        // Create Sample Mata Kuliah
-        MataKuliah::create([
-            'kode_mk' => 'IF101',
-            'nama_mk' => 'Sistem Basis Data',
-            'sks' => 3,
-            'semester' => '3',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep dasar basis data, perancangan database, dan SQL',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF102',
-            'nama_mk' => 'Sistem Operasi',
-            'sks' => 3,
-            'semester' => '4',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep sistem operasi, manajemen proses, memori, dan file system',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF103',
-            'nama_mk' => 'Internet of Things',
-            'sks' => 3,
-            'semester' => '6',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep IoT, sensor, actuator, dan aplikasi IoT',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF104',
-            'nama_mk' => 'Pengantar Kecerdasan Artificial',
-            'sks' => 3,
-            'semester' => '5',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep dasar AI, machine learning, dan neural networks',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF105',
-            'nama_mk' => 'Pemrograman Web',
-            'sks' => 3,
-            'semester' => '3',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari pengembangan aplikasi web menggunakan HTML, CSS, JavaScript, dan framework modern',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF106',
-            'nama_mk' => 'Desain dan Analisis Algoritma',
-            'sks' => 3,
-            'semester' => '4',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari teknik desain algoritma, analisis kompleksitas, dan optimasi algoritma',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF107',
-            'nama_mk' => 'Jaringan Komputer',
-            'sks' => 3,
-            'semester' => '5',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep jaringan komputer, protokol, routing, dan keamanan jaringan',
-        ]);
-
-        MataKuliah::create([
-            'kode_mk' => 'IF108',
-            'nama_mk' => 'E-Commerce',
-            'sks' => 3,
-            'semester' => '6',
-            'id_prodi' => $prodiInformatika->id,
-            'deskripsi' => 'Mata kuliah yang mempelajari konsep perdagangan elektronik, sistem pembayaran online, dan keamanan transaksi',
-        ]);
-
+        // Mata Kuliah akan ditambahkan oleh admin melalui dashboard
+        
         // Create Jenis Surat
         JenisSurat::create([
             'nama_surat' => 'Surat Keterangan Aktif Kuliah',

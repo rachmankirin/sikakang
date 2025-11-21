@@ -336,7 +336,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 // Fakultas → Prodi Options
                 const prodiOptions = {
-                    "Fakultas Teknik": ["Teknik Elektro", "Teknik Mesin", "Teknik Sipil", "Teknik Kimia", "Teknik Industri"],
+                    "Fakultas Teknik": ["Teknik Elektro", "Teknik Mesin", "Teknik Sipil", "Teknik Kimia", "Informatika"],
                     "Fakultas Ilmu Komputer": ["Teknik Informatika", "Sistem Informasi", "Ilmu Komputer", "Teknologi Informasi"],
                     "Fakultas Ekonomi": ["Manajemen", "Akuntansi", "Ekonomi Pembangunan", "Ekonomi Syariah"],
                     "Fakultas Hukum": ["Ilmu Hukum", "Hukum Bisnis", "Hukum Internasional"],

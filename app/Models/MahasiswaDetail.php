@@ -17,11 +17,18 @@ class MahasiswaDetail extends Model
     protected $fillable = [
         'user_id',
         'nim',
+        'nik',
         'dosen_pa_id',
         'angkatan',
         'program_studi',
         'status_mahasiswa',
         'fakultas',
+        'agama',
+        'jenis_kelamin',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'alamat',
+        'no_hp',
     ];
 
     /**

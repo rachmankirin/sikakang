@@ -1,17 +1,41 @@
 <x-app-layout>
 
 
-    <div class="p-4 sm:p-6 bg-gray-50 min-h-screen">
+    <div class="p-4 sm:p-6 bg-gradient-to-br from-white-50 via-white to-white-100 min-h-screen">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-x-6 md:gap-y-6">
             {{-- Header --}}
-            <div class="col-span-12 bg-yellow-300 text-center text-teal-700 font-semibold p-4 rounded-xl shadow mb-6">
-                Selamat Datang, {{ Auth::user()->nama_lengkap ?? 'User' }}, sebagai Mahasiswa Informatika
+            <div class="relative overflow-hidden col-span-12 bg-white/90 backdrop-blur rounded-2xl border border-yellow-100 shadow-lg p-5 sm:p-6 flex flex-col gap-3 transform-gpu transition-transform duration-200 hover:scale-[1.01] hover:shadow-xl">
+                <div class="absolute inset-0 pointer-events-none opacity-30"
+                     style="background: radial-gradient(circle at 15% 30%, rgba(255,224,94,0.4), transparent 35%), radial-gradient(circle at 85% 30%, rgba(255,224,94,0.25), transparent 35%);">
+                </div>
+                <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.3em] text-yellow-700/70 mb-1">Mahasiswa</p>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900">Halo, {{ Auth::user()->nama_lengkap ?? 'User' }}</h1>
+                        <p class="text-gray-600 mt-1">Selamat datang di dashboard Untirta. Pantau progres studimu di sini.</p>
+                    </div>
+                    <div class="flex items-center gap-3 bg-yellow-50/80 border border-yellow-100 px-4 py-3 rounded-2xl shadow-sm">
+                        <div class="w-12 h-12 rounded-xl bg-yellow-200 grid place-content-center text-xl text-gray-800">{{ strtoupper(substr(Auth::user()->nama_lengkap ?? 'U', 0, 1)) }}</div>
+                        <div class="leading-tight text-sm">
+                            <p class="font-semibold text-gray-900">{{ Auth::user()->nama_lengkap ?? 'User' }}</p>
+                            <p class="text-yellow-700/80">Informatika</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative mt-2 text-sm sm:text-base text-gray-800 leading-relaxed">
+                    <p class="text-[11px] uppercase tracking-[0.2em] text-yellow-700/80 font-semibold mb-1">Catatan Hari Ini</p>
+                    <p class="text-lg font-semibold text-gray-900 leading-snug">“Belajar itu maraton, bukan sprint. Nikmati prosesnya, jaga konsistensi.”</p>
+                    <p class="text-xs text-gray-500 mt-1">Sedikit kemajuan setiap hari lebih baik daripada menunggu momen sempurna.</p>
+                </div>
             </div>
 
             {{-- Chart dan IPK --}}
             <div
-                class="col-span-12 md:col-span-8 bg-yellow-100 p-4 h-auto md:h-95 rounded-xl shadow transform-gpu transition-transform duration-200 ease-out hover:scale-[1.01] hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none">
-                <h2 class="font-semibold text-gray-700 mb-2">Perkembangan IPS per Semester</h2>
+                class="col-span-12 md:col-span-8 bg-white border border-yellow-100 p-5 h-auto md:h-95 rounded-xl shadow transform-gpu transition-transform duration-200 ease-out hover:scale-[1.01] hover:shadow-lg motion-reduce:transform-none motion-reduce:transition-none">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="font-semibold text-gray-800">Perkembangan IPS per Semester</h2>
+                    <span class="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 border border-yellow-200">Live</span>
+                </div>
                 <div class="relative h-64 md:h-80">
                     <canvas id="ipsChart"></canvas>
                 </div>

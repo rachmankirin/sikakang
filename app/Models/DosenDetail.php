@@ -19,6 +19,11 @@ class DosenDetail extends Model
         'nidn',
         'jabatan_fungsional',
         'bidang_keahlian',
+        'jenis_kelamin',
+        'program_studi',
+        'fakultas',
+        'alamat',
+        'no_hp',
         'user_id'
     ];
 

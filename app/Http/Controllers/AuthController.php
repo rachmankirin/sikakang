@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -22,15 +24,25 @@ class AuthController extends Controller
         ]);
 
         $remember = $request->boolean('remember');
+        $rateKey = $this->throttleKey($request);
+
+        if (RateLimiter::tooManyAttempts($rateKey, 5)) {
+            $seconds = RateLimiter::availableIn($rateKey);
+            return back()
+                ->withErrors(['email' => 'Terlalu banyak percobaan. Silakan coba lagi dalam ' . $seconds . ' detik.'])
+                ->withInput($request->only('email'));
+        }
 
         $user = User::where('email', $credentials['email'])->first();
 
         if (! $user || ! $this->passwordMatches($user, $credentials['password'])) {
+            RateLimiter::hit($rateKey, 60);
             return back()
                 ->withErrors(['email' => 'Email atau password tidak sesuai.'])
                 ->withInput($request->only('email'));
         }
 
+        RateLimiter::clear($rateKey);
         Auth::login($user, $remember);
         $request->session()->regenerate();
 
@@ -109,5 +121,12 @@ class AuthController extends Controller
         $user->forceFill([
             'password' => Hash::make($plainPassword),
         ])->save();
+    }
+
+    private function throttleKey(Request $request): string
+    {
+        $email = Str::lower($request->input('email', ''));
+        $ip = (string) $request->ip();
+        return $email . '|' . $ip;
     }
 }

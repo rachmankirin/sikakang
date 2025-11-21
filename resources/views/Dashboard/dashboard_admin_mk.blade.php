@@ -197,7 +197,8 @@
                             // Jika ada kelas, buat entry per kelas
                             if (mk.kelas && mk.kelas.length > 0) {
                                 return mk.kelas.map(kelas => ({
-                                    id: kelas.kelas_id,
+                                    id: mk.mk_id,
+                                    kelas_id: kelas.kelas_id,
                                     kode: mk.kode_mk,
                                     nama: mk.nama_mk,
                                     sks: mk.sks,
@@ -452,7 +453,8 @@
                             if (editMataKuliah.kelas && editMataKuliah.kelas.length > 0 && editMataKuliah.kelas[0].nama_kelas) {
                                 const angkatan = editMataKuliah.kelas[0].nama_kelas.split('-')[1];
                                 if (angkatan) {
-                                    document.getElementById('angkatan').value = '20' + angkatan;
+                                    const normalizedAngkatan = angkatan.length === 2 ? `20${angkatan}` : angkatan;
+                                    document.getElementById('angkatan').value = normalizedAngkatan;
                                 }
                             }
                         }, 100);
@@ -623,7 +625,7 @@
                                     <td class="px-4 py-3 text-sm text-gray-700 font-mono">${item.kode}</td>
                                     <td class="px-4 py-3 text-sm text-gray-700">
                                         <div class="font-medium">${item.nama}</div>
-                                        <div class="text-xs text-gray-500 mt-1">${item.prodi} - ${item.jenjang}</div>
+                                        <div class="text-xs text-gray-500 mt-1">${item.prodi}</div>
                                     </td>
                                     <td class="px-4 py-3 text-sm text-gray-700">${item.sks} SKS</td>
                                     <td class="px-4 py-3 text-sm">

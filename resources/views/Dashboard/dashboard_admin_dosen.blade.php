@@ -50,6 +50,22 @@
         <!-- CONTENT -->
         <div class="p-4 sm:p-6 min-h-screen">
 
+            @if (session('success'))
+                <div class="mb-4 bg-green-50 border-l-4 border-green-500 p-3 rounded">
+                    <p class="text-sm text-green-700">{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-3 rounded">
+                    <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="flex justify-between items-center mb-6">
                 <!-- Tabs -->
                 <div class="flex gap-2">
@@ -111,7 +127,7 @@
                                     <td class="px-4 py-3">{{ $dsn->dosenDetail->bidang_keahlian ?? '-' }}</td>
 
                                     <td class="px-4 py-3">
-                                        <button class="edit-btn text-yellow-600 mr-2" data-id="{{ $dsn->id }}">
+                                        <button class="edit-btn text-yellow-600 mr-2" data-id="{{ $dsn->user_id }}">
                                             <i class="fas fa-edit"></i>
                                         </button>
 
@@ -146,41 +162,43 @@
 
                 <form id="dataForm" method="POST" action="{{ route('dosen.store') }}" class="p-4 space-y-4">
                     @csrf
+                    <input type="hidden" name="_method" id="formMethod" value="POST">
 
                     <input type="hidden" name="id" id="editId">
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Nama</label>
                         <input type="text" name="nama_lengkap" id="nama"
-                            class="w-full border rounded-lg px-3 py-2">
+                            class="w-full border rounded-lg px-3 py-2" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Password</label>
                         <input type="password" name="password" id="password"
-                            class="w-full border rounded-lg px-3 py-2">
+                            class="w-full border rounded-lg px-3 py-2" required>
+                        <p class="text-xs text-gray-500 mt-1">Kosongkan saat mengedit jika tidak ingin mengubah password.</p>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" name="email" id="email" class="w-full border rounded-lg px-3 py-2">
+                        <input type="email" name="email" id="email" class="w-full border rounded-lg px-3 py-2" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">NIDN</label>
-                        <input type="text" name="nidn" id="nidn" class="w-full border rounded-lg px-3 py-2">
+                        <input type="text" name="nidn" id="nidn" class="w-full border rounded-lg px-3 py-2" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Pangkat</label>
                         <input type="text" name="pangkat" id="pangkat"
-                            class="w-full border rounded-lg px-3 py-2">
+                            class="w-full border rounded-lg px-3 py-2" required>
                     </div>
 
                     <div>
                         <label class="block text-sm font-medium mb-1">Keahlian</label>
                         <input type="text" name="keahlian" id="keahlian"
-                            class="w-full border rounded-lg px-3 py-2">
+                            class="w-full border rounded-lg px-3 py-2" required>
                     </div>
 
                     <div class="flex justify-end gap-3 pt-4">
@@ -203,18 +221,35 @@
             const closeModal = document.getElementById("closeModal");
             const cancelBtn = document.getElementById("cancelBtn");
             const modalTitle = document.getElementById("modalTitle");
+            const dataForm = document.getElementById("dataForm");
+            const methodInput = document.getElementById("formMethod");
+            const passwordInput = document.getElementById("password");
+            const editIdInput = document.getElementById("editId");
 
-            // open modal
-            addBtn.addEventListener("click", () => {
-                modalTitle.textContent = "Tambah Data";
-                document.getElementById("dataForm").action = "{{ route('dosen.store') }}";
+            function showModal() {
                 modal.classList.remove("hidden");
-            });
+            }
 
-            // close modal
             function hideModal() {
                 modal.classList.add("hidden");
             }
+
+            function setCreateMode() {
+                dataForm.reset();
+                editIdInput.value = "";
+                modalTitle.textContent = "Tambah Data";
+                dataForm.action = "{{ route('dosen.store') }}";
+                methodInput.value = "POST";
+                passwordInput.required = true;
+            }
+
+            // open modal
+            addBtn.addEventListener("click", () => {
+                setCreateMode();
+                showModal();
+            });
+
+            // close modal
             closeModal.onclick = hideModal;
             cancelBtn.onclick = hideModal;
 
@@ -223,20 +258,31 @@
                 btn.addEventListener("click", async function() {
                     const id = this.dataset.id;
 
-                    const response = await fetch(`/dashboard-admin/dosen/${id}`);
-                    const data = await response.json();
+                    try {
+                        const response = await fetch(`/dashboard-admin/dosen/${id}`);
+                        if (!response.ok) {
+                            throw new Error('Gagal memuat data dosen');
+                        }
+                        const data = await response.json();
 
-                    modalTitle.textContent = "Edit Data";
-                    document.getElementById("dataForm").action = `/dashboard-admin/dosen/${id}`;
+                        modalTitle.textContent = "Edit Data";
+                        dataForm.action = `/dashboard-admin/dosen/${id}`;
+                        methodInput.value = "PUT";
+                        passwordInput.value = "";
+                        passwordInput.removeAttribute("required");
 
-                    document.getElementById("editId").value = data.id;
-                    document.getElementById("nama").value = data.nama;
-                    document.getElementById("email").value = data.email;
-                    document.getElementById("nidn").value = data.nidn;
-                    document.getElementById("pangkat").value = data.pangkat;
-                    document.getElementById("keahlian").value = data.keahlian;
+                        editIdInput.value = data.user_id;
+                        document.getElementById("nama").value = data.nama_lengkap;
+                        document.getElementById("email").value = data.email;
+                        document.getElementById("nidn").value = data.nidn;
+                        document.getElementById("pangkat").value = data.pangkat;
+                        document.getElementById("keahlian").value = data.keahlian;
 
-                    modal.classList.remove("hidden");
+                        showModal();
+                    } catch (error) {
+                        console.error(error);
+                        alert("Tidak dapat memuat data dosen. Silakan coba lagi.");
+                    }
                 });
             });
         </script>

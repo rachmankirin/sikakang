@@ -2,31 +2,48 @@
     @section('title', 'Profile Dosen')
 
     @php
-        // Agar mudah dihubungkan ke data nyata: cukup kirim $lecturer berbentuk object/array berikut.
-        $d = $lecturer ?? (object) [
+        // Gunakan data dari controller; fallback placeholder jika belum ada di DB.
+        $fallback = (object) [
+            'user_id' => null,
             'name' => 'JAKA PRATAMA, S.Kom., M.Kom.',
             'nidn' => '0715048607',
             'email' => 'jakapratamma@gmail.com',
-            'jenis_kelamin' => 'Laki-laki',
-            'program_studi' => 'Informatika',
-            'fakultas' => 'Fakultas Teknik',
-            'alamat' => 'Jalan Raya Cilegon KM. 3, Kota Serang, Banten',
-            'no_hp' => '08777778888',
+            'jenis_kelamin' => 'Belum diatur',
+            'program_studi' => 'Belum diatur',
+            'fakultas' => 'Belum diatur',
+            'alamat' => 'Belum diatur',
+            'no_hp' => 'Belum diatur',
             'status' => 'Aktif',
-            'bidang_keahlian' => ['Bidang Keahlian', 'Jaringan Komputer'],
-            'jabatan_fungsional' => 'Rektor',
+            'jabatan_fungsional' => 'Belum diatur',
+            'bidang_keahlian_raw' => 'Bidang Keahlian, Jaringan Komputer',
+            'bidang_keahlian_list' => ['Bidang Keahlian', 'Jaringan Komputer'],
         ];
+
+        $d = $lecturer ?? $fallback;
+        $bidangList = $d->bidang_keahlian_list
+            ?? (isset($d->bidang_keahlian_raw)
+                ? array_filter(array_map('trim', explode(',', $d->bidang_keahlian_raw)))
+                : []);
     @endphp
 
     <div class="space-y-6">
         <!-- Header (tanpa search) -->
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight">Profile Dosen</h1>
-            <div class="hidden sm:flex items-center gap-2">
-                <img src="{{ url('images/profile.svg') }}" class="w-8 h-8 rounded-full" alt="profile" />
-                <div class="leading-tight text-sm">
-                    <p class="font-semibold">{{ $d->name }}</p>
-                    <p class="text-gray-500">Dosen</p>
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
+            <div class="absolute inset-0 opacity-25"
+                 style="background: radial-gradient(circle at 20% 20%, rgba(255,224,94,0.4), transparent 35%), radial-gradient(circle at 80% 30%, rgba(255,224,94,0.25), transparent 30%), radial-gradient(circle at 50% 80%, rgba(255,224,94,0.3), transparent 40%);">
+            </div>
+            <div id="top" class="relative px-6 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.25em] text-yellow-200/80 mb-2">Faculty Member</p>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Profile Dosen</h1>
+                    <p class="text-slate-200/80 mt-1">Ringkasan identitas dan peran dosen dalam satu tampilan elegan.</p>
+                </div>
+                <div class="flex items-center gap-3 bg-white/10 backdrop-blur rounded-2xl px-4 py-3 border border-white/10 shadow-lg">
+                    <div class="w-12 h-12 rounded-full bg-white/20 grid place-content-center text-xl">{{ strtoupper(substr($d->name,0,1)) }}</div>
+                    <div class="leading-tight text-sm">
+                        <p class="font-semibold">{{ $d->name }}</p>
+                        <p class="text-yellow-200/90">Dosen</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,9 +72,12 @@
                                 Bidang Keahlian
                             </div>
                             <div class="mt-2 flex flex-wrap gap-2">
-                                @foreach (($d->bidang_keahlian ?? []) as $tag)
+                                @foreach ($bidangList as $tag)
                                     <span class="px-3 py-1 rounded-full bg-yellow-200/70 text-gray-700 text-xs font-semibold">{{ $tag }}</span>
                                 @endforeach
+                                @if (empty($bidangList))
+                                    <span class="text-xs text-gray-500">Belum diatur</span>
+                                @endif
                             </div>
                         </div>
                         @if (!empty($d->jabatan_fungsional))
@@ -81,15 +101,9 @@
             <div class="bg-white border border-yellow-100 rounded-2xl p-6 shadow-sm">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg sm:text-xl font-extrabold">Detail Dosen</h2>
-                    @php
-                        $editTargetId = $d->id ?? $d->user_id ?? null;
-                        $editUrl = $editTargetId && Route::has('dosen.edit')
-                            ? route('dosen.edit', ['dosen' => $editTargetId])
-                            : '#';
-                    @endphp
-                    <a href="{{ $editUrl }}" class="inline-flex items-center gap-2 text-yellow-600 hover:text-yellow-700 bg-yellow-100 hover:bg-yellow-200 transition px-3 py-2 rounded-lg">
+                    <a href="{{ route('dosen.profile.edit') }}" class="inline-flex items-center gap-2 text-yellow-600 hover:text-yellow-700 bg-yellow-100 hover:bg-yellow-200 transition px-3 py-2 rounded-lg">
                         <i class="fa-solid fa-pen-to-square"></i>
-                        <span class="font-semibold text-sm">Edit</span>
+                        <span class="font-semibold text-sm">Lengkapi / Edit</span>
                     </a>
                 </div>
 

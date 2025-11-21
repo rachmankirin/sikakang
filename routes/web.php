@@ -73,52 +73,9 @@ Route::middleware(['auth'])->group(function () {
             return view('Dashboard.jadwal_detail_rekap', compact('kode'));
         });
 
-        Route::get('/profile/mahasiswa', function () {
-            // Example shape of data to ease back end integration
-            $student = (object) [
-                'name' => 'JAYNUDIN MALIK',
-                'nim' => '33372400110',
-                'nik' => '3671234567890001',
-                'email' => 'jaynudin02@gmail.com',
-                'agama' => 'Islam',
-                'jenis_kelamin' => 'Laki-laki',
-                'ttl' => 'Jakarta, 20 April 2002',
-                'alamat' => 'Jalan Kemang Raya, RT 11 RW 2, Jakarta Selatan',
-                'no_hp' => '08777778888',
-                'status' => 'Aktif',
-                'prodi' => 'Informatika',
-                'angkatan' => '2024',
-                'dosen_pembimbing' => 'Mohamad Hilman, S.Kom., M.T.I',
-            ];
-
-            // Optional demo data for academic history and registrations
-            $histories = null; // let view fallback to sample unless provided
-            $registrations = null; // let view fallback to sample unless provided
-
-            return view('Profile.Profile_mahasiswa', compact('student', 'histories', 'registrations'));
-        });
-
-        Route::get('/profile/mahasiswa/edit', function () {
-            $student = (object) [
-                'name' => 'JAYNUDIN MALIK',
-                'nim' => '33372400110',
-                'nik' => '3671234567890001',
-                'email' => 'jaynudin02@gmail.com',
-                'agama' => 'Islam',
-                'jenis_kelamin' => 'Laki-laki',
-                'status_kawin' => 'Belum Menikah',
-                'golongan_darah' => 'O',
-                'tempat_lahir' => 'Jakarta',
-                'tanggal_lahir' => '2002-04-20',
-                'alamat' => 'Jalan Kemang Raya, RT 11 RW 2, Jakarta Selatan',
-                'no_hp' => '08777778888',
-            ];
-            return view('Profile.user_edit', compact('student'));
-        })->name('profile.edit');
-
-        Route::post('/profile/mahasiswa/update', function () {
-            return redirect()->back()->with('success', 'Data sudah diperbarui');
-        })->name('profile.update');
+        Route::get('/profile/mahasiswa', [\App\Http\Controllers\ProfileMahasiswaController::class, 'show'])->name('mahasiswa.profile');
+        Route::get('/profile/mahasiswa/edit', [\App\Http\Controllers\ProfileMahasiswaController::class, 'edit'])->name('mahasiswa.profile.edit');
+        Route::post('/profile/mahasiswa/update', [\App\Http\Controllers\ProfileMahasiswaController::class, 'update'])->name('mahasiswa.profile.update');
 
         Route::get('/mycourse', function () {
             return view('courses.mycourse');
@@ -146,10 +103,9 @@ Route::middleware(['auth'])->group(function () {
     // Dosen Routes
     Route::middleware(['role:dosen'])->group(function () {
         Route::get('/dosen/dashboard', [DosenController::class, 'dashboard'])->name('dosen.dashboard');
-        
-        Route::get('/dosen', function () {
-            return view('Profile.Profile_dosen');
-        });
+        Route::get('/dosen', [DosenController::class, 'profile'])->name('dosen.profile');
+        Route::get('/dosen/profile/edit', [DosenController::class, 'editProfile'])->name('dosen.profile.edit');
+        Route::put('/dosen/profile', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
     });
 
     // Admin Routes

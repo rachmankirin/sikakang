@@ -1,7 +1,9 @@
 <x-app-layout>
     @section('title', 'Profile Mahasiswa')
 
-    @php($active = request()->get('tab', 'data'))
+    @php
+        $active = $active ?? request()->get('tab', 'data');
+    @endphp
 
     <div x-data="{
         underline: { left: 0, width: 0 },
@@ -22,14 +24,23 @@
         moveTo(active);
     })" class="space-y-6">
         <!-- Header -->
-        <div class="flex items-center justify-between">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-800 tracking-tight">Profile Mahasiswa</h1>
-            <div class="hidden sm:flex items-center gap-3">
-                <div class="flex items-center gap-2">
-                    <img src="{{ url('images/profile.svg') }}" class="w-8 h-8 rounded-full" alt="profile" />
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-yellow-100 via-white to-yellow-50 border border-yellow-100">
+            <div class="absolute inset-0 opacity-30"
+                 style="background: radial-gradient(circle at 20% 30%, rgba(255,224,94,0.4), transparent 35%), radial-gradient(circle at 80% 40%, rgba(255,224,94,0.25), transparent 30%), radial-gradient(circle at 50% 90%, rgba(255,224,94,0.25), transparent 40%);">
+            </div>
+            <div class="relative px-6 py-6 sm:px-8 sm:py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.25em] text-yellow-700/70 mb-2">Student Profile</p>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">Profile Mahasiswa</h1>
+                    <p class="text-gray-600 mt-1">Data pribadi mahasiswa dengan akses tab riwayat akademik & registrasi.</p>
+                </div>
+                <div class="flex items-center gap-3 bg-white/70 backdrop-blur rounded-2xl px-4 py-3 border border-yellow-100 shadow-sm">
+                    <div class="w-12 h-12 rounded-full bg-yellow-200 grid place-content-center text-xl text-gray-800">
+                        {{ strtoupper(substr($student->name ?? 'M', 0, 1)) }}
+                    </div>
                     <div class="leading-tight text-sm">
-                        <p class="font-semibold">{{ $student->name ?? (auth()->user()->name ?? 'Mahasiswa') }}</p>
-                        <p class="text-gray-500">Student</p>
+                        <p class="font-semibold text-gray-900">{{ $student->name ?? (auth()->user()->name ?? 'Mahasiswa') }}</p>
+                        <p class="text-yellow-700/80">Mahasiswa</p>
                     </div>
                 </div>
             </div>

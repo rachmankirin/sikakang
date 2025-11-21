@@ -119,6 +119,8 @@ class MataKuliahController extends Controller
         ]);
         
         \Log::info('Validated data', $validated);
+        $semesterType = (intval($validated['semester']) % 2 === 1) ? 'ganjil' : 'genap';
+        $angkatanBaru = $request->input('angkatan');
         
         // Update hanya field yang ada di tabel mata_kuliah
         $mataKuliah->update([
@@ -129,23 +131,23 @@ class MataKuliahController extends Controller
             'deskripsi' => $validated['deskripsi'],
         ]);
         
-        // Update dosen dan angkatan di semua kelas terkait jika ada perubahan
-        if ($request->has('dosen_pengampu_id') || $request->has('angkatan')) {
-            if ($request->filled('angkatan')) {
-                // Update nama kelas dengan angkatan baru
-                $kelas = $mataKuliah->kelas;
-                foreach ($kelas as $k) {
-                    $kelasLetter = substr($k->nama_kelas, 0, 1); // A, B, C, dst
-                    $k->update([
-                        'nama_kelas' => $kelasLetter . '-' . substr($request->angkatan, -2),
-                        'dosen_pengampu_id' => $request->dosen_pengampu_id ?? $k->dosen_pengampu_id,
-                    ]);
+        // Update data kelas agar konsisten dengan perubahan mata kuliah
+        if ($mataKuliah->kelas()->exists()) {
+            foreach ($mataKuliah->kelas as $kelas) {
+                $kelasUpdateData = [
+                    'semester' => $semesterType,
+                ];
+
+                if ($angkatanBaru !== null && $angkatanBaru !== '') {
+                    $kelasLetter = $kelas->nama_kelas ? substr($kelas->nama_kelas, 0, 1) : 'A'; // fallback jika nama belum ada
+                    $kelasUpdateData['nama_kelas'] = $kelasLetter . '-' . $angkatanBaru;
                 }
-            } elseif ($request->filled('dosen_pengampu_id')) {
-                // Update hanya dosen_pengampu_id
-                $mataKuliah->kelas()->update([
-                    'dosen_pengampu_id' => $request->dosen_pengampu_id
-                ]);
+
+                if ($request->filled('dosen_pengampu_id')) {
+                    $kelasUpdateData['dosen_pengampu_id'] = $request->dosen_pengampu_id;
+                }
+
+                $kelas->update($kelasUpdateData);
             }
         }
         

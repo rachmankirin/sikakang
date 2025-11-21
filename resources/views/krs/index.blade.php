@@ -60,35 +60,19 @@
         </div>
 
         <!-- Period Notification -->
-        @if ($isKrsPeriod)
-            <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded">
-                <div class="flex items-start">
-                    <svg class="w-5 h-5 text-green-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <div>
-                        <p class="text-sm font-semibold text-green-800">Periode Pengisian KRS Aktif</p>
-                        <p class="text-xs text-green-700 mt-1">
-                            Periode: {{ $krsStartDate->format('d M Y H:i') }} - {{ $krsEndDate->format('d M Y H:i') }}
-                        </p>
-                    </div>
+        <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded">
+            <div class="flex items-start">
+                <svg class="w-5 h-5 text-green-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <div>
+                    <p class="text-sm font-semibold text-green-800">Pengisian KRS Terbuka</p>
+                    <p class="text-xs text-green-700 mt-1">
+                        Anda dapat mengisi KRS kapan saja
+                    </p>
                 </div>
             </div>
-        @else
-            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
-                <div class="flex items-start">
-                    <svg class="w-5 h-5 text-red-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                    </svg>
-                    <div>
-                        <p class="text-sm font-semibold text-red-800">Bukan Periode Pengisian KRS</p>
-                        <p class="text-xs text-red-700 mt-1">
-                            Periode pengisian KRS: {{ $krsStartDate->format('d M Y H:i') }} - {{ $krsEndDate->format('d M Y H:i') }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        @endif
+        </div>
 
         <!-- KRS Card -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">

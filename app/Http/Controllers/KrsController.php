@@ -22,12 +22,8 @@ class KrsController extends Controller
             return redirect('/dashboard')->with('error', 'Data mahasiswa tidak ditemukan');
         }
 
-        // KRS period configuration (7 days from start)
-        $krsStartDate = Carbon::create(2025, 11, 18, 0, 0, 0); // Start date
-        $krsEndDate = $krsStartDate->copy()->addDays(7); // 7 days period
-        $now = Carbon::now();
-        
-        $isKrsPeriod = $now->between($krsStartDate, $krsEndDate);
+        // KRS always open (no period restriction)
+        $isKrsPeriod = true;
 
         // Get KRS yang sudah diambil mahasiswa
         $krsList = Krs::where('mahasiswa_user_id', $userId)
@@ -57,9 +53,7 @@ class KrsController extends Controller
             'krsList',
             'totalSks',
             'availableKelas',
-            'isKrsPeriod',
-            'krsStartDate',
-            'krsEndDate'
+            'isKrsPeriod'
         ));
     }
 
@@ -78,15 +72,6 @@ class KrsController extends Controller
 
         if ($exists) {
             return redirect()->back()->with('error', 'Kelas ini sudah diambil');
-        }
-
-        // Check KRS period
-        $krsStartDate = Carbon::create(2025, 11, 18, 0, 0, 0);
-        $krsEndDate = $krsStartDate->copy()->addDays(7);
-        $now = Carbon::now();
-        
-        if (!$now->between($krsStartDate, $krsEndDate)) {
-            return redirect()->back()->with('error', 'Bukan periode pengisian KRS');
         }
 
         Krs::create([
@@ -109,15 +94,6 @@ class KrsController extends Controller
 
         if (!$krs) {
             return redirect()->back()->with('error', 'KRS tidak ditemukan');
-        }
-
-        // Check KRS period
-        $krsStartDate = Carbon::create(2025, 11, 18, 0, 0, 0);
-        $krsEndDate = $krsStartDate->copy()->addDays(7);
-        $now = Carbon::now();
-        
-        if (!$now->between($krsStartDate, $krsEndDate)) {
-            return redirect()->back()->with('error', 'Bukan periode pengisian KRS');
         }
 
         if ($krs->status_krs !== 'diambil') {

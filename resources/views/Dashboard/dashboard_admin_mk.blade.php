@@ -196,24 +196,40 @@
                         matakuliah: dbMataKuliah.length > 0 ? dbMataKuliah.flatMap(mk => {
                             // Jika ada kelas, buat entry per kelas
                             if (mk.kelas && mk.kelas.length > 0) {
-                                return mk.kelas.map(kelas => ({
-                                    id: mk.mk_id,
-                                    kelas_id: kelas.kelas_id,
-                                    kode: mk.kode_mk,
-                                    nama: mk.nama_mk,
-                                    sks: mk.sks,
-                                    semester: mk.semester,
-                                    dosen: kelas.dosen_pengampu ? kelas.dosen_pengampu.nama_lengkap : '-',
-                                    prodi: mk.prodi ? mk.prodi.name : '-',
-                                    angkatan: kelas.nama_kelas ? kelas.nama_kelas.split('-')[1] : '-',
-                                    kelas: kelas.nama_kelas ? kelas.nama_kelas.split('-')[0] : '-',
-                                    status: 'Aktif',
-                                    waktu: kelas.hari && kelas.jam_mulai && kelas.jam_selesai 
-                                        ? `${kelas.hari}, ${kelas.jam_mulai} - ${kelas.jam_selesai}` 
-                                        : '-',
-                                    kapasitas: kelas.kapasitas || 0,
-                                    deskripsi: mk.deskripsi || '-'
-                                }));
+                                return mk.kelas.map(kelas => {
+                                    // Extract kelas letter from nama_kelas
+                                    // Format: "BASDAT_A1234", "IOT_B9656"
+                                    let kelasLetter = '-';
+                                    
+                                    if (kelas.nama_kelas && kelas.nama_kelas.includes('_')) {
+                                        const parts = kelas.nama_kelas.split('_');
+                                        if (parts.length > 1) {
+                                            kelasLetter = parts[1].charAt(0); // Ambil huruf pertama (A, B, C)
+                                        }
+                                    }
+                                    
+                                    // Ambil angkatan dari kolom database
+                                    let angkatan = kelas.angkatan || '-';
+                                    
+                                    return {
+                                        id: mk.mk_id,
+                                        kelas_id: kelas.kelas_id,
+                                        kode: mk.kode_mk,
+                                        nama: mk.nama_mk,
+                                        sks: mk.sks,
+                                        semester: mk.semester,
+                                        dosen: kelas.dosen_pengampu ? kelas.dosen_pengampu.nama_lengkap : '-',
+                                        prodi: mk.prodi ? mk.prodi.name : '-',
+                                        angkatan: angkatan,
+                                        kelas: kelasLetter,
+                                        status: kelas.status || 'aktif',
+                                        waktu: kelas.hari && kelas.jam_mulai && kelas.jam_selesai 
+                                            ? `${kelas.hari}, ${kelas.jam_mulai} - ${kelas.jam_selesai}` 
+                                            : '-',
+                                        kapasitas: kelas.kapasitas || 0,
+                                        deskripsi: mk.deskripsi || '-'
+                                    };
+                                });
                             } else {
                                 // Jika belum ada kelas, tampilkan data MK saja
                                 return [{
@@ -356,14 +372,6 @@
                         <div> <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Mata Kuliah</label>
                             <textarea id="deskripsi" name="deskripsi" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="Deskripsi singkat tentang mata kuliah..."></textarea>
                         </div>
-                        <div> <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                            <select id="status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
-                                <option value="">Pilih Status</option>
-                                <option value="Aktif">Aktif</option>
-                                <option value="Nonaktif">Nonaktif</option>
-                                <option value="Dalam Review">Dalam Review</option>
-                            </select>
-                        </div>
                     `;
 
                     const formKurikulum = `
@@ -430,6 +438,38 @@
                         if (jumlahKelasDiv) jumlahKelasDiv.style.display = 'none';
                         if (classTimeInputs) classTimeInputs.style.display = 'none';
                         
+                        // Add status section for each kelas
+                        if (editMataKuliah.kelas && editMataKuliah.kelas.length > 0) {
+                            const statusSection = document.createElement('div');
+                            statusSection.className = 'space-y-3 p-4 border border-blue-200 rounded-lg bg-blue-50/50';
+                            statusSection.innerHTML = '<h4 class="text-sm font-semibold text-gray-700 mb-2">Status Per Kelas</h4>';
+                            
+                            editMataKuliah.kelas.forEach((kelas, index) => {
+                                const kelasLetter = String.fromCharCode(65 + index); // A, B, C, ...
+                                const kelasDiv = document.createElement('div');
+                                kelasDiv.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200';
+                                kelasDiv.innerHTML = `
+                                    <div>
+                                        <span class="font-medium text-gray-700">Kelas ${kelasLetter}</span>
+                                        <span class="text-xs text-gray-500 ml-2">(${kelas.nama_kelas})</span>
+                                    </div>
+                                    <div>
+                                        <select name="status_kelas_${kelas.kelas_id}" class="px-3 py-1.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                                            <option value="aktif" ${(kelas.status || 'aktif') === 'aktif' ? 'selected' : ''}>Aktif</option>
+                                            <option value="nonaktif" ${kelas.status === 'nonaktif' ? 'selected' : ''}>Nonaktif</option>
+                                        </select>
+                                    </div>
+                                `;
+                                statusSection.appendChild(kelasDiv);
+                            });
+                            
+                            // Insert before deskripsi field
+                            const deskripsiDiv = formContent.querySelector('[for="deskripsi"]')?.parentElement;
+                            if (deskripsiDiv) {
+                                deskripsiDiv.parentNode.insertBefore(statusSection, deskripsiDiv);
+                            }
+                        }
+                        
                         // Update info text
                         const infoDiv = formContent.querySelector('.bg-blue-50');
                         if (infoDiv) {
@@ -449,18 +489,14 @@
                                 document.getElementById('dosen').value = editMataKuliah.kelas[0].dosen_pengampu_id;
                             }
                             
-                            // Set angkatan if available
-                            if (editMataKuliah.kelas && editMataKuliah.kelas.length > 0 && editMataKuliah.kelas[0].nama_kelas) {
-                                const angkatan = editMataKuliah.kelas[0].nama_kelas.split('-')[1];
-                                if (angkatan) {
-                                    const normalizedAngkatan = angkatan.length === 2 ? `20${angkatan}` : angkatan;
-                                    document.getElementById('angkatan').value = normalizedAngkatan;
-                                }
+                            // Set angkatan if available (dari kolom angkatan di database)
+                            if (editMataKuliah.kelas && editMataKuliah.kelas.length > 0 && editMataKuliah.kelas[0].angkatan) {
+                                document.getElementById('angkatan').value = editMataKuliah.kelas[0].angkatan;
                             }
                         }, 100);
                         
-                        // Update form action - use Laravel route helper
-                        dataForm.action = `{{ url('/dashboard-admin/mk') }}/${editMataKuliah.mk_id}`;
+                        // Update form action - use kode_mk instead of mk_id
+                        dataForm.action = `{{ url('/dashboard-admin/mk') }}/${editMataKuliah.kode_mk}`;
                         
                         // Ensure _method input exists for PUT request
                         let methodInput = dataForm.querySelector('input[name="_method"]');
@@ -612,10 +648,15 @@
                             row.className = 'hover:bg-gray-50 transition-colors';
 
                             let statusClass = '';
-                            if (item.status === 'Aktif') {
+                            let statusText = item.status;
+                            // Normalize status - handle both 'aktif'/'nonaktif' and 'Aktif'/'Nonaktif'
+                            const normalizedStatus = item.status ? item.status.toLowerCase() : 'aktif';
+                            if (normalizedStatus === 'aktif') {
                                 statusClass = 'status-aktif';
-                            } else if (item.status === 'Nonaktif') {
+                                statusText = 'Aktif';
+                            } else if (normalizedStatus === 'nonaktif') {
                                 statusClass = 'status-nonaktif';
+                                statusText = 'Nonaktif';
                             }
 
                             let rowHTML = '';
@@ -639,13 +680,15 @@
                                     <td class="px-4 py-3 text-sm text-gray-700">${item.dosen}</td>
                                     <td class="px-4 py-3 text-sm text-gray-700">${item.angkatan}</td>
                                     <td class="px-4 py-3 text-sm">
-                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">${item.status}</span>
+                                        <span class="px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                                            ${statusText}
+                                        </span>
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        <button class="edit-btn text-yellow-600 hover:text-yellow-800 mr-2" data-id="${item.id}" data-channel="${currentChannel}">
+                                        <button class="edit-btn text-yellow-600 hover:text-yellow-800 mr-2" data-kode="${item.kode}" data-channel="${currentChannel}">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-btn text-red-600 hover:text-red-800" data-id="${item.id}" data-channel="${currentChannel}">
+                                        <button class="delete-btn text-red-600 hover:text-red-800" data-kode="${item.kode}" data-channel="${currentChannel}">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -735,12 +778,12 @@
                             const target = e.target.closest('.edit-btn, .delete-btn');
                             if (!target) return;
 
-                            const id = parseInt(target.getAttribute('data-id'));
-
                             if (target.classList.contains('edit-btn')) {
-                                editData(id);
+                                const kode = target.getAttribute('data-kode');
+                                if (kode) editData(kode);
                             } else if (target.classList.contains('delete-btn')) {
-                                deleteData(id);
+                                const kode = target.getAttribute('data-kode');
+                                if (kode) deleteData(kode);
                             }
                         });
                     }
@@ -773,9 +816,9 @@
                     }
 
                     // Edit data - redirect to edit route
-                    function editData(id) {
-                        // Redirect ke route edit dengan ID mata kuliah
-                        window.location.href = `/dashboard-admin/mk/${id}/edit`;
+                    function editData(kode) {
+                        // Redirect ke route edit dengan kode mata kuliah
+                        window.location.href = `/dashboard-admin/mk/${kode}/edit`;
                     }
 
                     // Save data (add or edit)
@@ -786,12 +829,7 @@
                         if (currentChannel === 'matakuliah') {
                             const jumlahKelas = parseInt(formData.get('jumlah_kelas'));
                             if (isEditing) {
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: 'Fitur Tidak Tersedia',
-                                    text: 'Fitur edit Mata Kuliah dalam mode demo dinonaktifkan.',
-                                    confirmButtonColor: '#f59e0b'
-                                });
+                                alert('Fitur edit Mata Kuliah dalam mode demo dinonaktifkan.');
                                 closeModalFunc();
                                 return;
                             }
@@ -809,12 +847,8 @@
                                 // Validasi
                                 if (!waktuHari || !waktuMulai || !waktuSelesai || isNaN(kapasitasKelas) || kapasitasKelas <
                                     10) {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Data Tidak Lengkap',
-                                        text: `Hari, Jam Mulai, Jam Selesai, dan Kapasitas (minimal 10) untuk Kelas ${namaKelas} harus diisi dengan benar.`,
-                                        confirmButtonColor: '#f59e0b'
-                                    });
+                                    alert(
+                                        `Hari, Jam Mulai, Jam Selesai, dan Kapasitas (minimal 10) untuk Kelas ${namaKelas} harus diisi dengan benar.`);
                                     return; // Stop saving
                                 }
 
@@ -879,28 +913,39 @@
                     }
 
                     // Delete data (tidak berubah)
-                    function deleteData(id) {
-                        if (confirm('Apakah Anda yakin ingin menghapus mata kuliah ini beserta semua kelasnya?')) {
-                            // Create form and submit DELETE request
-                            const form = document.createElement('form');
-                            form.method = 'POST';
-                            form.action = `/dashboard-admin/mk/${id}`;
-                            
-                            const csrfInput = document.createElement('input');
-                            csrfInput.type = 'hidden';
-                            csrfInput.name = '_token';
-                            csrfInput.value = '{{ csrf_token() }}';
-                            form.appendChild(csrfInput);
-                            
-                            const methodInput = document.createElement('input');
-                            methodInput.type = 'hidden';
-                            methodInput.name = '_method';
-                            methodInput.value = 'DELETE';
-                            form.appendChild(methodInput);
-                            
-                            document.body.appendChild(form);
-                            form.submit();
-                        }
+                    function deleteData(kode) {
+                        Swal.fire({
+                            title: 'Hapus Mata Kuliah?',
+                            text: 'Mata kuliah ini beserta semua kelasnya akan dihapus permanen!',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#6b7280',
+                            confirmButtonText: 'Ya, hapus',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Create form and submit DELETE request
+                                const form = document.createElement('form');
+                                form.method = 'POST';
+                                form.action = `/dashboard-admin/mk/${kode}`;
+                                
+                                const csrfInput = document.createElement('input');
+                                csrfInput.type = 'hidden';
+                                csrfInput.name = '_token';
+                                csrfInput.value = '{{ csrf_token() }}';
+                                form.appendChild(csrfInput);
+                                
+                                const methodInput = document.createElement('input');
+                                methodInput.type = 'hidden';
+                                methodInput.name = '_method';
+                                methodInput.value = 'DELETE';
+                                form.appendChild(methodInput);
+                                
+                                document.body.appendChild(form);
+                                form.submit();
+                            }
+                        });
                     }
 
                     // Close modal (tidak berubah)

@@ -46,7 +46,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Mahasiswa Routes
     Route::middleware(['role:mahasiswa'])->group(function () {
-        Route::get('/dashboard', [\App\Http\Controllers\DashboardMahasiswaController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', function () {
+            // Contoh data dinamis untuk chart IPS
+            $labels = ['Semester 1', 'Semester 2', 'Semester 3'];
+            $ips    = [4.0, 4.0, 0.0];
+            return view('Dashboard.dashboard_mahasiswa', compact('labels', 'ips'));
+        })->name('dashboard');
 
         Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
         Route::post('/krs/store', [KrsController::class, 'store'])->name('krs.store');
@@ -55,14 +60,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
 
         // Routes untuk detail jadwal
-        Route::get('/jadwal/detail/{kode}', [\App\Http\Controllers\DetailMataKuliahController::class, 'show'])->name('jadwal.detail');
-        Route::get('/jadwal/detail/{kode}/rps', [\App\Http\Controllers\DetailMataKuliahController::class, 'rps'])->name('jadwal.detail.rps');
-        Route::get('/jadwal/detail/{kode}/jurnal', [\App\Http\Controllers\DetailMataKuliahController::class, 'jurnal'])->name('jadwal.detail.jurnal');
-        Route::get('/jadwal/detail/{kode}/rekap', [\App\Http\Controllers\DetailMataKuliahController::class, 'rekap'])->name('jadwal.detail.rekap');
-        
-        // Routes untuk validasi jurnal mahasiswa
-        Route::get('/jadwal/detail/{kode}/validasi', [\App\Http\Controllers\JurnalValidasiController::class, 'index'])->name('jadwal.detail.validasi');
-        Route::post('/jurnal/{jurnalId}/validate', [\App\Http\Controllers\JurnalValidasiController::class, 'validate'])->name('jurnal.validate');
+        Route::get('/jadwal/detail/{kode}', function ($kode) {
+            return view('Dashboard.jadwal_detail', compact('kode'));
+        });
+        Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
+            return view('Dashboard.jadwal_detail_rps', compact('kode'));
+        });
+        Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
+            return view('Dashboard.jadwal_detail', compact('kode'));
+        });
+        Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
+            return view('Dashboard.jadwal_detail_rekap', compact('kode'));
+        });
 
         Route::get('/profile/mahasiswa', [\App\Http\Controllers\ProfileMahasiswaController::class, 'show'])->name('mahasiswa.profile');
         Route::get('/profile/mahasiswa/edit', [\App\Http\Controllers\ProfileMahasiswaController::class, 'edit'])->name('mahasiswa.profile.edit');
@@ -107,7 +116,15 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/dashboard-admin/dosen', DosenController::class);
         Route::resource('/dashboard-admin/mahasiswa', MhsController::class);
         Route::resource('/dashboard-admin/fakultas', FakultasController::class);
-        Route::resource('/dashboard-admin/mk', MataKuliahController::class);
+        
+        // Custom routes for mata kuliah (using kode_mk instead of id)
+        Route::get('/dashboard-admin/mk', [MataKuliahController::class, 'index'])->name('mk.index');
+        Route::post('/dashboard-admin/mk', [MataKuliahController::class, 'store'])->name('mk.store');
+        Route::get('/dashboard-admin/mk/{kode}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
+        Route::put('/dashboard-admin/mk/{kode}', [MataKuliahController::class, 'update'])->name('mk.update');
+        Route::delete('/dashboard-admin/mk/{kode}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
+        
+        Route::patch('/dashboard-admin/kelas/{id}/toggle-status', [MataKuliahController::class, 'toggleStatus'])->name('kelas.toggle-status');
         Route::resource('/dashboard-admin/prodi', ProdiController::class);
 
         // Admin - Verifikasi Pengajuan Surat

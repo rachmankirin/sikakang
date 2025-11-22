@@ -421,9 +421,19 @@
                     updateProgress();
 
                     // Show success message
-                    alert('Tugas berhasil dikumpulkan!');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Tugas berhasil dikumpulkan!',
+                        confirmButtonColor: '#f59e0b'
+                    });
                 } else {
-                    alert('Silakan pilih file terlebih dahulu!');
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan',
+                        text: 'Silakan pilih file terlebih dahulu!',
+                        confirmButtonColor: '#f59e0b'
+                    });
                 }
             });
         });

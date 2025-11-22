@@ -153,77 +153,54 @@
                                     <th
                                         class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Aksi</th>
-                                </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200" id="dataTableBody">
                                 @forelse ($mhs as $mahasiswa)
-                                    @php
-                                        $detail = $mahasiswa->mahasiswaDetail;
-                                        $status = $detail->status_mahasiswa ?? 'nonaktif';
-                                        $statusClass = match($status) {
-                                            'aktif' => 'status-aktif',
-                                            'cuti' => 'status-cuti',
-                                            'lulus' => 'status-lulus',
-                                            default => 'status-nonaktif'
-                                        };
-                                        $statusText = ucfirst($status);
-                                    @endphp
-                                    <tr>
+                                    @php $detail = $mahasiswa->mahasiswaDetail; @endphp
+                                    <tr class="hover:bg-gray-50 transition-colors">
                                         <td class="px-4 py-3">{{ $mahasiswa->user_id }}</td>
                                         <td class="px-4 py-3">{{ $mahasiswa->nama_lengkap }}</td>
                                         <td class="px-4 py-3 font-mono">{{ $detail->nim ?? '-' }}</td>
                                         <td class="px-4 py-3">{{ $detail->fakultas ?? '-' }}</td>
                                         <td class="px-4 py-3">{{ $detail->program_studi ?? '-' }}</td>
                                         <td class="px-4 py-3">{{ $detail->angkatan ?? '-' }}</td>
+                                        <td class="px-4 py-3">-</td>
                                         <td class="px-4 py-3">
-                                            @if($detail && $detail->program_studi)
-                                                {{ str_contains(strtolower($detail->program_studi), 'd3') ? 'D3' : 
-                                                   (str_contains(strtolower($detail->program_studi), 's2') ? 'S2' : 
-                                                   (str_contains(strtolower($detail->program_studi), 's3') ? 'S3' : 'S1')) }}
+                                            @if ($detail && $detail->status_mahasiswa)
+                                                <span
+                                                    class="px-2 py-1 text-xs font-semibold rounded-full status-{{ $detail->status_mahasiswa }}">
+                                                    {{ ucfirst($detail->status_mahasiswa) }}
+                                                </span>
                                             @else
                                                 -
                                             @endif
                                         </td>
-                                        <td class="px-4 py-3">
-                                            <span class="px-2 py-1 rounded text-white {{ $statusClass }}">{{ $statusText }}</span>
-                                        </td>
-                                        <td class="px-4 py-3">
-                                            <button class="text-blue-600 hover:underline mr-3 editBtn" data-id="{{ $mahasiswa->user_id }}">
-                                                Edit
+                                        <td class="px-4 py-3 flex items-center space-x-2">
+                                            <button
+                                                class="editBtn text-blue-500 hover:text-blue-700 transition-colors"
+                                                data-id="{{ $mahasiswa->user_id }}">
+                                                <i class="fas fa-edit"></i>
                                             </button>
-                                            <button class="text-red-600 hover:underline deleteBtn" data-id="{{ $mahasiswa->user_id }}">
-                                                Hapus
+                                            <button
+                                                class="deleteBtn text-red-500 hover:text-red-700 transition-colors"
+                                                data-id="{{ $mahasiswa->user_id }}">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="9" class="px-4 py-8 text-center text-gray-500">
-                                            <i class="fas fa-inbox text-4xl mb-2"></i>
-                                            <p>Tidak ada data</p>
-                                        </td>
+                                        <td colspan="9" class="text-center py-4 text-gray-500">Tidak ada data
+                                            mahasiswa.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Pagination (if needed) -->
-                    <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between">
-                        <div class="text-sm text-gray-700">
-                            Menampilkan <span id="startItem">1</span> - <span id="endItem">{{ $mhs->count() }}</span> dari <span
-                                id="totalItems">{{ $mhs->total() ?? $mhs->count() }}</span> data
-                        </div>
-                        <div class="flex space-x-2">
-                            <button
-                                class="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button
-                                class="px-3 py-1 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
+                    <!-- Pagination -->
+                    <div class="p-4 bg-gray-50 border-t border-gray-200">
+                        {{ $mhs->links() }}
                     </div>
                 </div>
             </div>
@@ -462,7 +439,7 @@
                         editingId = id;
 
                         // Fetch mahasiswa data
-                        const response = await fetch(`/dashboard-admin/mahasiswa/${id}/edit`);
+                        const response = await fetch(/dashboard-admin/mahasiswa/${id}/edit);
                         const data = await response.json();
 
                         modalTitle.textContent = "Edit Data Mahasiswa";
@@ -483,7 +460,7 @@
                         statusSelect.value = data.detail.status_mahasiswa || '';
 
                         // Update form action and method
-                        dataForm.action = `/dashboard-admin/mahasiswa/${id}`;
+                        dataForm.action = /dashboard-admin/mahasiswa/${id};
                         formMethod.innerHTML = '@method("PUT")';
                         passwordField.style.display = 'none';
                         passwordInput.required = false;
@@ -524,7 +501,7 @@
                         const formData = new FormData(dataForm);
                         formData.append('_method', 'PUT');
 
-                        const response = await fetch(`/dashboard-admin/mahasiswa/${editingId}`, {
+                        const response = await fetch(/dashboard-admin/mahasiswa/${editingId}, {
                             method: 'POST',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -547,7 +524,7 @@
 
                 async function deleteMahasiswa(id) {
                     try {
-                        const response = await fetch(`/dashboard-admin/mahasiswa/${id}`, {
+                        const response = await fetch(/dashboard-admin/mahasiswa/${id}, {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

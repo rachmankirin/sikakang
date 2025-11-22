@@ -22,6 +22,19 @@ class JurnalPerkuliahan extends Model
         'jam_selesai',
         'materi',
         'metode_pembelajaran',
+        'validasi_dosen',
+        'dosen_validator_id',
+        'waktu_validasi_dosen',
+        'validasi_mahasiswa',
+        'mahasiswa_validator_id',
+        'waktu_validasi_mahasiswa',
+    ];
+
+    protected $casts = [
+        'validasi_dosen' => 'boolean',
+        'validasi_mahasiswa' => 'boolean',
+        'waktu_validasi_dosen' => 'datetime',
+        'waktu_validasi_mahasiswa' => 'datetime',
     ];
 
     /**
@@ -38,5 +51,37 @@ class JurnalPerkuliahan extends Model
     public function absensi(): HasMany
     {
         return $this->hasMany(Absensi::class, 'jurnal_id');
+    }
+
+    /**
+     * Get the dosen validator.
+     */
+    public function dosenValidator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'dosen_validator_id', 'user_id');
+    }
+
+    /**
+     * Get the mahasiswa validator.
+     */
+    public function mahasiswaValidator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'mahasiswa_validator_id', 'user_id');
+    }
+
+    /**
+     * Check if jurnal is fully validated (both dosen and mahasiswa).
+     */
+    public function isFullyValidated(): bool
+    {
+        return $this->validasi_dosen && $this->validasi_mahasiswa;
+    }
+
+    /**
+     * Check if jurnal needs mahasiswa validation.
+     */
+    public function needsMahasiswaValidation(): bool
+    {
+        return $this->validasi_dosen && !$this->validasi_mahasiswa;
     }
 }

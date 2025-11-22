@@ -52,8 +52,9 @@
                         </svg>
                     </div>
                     <div>
-                        <p class="text-sm text-gray-600">Maks SKS Semester Ini</p>
-                        <p class="text-2xl font-bold text-gray-900">24</p>
+                        <p class="text-sm text-gray-600">Sisa SKS Tersedia</p>
+                        <p class="text-2xl font-bold {{ $remainingSks <= 3 ? 'text-red-600' : ($remainingSks <= 6 ? 'text-yellow-600' : 'text-gray-900') }}">{{ $remainingSks }}</p>
+                        <p class="text-xs text-gray-500 mt-1">dari {{ $maxSks }} SKS maks</p>
                     </div>
                 </div>
             </div>
@@ -73,6 +74,36 @@
                 </div>
             </div>
         </div>
+
+        @if($totalSks >= $maxSks)
+            <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-red-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <p class="text-sm font-semibold text-red-800">Batas SKS Tercapai</p>
+                        <p class="text-xs text-red-700 mt-1">
+                            Anda telah mencapai batas maksimal {{ $maxSks }} SKS untuk semester ini. Tidak dapat menambah mata kuliah lagi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @elseif($remainingSks <= 6)
+            <div class="mb-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded">
+                <div class="flex items-start">
+                    <svg class="w-5 h-5 text-yellow-500 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <div>
+                        <p class="text-sm font-semibold text-yellow-800">Mendekati Batas SKS</p>
+                        <p class="text-xs text-yellow-700 mt-1">
+                            Anda hanya dapat mengambil {{ $remainingSks }} SKS lagi dari batas maksimal {{ $maxSks }} SKS.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endif
 
         <!-- KRS Card -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
@@ -137,7 +168,7 @@
                                 @if($isKrsPeriod)
                                     <td class="px-6 py-4">
                                         @if($krs->status_krs === 'diambil')
-                                            <form action="{{ route('krs.destroy', $krs->krs_id) }}" method="POST" onsubmit="return confirm('Yakin ingin membatalkan mata kuliah ini?')">
+                                            <form action="{{ route('krs.destroy', $krs->krs_id) }}" method="POST" class="js-krs-delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium">
@@ -220,16 +251,31 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('krs.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="kelas_id" value="{{ $kelas->kelas_id }}">
-                                    <button type="submit" class="w-full bg-[#feffc4] text-black font-semibold px-4 py-2 rounded-lg hover:bg-yellow-300 border border-yellow-400 transition">
-                                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                        </svg>
-                                        Ambil Mata Kuliah
-                                    </button>
-                                </form>
+                                @php
+                                    $willExceedLimit = ($totalSks + $kelas->mataKuliah->sks) > $maxSks;
+                                @endphp
+
+                                @if($willExceedLimit)
+                                    <div class="bg-red-50 border border-red-200 rounded-lg p-3">
+                                        <p class="text-xs text-red-700 font-medium">
+                                            <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Melebihi batas SKS ({{ $totalSks }} + {{ $kelas->mataKuliah->sks }} = {{ $totalSks + $kelas->mataKuliah->sks }} SKS)
+                                        </p>
+                                    </div>
+                                @else
+                                    <form action="{{ route('krs.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="kelas_id" value="{{ $kelas->kelas_id }}">
+                                        <button type="submit" class="w-full bg-[#feffc4] text-black font-semibold px-4 py-2 rounded-lg hover:bg-yellow-300 border border-yellow-400 transition">
+                                            <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                            Ambil Mata Kuliah
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -237,4 +283,28 @@
             </div>
         @endif
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.js-krs-delete-form').forEach((form) => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Batalkan Mata Kuliah?',
+                        text: 'Yakin ingin membatalkan mata kuliah ini dari KRS Anda?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, batalkan',
+                        cancelButtonText: 'Tidak'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

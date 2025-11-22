@@ -60,7 +60,7 @@
                                                 @csrf
                                                 <button class="px-3 py-1.5 rounded-md bg-emerald-500 text-white hover:bg-emerald-600">Setujui</button>
                                             </form>
-                                            <form action="{{ route('admin.surat.reject', $p->pengajuan_id) }}" method="POST" class="inline" onsubmit="return confirm('Tolak pengajuan ini?')">
+                                            <form action="{{ route('admin.surat.reject', $p->pengajuan_id) }}" method="POST" class="inline js-reject-form">
                                                 @csrf
                                                 <input type="hidden" name="catatan" value="Pengajuan tidak memenuhi persyaratan">
                                                 <button class="px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600">Tolak</button>
@@ -81,4 +81,28 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.js-reject-form').forEach((form) => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    Swal.fire({
+                        title: 'Tolak Pengajuan?',
+                        text: 'Apakah Anda yakin ingin menolak pengajuan surat ini?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, tolak',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </x-app-layout>

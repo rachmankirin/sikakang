@@ -786,7 +786,12 @@
                         if (currentChannel === 'matakuliah') {
                             const jumlahKelas = parseInt(formData.get('jumlah_kelas'));
                             if (isEditing) {
-                                alert('Fitur edit Mata Kuliah dalam mode demo dinonaktifkan.');
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Fitur Tidak Tersedia',
+                                    text: 'Fitur edit Mata Kuliah dalam mode demo dinonaktifkan.',
+                                    confirmButtonColor: '#f59e0b'
+                                });
                                 closeModalFunc();
                                 return;
                             }
@@ -804,8 +809,12 @@
                                 // Validasi
                                 if (!waktuHari || !waktuMulai || !waktuSelesai || isNaN(kapasitasKelas) || kapasitasKelas <
                                     10) {
-                                    alert(
-                                        `Hari, Jam Mulai, Jam Selesai, dan Kapasitas (minimal 10) untuk Kelas ${namaKelas} harus diisi dengan benar.`);
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Data Tidak Lengkap',
+                                        text: `Hari, Jam Mulai, Jam Selesai, dan Kapasitas (minimal 10) untuk Kelas ${namaKelas} harus diisi dengan benar.`,
+                                        confirmButtonColor: '#f59e0b'
+                                    });
                                     return; // Stop saving
                                 }
 

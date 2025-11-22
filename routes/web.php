@@ -60,18 +60,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
 
         // Routes untuk detail jadwal
-        Route::get('/jadwal/detail/{kode}', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
-            return view('Dashboard.jadwal_detail_rps', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
-            return view('Dashboard.jadwal_detail_rekap', compact('kode'));
-        });
+        Route::get('/jadwal/detail/{kode}', [\App\Http\Controllers\DetailMataKuliahController::class, 'show'])->name('jadwal.detail');
+        Route::get('/jadwal/detail/{kode}/rps', [\App\Http\Controllers\DetailMataKuliahController::class, 'rps'])->name('jadwal.detail.rps');
+        Route::get('/jadwal/detail/{kode}/jurnal', [\App\Http\Controllers\DetailMataKuliahController::class, 'jurnal'])->name('jadwal.detail.jurnal');
+        Route::get('/jadwal/detail/{kode}/rekap', [\App\Http\Controllers\DetailMataKuliahController::class, 'rekap'])->name('jadwal.detail.rekap');
+        
+        // Routes untuk validasi jurnal mahasiswa
+        Route::get('/jadwal/detail/{kode}/validasi', [\App\Http\Controllers\JurnalValidasiController::class, 'index'])->name('jadwal.detail.validasi');
+        Route::post('/jurnal/{jurnalId}/validate', [\App\Http\Controllers\JurnalValidasiController::class, 'validate'])->name('jurnal.validate');
 
         Route::get('/profile/mahasiswa', [\App\Http\Controllers\ProfileMahasiswaController::class, 'show'])->name('mahasiswa.profile');
         Route::get('/profile/mahasiswa/edit', [\App\Http\Controllers\ProfileMahasiswaController::class, 'edit'])->name('mahasiswa.profile.edit');

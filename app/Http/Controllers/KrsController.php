@@ -25,6 +25,9 @@ class KrsController extends Controller
         // KRS always open (no period restriction)
         $isKrsPeriod = true;
 
+        // SKS limit constant
+        $maxSks = 24;
+
         // Get KRS yang sudah diambil mahasiswa
         $krsList = Krs::where('mahasiswa_user_id', $userId)
             ->with(['kelas.mataKuliah', 'kelas.dosenPengampu'])
@@ -34,6 +37,9 @@ class KrsController extends Controller
         $totalSks = $krsList->sum(function($krs) {
             return $krs->kelas->mataKuliah->sks ?? 0;
         });
+
+        // Calculate remaining SKS
+        $remainingSks = $maxSks - $totalSks;
 
         // Get available classes sesuai prodi mahasiswa
         $availableKelas = Kelas::with(['mataKuliah.prodi', 'dosenPengampu'])
@@ -66,7 +72,9 @@ class KrsController extends Controller
             'krsList',
             'totalSks',
             'availableKelas',
-            'isKrsPeriod'
+            'isKrsPeriod',
+            'maxSks',
+            'remainingSks'
         ));
     }
 
@@ -77,6 +85,7 @@ class KrsController extends Controller
         ]);
 
         $userId = Auth::id();
+        $maxSks = 24;
 
         // Get kelas yang akan diambil
         $kelasYangDiambil = Kelas::with('mataKuliah')->findOrFail($request->kelas_id);
@@ -88,6 +97,20 @@ class KrsController extends Controller
 
         if ($exists) {
             return redirect()->back()->with('error', 'Kelas ini sudah diambil');
+        }
+
+        // Calculate current total SKS
+        $currentTotalSks = Krs::where('mahasiswa_user_id', $userId)
+            ->with('kelas.mataKuliah')
+            ->get()
+            ->sum(function($krs) {
+                return $krs->kelas->mataKuliah->sks ?? 0;
+            });
+
+        // Check if adding this class would exceed SKS limit
+        $sksYangAkanDiambil = $kelasYangDiambil->mataKuliah->sks ?? 0;
+        if (($currentTotalSks + $sksYangAkanDiambil) > $maxSks) {
+            return redirect()->back()->with('error', 'Tidak dapat mengambil mata kuliah ini. Total SKS akan melebihi batas maksimal ' . $maxSks . ' SKS. Anda sudah mengambil ' . $currentTotalSks . ' SKS, mata kuliah ini bernilai ' . $sksYangAkanDiambil . ' SKS.');
         }
 
         // Check if already taken same mata kuliah (different class)

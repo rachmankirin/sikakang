@@ -77,7 +77,7 @@
                                 @endphp
 
                                 <!-- Course Card -->
-                                <div class="group bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 overflow-hidden">
+                                <a href="{{ route('jadwal.detail', $mataKuliah->kode_mk) }}" class="block group bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg hover:border-{{ $color }}-300 transition-all duration-300 overflow-hidden cursor-pointer">
                                     <div class="bg-{{ $color }}-50 p-4 border-b border-{{ $color }}-100">
                                         <div class="flex items-start justify-between">
                                             <div class="flex-1">
@@ -122,7 +122,7 @@
                                             <span>{{ $dosen ? $dosen->nama_lengkap : 'Belum ada dosen' }}</span>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                     </div>

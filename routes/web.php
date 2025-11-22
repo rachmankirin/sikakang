@@ -10,6 +10,7 @@ use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\MhsController;
 use App\Http\Controllers\PengajuanSuratController;
 use App\Http\Controllers\AdminPengajuanSuratController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\ProdiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegistrationController;
@@ -34,18 +35,24 @@ Route::middleware('guest')->group(function () {
 
 // Protected Routes (requires login)
 Route::middleware(['auth'])->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/jadwal/detail/{kelas_id}/rps', [JurnalController::class, 'showRps'])->name('jadwal.rps');
+    Route::get('/jadwal/detail/{kelas_id}/rekap', [JurnalController::class, 'showRekap'])->name('jadwal.rekap');
     Route::get('/', function () {
         return view('pages.pengumuman');
     });
+    Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
 
     Route::get('/pengumuman', function () {
         return view('pages.pengumuman');
     });
-
+    Route::get('/jadwal', [JurnalController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal/detail/{kelas_id}', [JurnalController::class, 'show'])->name('jadwal.detail');
+    Route::get('/jadwal/detail/{kelas_id}/rekap', [JurnalController::class, 'rekap'])->name('jadwal.rekap');
     // Mahasiswa Routes
     Route::middleware(['role:mahasiswa'])->group(function () {
+        Route::get('/krs/cetak-pdf', [KrsController::class, 'cetakPdf'])->name('krs.cetakPdf');
         Route::get('/dashboard', function () {
             // Contoh data dinamis untuk chart IPS
             $labels = ['Semester 1', 'Semester 2', 'Semester 3'];
@@ -57,21 +64,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/krs/store', [KrsController::class, 'store'])->name('krs.store');
         Route::delete('/krs/{id}', [KrsController::class, 'destroy'])->name('krs.destroy');
         Route::get('/hasil', [HasilStudiController::class, 'index']);
-        Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
 
-        // Routes untuk detail jadwal
-        Route::get('/jadwal/detail/{kode}', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
-            return view('Dashboard.jadwal_detail_rps', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
-            return view('Dashboard.jadwal_detail_rekap', compact('kode'));
-        });
+
 
         Route::get('/profile/mahasiswa', [\App\Http\Controllers\ProfileMahasiswaController::class, 'show'])->name('mahasiswa.profile');
         Route::get('/profile/mahasiswa/edit', [\App\Http\Controllers\ProfileMahasiswaController::class, 'edit'])->name('mahasiswa.profile.edit');
@@ -106,6 +100,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dosen', [DosenController::class, 'profile'])->name('dosen.profile');
         Route::get('/dosen/profile/edit', [DosenController::class, 'editProfile'])->name('dosen.profile.edit');
         Route::put('/dosen/profile', [DosenController::class, 'updateProfile'])->name('dosen.profile.update');
+
+        Route::post('/jadwal/{kelas_id}/jurnal', [JurnalController::class, 'storeJurnal'])->name('jurnal.store');
+        Route::post('/jurnal/{jurnal_id}/absensi', [JurnalController::class, 'storeAbsensi'])->name('jurnal.absensi.store');
     });
 
     // Admin Routes
@@ -124,5 +121,4 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/dashboard-admin/pengajuan-surat/{id}/approve', [AdminPengajuanSuratController::class, 'approve'])->name('admin.surat.approve');
         Route::post('/dashboard-admin/pengajuan-surat/{id}/reject', [AdminPengajuanSuratController::class, 'reject'])->name('admin.surat.reject');
     });
-
 });

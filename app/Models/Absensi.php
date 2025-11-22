@@ -23,9 +23,9 @@ class Absensi extends Model
     /**
      * Get the jurnal perkuliahan that owns the absensi.
      */
-    public function jurnalPerkuliahan(): BelongsTo
+    public function jurnal()
     {
-        return $this->belongsTo(JurnalPerkuliahan::class, 'jurnal_id');
+        return $this->belongsTo(JurnalPerkuliahan::class, 'jurnal_id', 'jurnal_id');
     }
 
     /**

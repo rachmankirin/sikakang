@@ -64,4 +64,10 @@ class Kelas extends Model
     {
         return $this->hasMany(SpadaCourses::class, 'kelas_id');
     }
+    public function mahasiswa()
+    {
+        return $this->belongsToMany(User::class, 'mahasiswa_details', 'kelas_id', 'user_id')
+            ->withPivot(['nim'])
+            ->with('mahasiswaDetail');
+    }
 }

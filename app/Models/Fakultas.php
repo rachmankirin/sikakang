@@ -10,6 +10,6 @@ class Fakultas extends Model
 
     public function prodi()
     {
-        return $this->belongsTo(Prodi::class, 'fakultas_id');
+        return $this->hasMany(Prodi::class, 'fakultas_id');
     }
 }

@@ -28,9 +28,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             @php
                 $stats = [
-                    ['label' => 'Total SKS Semester ini', 'value' => '24', 'sub' => 'SKS yang diambil', 'icon' => 'fa-layer-group'],
-                    ['label' => 'Indeks Prestasi Semester', 'value' => '3.80', 'sub' => 'IP Semester ini', 'icon' => 'fa-chart-line'],
-                    ['label' => 'Indeks Prestasi Kumulatif', 'value' => '3.90', 'sub' => 'IPK Saat ini', 'icon' => 'fa-graduation-cap'],
+                    ['label' => 'Total SKS Semester ini', 'value' => $totalSKS ?? 0, 'sub' => 'SKS yang diambil', 'icon' => 'fa-layer-group'],
+                    ['label' => 'Indeks Prestasi Semester', 'value' => number_format($ips, 2), 'sub' => 'IP Semester ini', 'icon' => 'fa-chart-line'],
+                    ['label' => 'Indeks Prestasi Kumulatif', 'value' => number_format($ipk, 2), 'sub' => 'IPK Saat ini', 'icon' => 'fa-graduation-cap'],
                 ];
             @endphp
             @foreach ($stats as $s)
@@ -53,8 +53,8 @@
             <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-yellow-50 border-b border-yellow-100">
                 <div>
                     <p class="text-xs uppercase tracking-wide text-yellow-700/80 font-semibold">Kartu Hasil Studi</p>
-                    <p class="text-gray-800 font-bold text-lg">Nama Mahasiswa</p>
-                    <p class="text-gray-500 text-sm">NIM: 3337240077</p>
+                    <p class="text-gray-800 font-bold text-lg">{{ $mahasiswa->nama_lengkap }}</p>
+                    <p class="text-gray-500 text-sm">NIM: {{ $mahasiswaDetails->nim ?? '-' }}</p>
                 </div>
                 <div class="flex gap-2">
                     <span class="px-3 py-1 rounded-full bg-white text-yellow-700 border border-yellow-200 text-xs font-semibold">Semester Genap</span>
@@ -75,28 +75,32 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-yellow-50">
-                        @php
-                            $rows = [
-                                ['kode' => 'INF622201', 'mk' => 'Pemrograman Web', 'sks' => 3, 'dosen' => 'Yulian Ansore', 'nilai' => 90, 'mutu' => 'A'],
-                                ['kode' => 'INF622202', 'mk' => 'Basis Data', 'sks' => 3, 'dosen' => 'Yulian Ansore', 'nilai' => 88, 'mutu' => 'A-'],
-                                ['kode' => 'INF622203', 'mk' => 'Sistem Operasi', 'sks' => 3, 'dosen' => 'Yulian Ansore', 'nilai' => 82, 'mutu' => 'B+'],
-                            ];
-                        @endphp
-                        @foreach ($rows as $i => $r)
+                        @forelse ($krsData as $i => $krs)
                             <tr class="hover:bg-yellow-50 transition-colors">
                                 <td class="px-4 py-3">{{ $i + 1 }}</td>
-                                <td class="px-4 py-3 font-semibold text-gray-800">{{ $r['kode'] }}</td>
+                                <td class="px-4 py-3 font-semibold text-gray-800">{{ $krs->kelas->mataKuliah->kode_mk ?? '-' }}</td>
                                 <td class="px-4 py-3">
-                                    <div class="font-semibold text-gray-900">{{ $r['mk'] }}</div>
-                                    <span class="inline-flex mt-1 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">{{ $r['sks'] }} SKS</span>
+                                    <div class="font-semibold text-gray-900">{{ $krs->kelas->mataKuliah->nama_mk ?? '-' }}</div>
+                                    <span class="inline-flex mt-1 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">{{ $krs->kelas->mataKuliah->sks ?? 0 }} SKS</span>
                                 </td>
-                                <td class="px-4 py-3 text-gray-700">{{ $r['dosen'] }}</td>
-                                <td class="px-4 py-3 text-center font-semibold text-gray-900">{{ $r['nilai'] }}</td>
+                                <td class="px-4 py-3 text-gray-700">{{ $krs->kelas->dosenPengampu->nama_lengkap ?? '-' }}</td>
+                                <td class="px-4 py-3 text-center font-semibold text-gray-500">{{ $krs->nilai_akhir_angka ?: '-' }}</td>
                                 <td class="px-4 py-3 text-center">
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">{{ $r['mutu'] }}</span>
+                                    @if($krs->nilai_akhir_huruf)
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800 border border-green-200">{{ $krs->nilai_akhir_huruf }}</span>
+                                    @else
+                                        <span class="text-gray-400">-</span>
+                                    @endif
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                                    <i class="fa-solid fa-inbox text-gray-400 text-3xl mb-2"></i>
+                                    <p>Belum ada data KRS</p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

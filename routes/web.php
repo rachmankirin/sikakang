@@ -56,11 +56,7 @@ Route::middleware(['auth'])->group(function () {
         // CETAK KRS PDF
         Route::get('/krs/cetak/pdf', [KrsController::class, 'cetakPdf'])->name('krs.cetakPdf');
 
-        Route::get('/dashboard', function () {
-            $labels = ['Semester 1', 'Semester 2', 'Semester 3'];
-            $ips = [4.0, 4.0, 0.0];
-            return view('Dashboard.dashboard_mahasiswa', compact('labels', 'ips'));
-        })->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardMahasiswaController::class, 'index'])->name('dashboard');
 
         Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
         Route::post('/krs/store', [KrsController::class, 'store'])->name('krs.store');

@@ -66,7 +66,7 @@
 
             <!-- Tab Navigation -->
             @php
-                $tabBase = url('/jadwal/detail/' . ($idKelas ?? ($kelas->id ?? $kelas->kelas_id)));
+                $tabBase = url('/jadwal/detail/' . ($idKelas ?? ($kelas->id ?? $kelas->mataKuliah->kode_mk)));
             @endphp
             <div class="mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">

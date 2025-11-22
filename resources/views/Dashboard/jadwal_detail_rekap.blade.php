@@ -61,15 +61,15 @@
             <!-- Tab Navigation -->
             <div class="mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="/jadwal/detail/IF-402/rps"
+                    <a href="/jadwal/detail/{{ $kode_mk }}/rps"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         RPS & Bahan Ajar
                     </a>
-                    <a href="/jadwal/detail/IF-402/jurnal"
+                    <a href="/jadwal/detail/{{ $kode_mk }}/jurnal"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         Jurnal Perkuliahan
                     </a>
-                    <a href="/jadwal/detail/IF-402/rekap"
+                    <a href="/jadwal/detail/{{ $kode_mk }}/rekap"
                         class="text-center py-3 px-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition">
                         Rekap Jurnal Perkuliahan
                     </a>
@@ -107,116 +107,72 @@
                         <table class="w-full text-sm">
                             <thead class="bg-blue-100">
                                 <tr>
-                                    <th class="px-3 py-2 text-left font-semibold text-gray-900">No</th>
-                                    <th class="px-3 py-2 text-left font-semibold text-gray-900">Nama</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">Jumlah Kehadiran</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">Persentase</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">03 September 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">12 September 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">24 September 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">01 October 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">08 October 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">22 October 2025</th>
-                                    <th class="px-3 py-2 text-center font-semibold text-gray-900">05 November 2025</th>
+                                    <th class="px-3 py-2">No</th>
+                                    <th class="px-3 py-2 text-left">Nama</th>
+                                    <th class="px-3 py-2 text-center">Jumlah Hadir</th>
+                                    <th class="px-3 py-2 text-center">Persentase</th>
+
+                                    @foreach ($jurnals as $jurnal)
+                                        <th class="px-3 py-2 text-center">
+                                            {{ \Carbon\Carbon::parse($jurnal->tanggal_perkuliahan)->format('d M Y') }}
+                                        </th>
+                                    @endforeach
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @php
-                                    $students = [
-                                        [
-                                            'name' => 'NAMA MAHASISWA',
-                                            'nim' => '3337240004',
-                                            'count' => 7,
-                                            'percent' => '88%',
-                                            'status' => [
-                                                'Hadir',
-                                                'Tidak Hadir',
-                                                'Sakit',
-                                                'Hadir',
-                                                'Hadir',
-                                                'Hadir',
-                                                'Hadir',
-                                            ],
-                                        ],
-                                        [
-                                            'name' => 'NAMA MAHASISWA',
-                                            'nim' => '3337240004',
-                                            'count' => 6,
-                                            'percent' => '75%',
-                                            'status' => [
-                                                'Tidak Hadir',
-                                                'Hadir',
-                                                'Hadir',
-                                                'Sakit',
-                                                'Hadir',
-                                                'Hadir',
-                                                'Hadir',
-                                            ],
-                                        ],
-                                        [
-                                            'name' => 'NAMA MAHASISWA',
-                                            'nim' => '3337240004',
-                                            'count' => 8,
-                                            'percent' => '75%',
-                                            'status' => [
-                                                'Tidak Hadir',
-                                                'Sakit',
-                                                'Hadir',
-                                                'Izin',
-                                                'Hadir',
-                                                'Hadir',
-                                                'Hadir',
-                                            ],
-                                        ],
-                                        [
-                                            'name' => 'NAMA MAHASISWA',
-                                            'nim' => '3337240004',
-                                            'count' => 8,
-                                            'percent' => '100%',
-                                            'status' => ['Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir'],
-                                        ],
-                                        [
-                                            'name' => 'NAMA MAHASISWA',
-                                            'nim' => '3337240004',
-                                            'count' => 8,
-                                            'percent' => '100%',
-                                            'status' => ['Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir', 'Hadir'],
-                                        ],
-                                    ];
 
-                                    function getStatusBadge($status)
-                                    {
-                                        $badges = [
-                                            'Hadir' => 'bg-green-500 text-white',
-                                            'Tidak Hadir' => 'bg-red-500 text-white',
-                                            'Sakit' => 'bg-purple-500 text-white',
-                                            'Izin' => 'bg-yellow-500 text-white',
-                                        ];
-                                        $class = $badges[$status] ?? 'bg-gray-500 text-white';
-                                        return "<span class='inline-block px-2 py-1 text-xs font-semibold rounded {$class}'>{$status}</span>";
-                                    }
-                                @endphp
-                                @foreach ($students as $index => $student)
+                            <tbody class="divide-y divide-gray-200">
+                                @foreach ($peserta as $i => $mhs)
                                     <tr class="hover:bg-gray-50">
-                                        <td class="px-3 py-3">{{ $index + 1 }}</td>
+                                        <td class="px-3 py-3">{{ $i + 1 }}</td>
+
                                         <td class="px-3 py-3">
-                                            <div class="font-semibold text-gray-900">{{ $student['name'] }}</div>
+                                            <div class="font-semibold text-gray-900">{{ $mhs->nama_lengkap }}</div>
                                             <div
-                                                class="text-xs text-white bg-blue-600 rounded px-2 py-1 inline-block mt-1">
-                                                {{ $student['nim'] }}</div>
+                                                class="text-xs bg-blue-600 text-white px-2 py-1 rounded inline-block mt-1">
+                                                {{ $mhs->nim }}
+                                            </div>
                                         </td>
-                                        <td class="px-3 py-3 text-center font-semibold">{{ $student['count'] }}</td>
+
+                                        <td class="px-3 py-3 text-center font-semibold text-gray-900">
+                                            {{ $mhs->hadir }}
+                                        </td>
+
                                         <td class="px-3 py-3 text-center">
                                             <span
-                                                class="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">{{ $student['percent'] }}</span>
+                                                class="px-3 py-1 rounded-full font-semibold
+                        @if ($mhs->persentase >= 80) bg-green-100 text-green-700
+                        @elseif($mhs->persentase >= 50)
+                            bg-yellow-100 text-yellow-700
+                        @else
+                            bg-red-100 text-red-700 @endif
+                    ">
+                                                {{ $mhs->persentase }}%
+                                            </span>
                                         </td>
-                                        @foreach ($student['status'] as $status)
-                                            <td class="px-3 py-3 text-center">{!! getStatusBadge($status) !!}</td>
+
+                                        @foreach ($jurnals as $jurnal)
+                                            @php
+                                                $status = $mhs->statusAbsensi[$jurnal->jurnal_id] ?? 'alpa';
+                                                $badgeClass =
+                                                    [
+                                                        'hadir' => 'bg-green-500',
+                                                        'sakit' => 'bg-purple-500',
+                                                        'izin' => 'bg-yellow-500',
+                                                        'alpa' => 'bg-red-500',
+                                                    ][$status] ?? 'bg-gray-500';
+                                            @endphp
+
+                                            <td class="px-3 py-3 text-center">
+                                                <span class="px-2 py-1 text-xs text-white rounded {{ $badgeClass }}">
+                                                    {{ ucfirst($status) }}
+                                                </span>
+                                            </td>
                                         @endforeach
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
                     </div>
                 </div>
 

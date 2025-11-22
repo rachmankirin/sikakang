@@ -61,15 +61,15 @@
             <!-- Tab Navigation -->
             <div class="mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="/jadwal/detail/{{ $kelas_id }}/rps"
+                    <a href="/jadwal/detail/{{ $kode_mk }}/rps"
                         class="text-center py-3 px-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition">
                         RPS & Bahan Ajar
                     </a>
-                    <a href="/jadwal/detail/{{ $kelas_id }}"
+                    <a href="/jadwal/detail/{{ $kode_mk }}"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         Jurnal Perkuliahan
                     </a>
-                    <a href="/jadwal/detail/{{ $kelas_id }}/rekap"
+                    <a href="/jadwal/detail/{{ $kode_mk }}/rekap"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         Rekap Jurnal Perkuliahan
                     </a>

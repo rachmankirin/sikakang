@@ -115,12 +115,50 @@ class JurnalController extends Controller
             ->whereHas('mataKuliah', fn($q) => $q->where('kode_mk', $kode_mk))
             ->firstOrFail();
 
-        $rekap = JurnalPerkuliahan::with('absensi')
-            ->where('kelas_id', $kelas->kelas_id)
+        // Ambil semua jurnal (pertemuan)
+        $jurnals = JurnalPerkuliahan::where('kelas_id', $kelas->kelas_id)
+            ->orderBy('tanggal_perkuliahan')
             ->get();
 
-        return view('dashboard.jadwal_detail_rekap', compact('kelas', 'rekap', 'kode_mk'));
+        // Semua peserta kelas
+        $peserta = Krs::where('kelas_id', $kelas->kelas_id)
+            ->join('mahasiswa_details', 'mahasiswa_details.user_id', '=', 'krs.mahasiswa_user_id')
+            ->join('users', 'users.user_id', '=', 'mahasiswa_details.user_id')
+            ->select('users.user_id', 'users.nama_lengkap', 'mahasiswa_details.nim')
+            ->get();
+
+        // Hitung absensi per mahasiswa
+        foreach ($peserta as $mhs) {
+            $hadirCount = 0;
+            $absensiStatus = [];
+
+            foreach ($jurnals as $jurnal) {
+                $absensi = $jurnal->absensi
+                    ->where('mahasiswa_user_id', $mhs->user_id)
+                    ->first();
+
+                $status = $absensi->status_kehadiran ?? 'alpa';
+
+                $absensiStatus[$jurnal->jurnal_id] = $status;
+
+                if ($status === 'hadir') {
+                    $hadirCount++;
+                }
+            }
+
+            $mhs->hadir = $hadirCount;
+            $mhs->persentase = $jurnals->count() > 0 ? round(($hadirCount / $jurnals->count()) * 100) : 0;
+            $mhs->statusAbsensi = $absensiStatus;
+        }
+
+        return view('dashboard.jadwal_detail_rekap', compact(
+            'kelas',
+            'kode_mk',
+            'jurnals',
+            'peserta'
+        ));
     }
+
 
     public function storeJurnal(Request $request, $kelas_id)
     {

@@ -55,23 +55,89 @@ class MataKuliahController extends Controller
         // Konversi semester angka ke ganjil/genap
         $semesterType = (intval($validated['semester']) % 2 == 1) ? 'ganjil' : 'genap';
         
+        // Generate singkatan mata kuliah
+        $singkatan = $this->generateSingkatan($validated['nama_mk']);
+        
         for ($i = 0; $i < $jumlahKelas; $i++) {
-            $namaKelas = chr(65 + $i); // A, B, C, dst
+            $kelasLetter = chr(65 + $i); // A, B, C, dst
+            
+            // Generate unique 4 digit code
+            $uniqueCode = $this->generateUniqueCode();
+            $namaKelas = $singkatan . '_' . $kelasLetter . $uniqueCode;
             
             Kelas::create([
                 'mk_id' => $mataKuliah->mk_id,
                 'dosen_pengampu_id' => $request->input('dosen_pengampu_id'),
-                'nama_kelas' => $namaKelas . '-' . ($request->input('angkatan') ?? date('y')),
+                'nama_kelas' => $namaKelas,
                 'tahun_ajar' => date('Y') . '/' . (date('Y') + 1),
                 'semester' => $semesterType,
-                'kapasitas' => $request->input('kapasitas_' . $namaKelas, 40),
-                'hari' => $request->input('waktu_hari_' . $namaKelas),
-                'jam_mulai' => $request->input('waktu_mulai_' . $namaKelas),
-                'jam_selesai' => $request->input('waktu_selesai_' . $namaKelas),
+                'kapasitas' => $request->input('kapasitas_' . $kelasLetter, 40),
+                'hari' => $request->input('waktu_hari_' . $kelasLetter),
+                'jam_mulai' => $request->input('waktu_mulai_' . $kelasLetter),
+                'jam_selesai' => $request->input('waktu_selesai_' . $kelasLetter),
             ]);
         }
         
         return redirect('/dashboard-admin/mk')->with('success', 'Mata Kuliah dan Kelas berhasil ditambahkan');
+    }
+
+    /**
+     * Generate singkatan dari nama mata kuliah
+     */
+    private function generateSingkatan($namaMK)
+    {
+        $namaMK = strtolower($namaMK);
+        
+        // Mapping nama mata kuliah ke singkatan
+        $mappings = [
+            'basis data' => 'BASDAT',
+            'sistem basis data' => 'BASDAT',
+            'sistem operasi' => 'SISOP',
+            'internet of things' => 'IOT',
+            'iot' => 'IOT',
+            'pengantar kecerdasan artificial' => 'PKA',
+            'kecerdasan artificial' => 'PKA',
+            'pemrograman web' => 'PEMWEB',
+            'desain dan analisis algoritma' => 'DAA',
+            'jaringan komputer' => 'JARKOM',
+            'e-commerce' => 'ECOM',
+        ];
+        
+        // Cek mapping
+        foreach ($mappings as $key => $singkatan) {
+            if (str_contains($namaMK, $key)) {
+                return $singkatan;
+            }
+        }
+        
+        // Jika tidak ada mapping, generate dari huruf kapital atau 6 huruf pertama
+        $words = explode(' ', $namaMK);
+        if (count($words) > 1) {
+            // Ambil huruf pertama setiap kata
+            $singkatan = '';
+            foreach ($words as $word) {
+                if (strlen($word) > 0) {
+                    $singkatan .= strtoupper($word[0]);
+                }
+            }
+            return substr($singkatan, 0, 6);
+        } else {
+            // Ambil 6 huruf pertama
+            return strtoupper(substr($namaMK, 0, 6));
+        }
+    }
+
+    /**
+     * Generate unique 4 digit code
+     */
+    private function generateUniqueCode()
+    {
+        do {
+            $code = str_pad(random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+            $exists = \App\Models\Kelas::where('nama_kelas', 'LIKE', '%' . $code)->exists();
+        } while ($exists);
+        
+        return $code;
     }
 
     /**

@@ -86,7 +86,7 @@ class KrsController extends Controller
             return back()->with('error', 'Anda sudah mengambil mata kuliah ini di kelas lain (satu MK = satu kelas).');
         }
 
-        // 3. Max SKS
+
         $mahasiswaDetail = MahasiswaDetail::where('user_id', $userId)->first();
         $maxSks = $mahasiswaDetail->max_sks ?? $this->defaultMaxSks;
         $currentSks = Krs::where('mahasiswa_user_id', $userId)
@@ -97,7 +97,7 @@ class KrsController extends Controller
             return back()->with('error', "Mengambil kelas ini melebihi batas maksimal SKS ({$maxSks}). Saat ini: {$currentSks} SKS.");
         }
 
-        // 4. Cek bentrok jadwal: bandingkan semua kelas yang diambil
+
         $takenKelas = Krs::where('mahasiswa_user_id', $userId)
             ->with('kelas')
             ->get()

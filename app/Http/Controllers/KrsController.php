@@ -42,10 +42,23 @@ class KrsController extends Controller
             })
             ->get();
 
-        // Filter kelas yang belum diambil
+        // Get mk_id yang sudah diambil mahasiswa
+        $takenMkIds = $krsList->pluck('kelas.mk_id')->unique()->toArray();
+        
+        // Filter kelas: 
+        // 1. Tidak boleh kelas yang sudah diambil (exact kelas_id)
+        // 2. Tidak boleh mata kuliah yang sudah diambil (mk_id sama)
         $takenKelasIds = $krsList->pluck('kelas_id')->toArray();
-        $availableKelas = $availableKelas->reject(function($kelas) use ($takenKelasIds) {
-            return in_array($kelas->kelas_id, $takenKelasIds);
+        $availableKelas = $availableKelas->reject(function($kelas) use ($takenKelasIds, $takenMkIds) {
+            // Reject jika kelas sudah diambil
+            if (in_array($kelas->kelas_id, $takenKelasIds)) {
+                return true;
+            }
+            // Reject jika mata kuliah sudah diambil (di kelas lain)
+            if (in_array($kelas->mk_id, $takenMkIds)) {
+                return true;
+            }
+            return false;
         });
 
         return view('krs.index', compact(
@@ -65,13 +78,27 @@ class KrsController extends Controller
 
         $userId = Auth::id();
 
-        // Check if already taken
+        // Get kelas yang akan diambil
+        $kelasYangDiambil = Kelas::with('mataKuliah')->findOrFail($request->kelas_id);
+
+        // Check if already taken exact class
         $exists = Krs::where('mahasiswa_user_id', $userId)
             ->where('kelas_id', $request->kelas_id)
             ->exists();
 
         if ($exists) {
             return redirect()->back()->with('error', 'Kelas ini sudah diambil');
+        }
+
+        // Check if already taken same mata kuliah (different class)
+        $sudahAmbilMataKuliah = Krs::where('mahasiswa_user_id', $userId)
+            ->whereHas('kelas', function($query) use ($kelasYangDiambil) {
+                $query->where('mk_id', $kelasYangDiambil->mk_id);
+            })
+            ->exists();
+
+        if ($sudahAmbilMataKuliah) {
+            return redirect()->back()->with('error', 'Anda sudah mengambil mata kuliah ' . $kelasYangDiambil->mataKuliah->nama_mk . ' di kelas lain. Tidak bisa mengambil kelas yang sama lebih dari satu kali.');
         }
 
         Krs::create([

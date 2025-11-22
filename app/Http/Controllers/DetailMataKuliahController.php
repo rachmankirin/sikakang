@@ -220,4 +220,49 @@ class DetailMataKuliahController extends Controller
             'jurnalNeedingValidationCount'
         ));
     }
+
+    public function validasi($kodeMk)
+    {
+        $userId = Auth::id();
+
+        // Find mata kuliah by kode
+        $mataKuliah = MataKuliah::where('kode_mk', $kodeMk)->first();
+        
+        if (!$mataKuliah) {
+            return redirect()->route('jadwal.index')->with('error', 'Mata kuliah tidak ditemukan');
+        }
+
+        // Get kelas that student is taking for this mata kuliah
+        $krs = Krs::where('mahasiswa_user_id', $userId)
+            ->whereHas('kelas', function($query) use ($mataKuliah) {
+                $query->where('mk_id', $mataKuliah->mk_id);
+            })
+            ->with(['kelas.mataKuliah', 'kelas.dosenPengampu'])
+            ->first();
+
+        if (!$krs) {
+            return redirect()->route('jadwal.index')->with('error', 'Anda tidak terdaftar di mata kuliah ini');
+        }
+
+        $kelas = $krs->kelas;
+        $dosen = $kelas->dosenPengampu;
+
+        // Get jurnal perkuliahan that need validation (validated by dosen but not by mahasiswa)
+        $jurnalList = JurnalPerkuliahan::where('kelas_id', $kelas->kelas_id)
+            ->where('validasi_dosen', true)
+            ->where('validasi_mahasiswa', false)
+            ->orderBy('pertemuan_ke', 'asc')
+            ->get();
+
+        // Count total jurnal needing validation
+        $jurnalNeedingValidationCount = $jurnalList->count();
+
+        return view('Dashboard.jadwal_detail_validasi', compact(
+            'mataKuliah',
+            'kelas',
+            'dosen',
+            'jurnalList',
+            'jurnalNeedingValidationCount'
+        ));
+    }
 }

@@ -46,12 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Mahasiswa Routes
     Route::middleware(['role:mahasiswa'])->group(function () {
-        Route::get('/dashboard', function () {
-            // Contoh data dinamis untuk chart IPS
-            $labels = ['Semester 1', 'Semester 2', 'Semester 3'];
-            $ips    = [4.0, 4.0, 0.0];
-            return view('Dashboard.dashboard_mahasiswa', compact('labels', 'ips'));
-        })->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardMahasiswaController::class, 'index'])->name('dashboard');
 
         Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
         Route::post('/krs/store', [KrsController::class, 'store'])->name('krs.store');
@@ -60,18 +55,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jadwal', [JadwalController::class, 'index'])->name('jadwal.index');
 
         // Routes untuk detail jadwal
-        Route::get('/jadwal/detail/{kode}', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rps', function ($kode) {
-            return view('Dashboard.jadwal_detail_rps', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/jurnal', function ($kode) {
-            return view('Dashboard.jadwal_detail', compact('kode'));
-        });
-        Route::get('/jadwal/detail/{kode}/rekap', function ($kode) {
-            return view('Dashboard.jadwal_detail_rekap', compact('kode'));
-        });
+        Route::get('/jadwal/detail/{kode}', [\App\Http\Controllers\DetailMataKuliahController::class, 'show'])->name('jadwal.detail');
+        Route::get('/jadwal/detail/{kode}/rps', [\App\Http\Controllers\DetailMataKuliahController::class, 'rps'])->name('jadwal.detail.rps');
+        Route::get('/jadwal/detail/{kode}/jurnal', [\App\Http\Controllers\DetailMataKuliahController::class, 'jurnal'])->name('jadwal.detail.jurnal');
+        Route::get('/jadwal/detail/{kode}/rekap', [\App\Http\Controllers\DetailMataKuliahController::class, 'rekap'])->name('jadwal.detail.rekap');
+        Route::get('/jadwal/detail/{kode}/validasi', [\App\Http\Controllers\DetailMataKuliahController::class, 'validasi'])->name('jadwal.detail.validasi');
 
         Route::get('/profile/mahasiswa', [\App\Http\Controllers\ProfileMahasiswaController::class, 'show'])->name('mahasiswa.profile');
         Route::get('/profile/mahasiswa/edit', [\App\Http\Controllers\ProfileMahasiswaController::class, 'edit'])->name('mahasiswa.profile.edit');

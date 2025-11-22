@@ -116,7 +116,15 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/dashboard-admin/dosen', DosenController::class);
         Route::resource('/dashboard-admin/mahasiswa', MhsController::class);
         Route::resource('/dashboard-admin/fakultas', FakultasController::class);
-        Route::resource('/dashboard-admin/mk', MataKuliahController::class);
+        
+        // Custom routes for mata kuliah (using kode_mk instead of id)
+        Route::get('/dashboard-admin/mk', [MataKuliahController::class, 'index'])->name('mk.index');
+        Route::post('/dashboard-admin/mk', [MataKuliahController::class, 'store'])->name('mk.store');
+        Route::get('/dashboard-admin/mk/{kode}/edit', [MataKuliahController::class, 'edit'])->name('mk.edit');
+        Route::put('/dashboard-admin/mk/{kode}', [MataKuliahController::class, 'update'])->name('mk.update');
+        Route::delete('/dashboard-admin/mk/{kode}', [MataKuliahController::class, 'destroy'])->name('mk.destroy');
+        
+        Route::patch('/dashboard-admin/kelas/{id}/toggle-status', [MataKuliahController::class, 'toggleStatus'])->name('kelas.toggle-status');
         Route::resource('/dashboard-admin/prodi', ProdiController::class);
 
         // Admin - Verifikasi Pengajuan Surat

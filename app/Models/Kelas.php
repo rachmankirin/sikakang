@@ -23,6 +23,8 @@ class Kelas extends Model
         'jam_mulai',
         'jam_selesai',
         'hari',
+        'status',
+        'angkatan',
     ];
 
     /**

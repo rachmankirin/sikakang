@@ -42,9 +42,9 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::get('/jadwal', [JurnalController::class, 'jadwal'])->name('jadwal.index');
-    Route::get('/jadwal/detail/{kode_mk}', [JurnalController::class, 'detail'])->name('jadwal.detail');
-    Route::get('/jadwal/detail/{kode_mk}/rps', [JurnalController::class, 'showRps'])->name('jadwal.detail.rps');
-    Route::get('/jadwal/detail/{kode_mk}/rekap', [JurnalController::class, 'rekap'])->name('jadwal.detail.rekap');
+    Route::get('/jadwal/detail/{nama_kelas}', [JurnalController::class, 'detail'])->name('jadwal.detail');
+    Route::get('/jadwal/detail/{nama_kelas}/rps', [JurnalController::class, 'showRps'])->name('jadwal.detail.rps');
+    Route::get('/jadwal/detail/{nama_kelas}/rekap', [JurnalController::class, 'rekap'])->name('jadwal.detail.rekap');
 
 
     /*

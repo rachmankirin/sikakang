@@ -64,7 +64,7 @@
                                         $dosen = $kelas->dosenPengampu;
                                     @endphp
 
-                                    <a href="{{ route('jadwal.detail', $mk->kode_mk) }}"
+                                    <a href="{{ route('jadwal.detail.rps', urlencode($kelas->nama_kelas)) }}"
                                         class="group bg-white rounded-xl border hover:shadow-lg transition p-4">
 
                                         <div class="bg-{{ $color }}-50 p-3 rounded-lg mb-3">

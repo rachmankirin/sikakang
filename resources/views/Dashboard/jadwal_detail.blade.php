@@ -70,18 +70,20 @@
             @endphp
             <div class="mb-6">
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <a href="{{ $tabBase . '/rps' }}"
+                    <a href="{{ route('jadwal.detail.rps', urlencode($kelas->nama_kelas)) }}"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         RPS & Bahan Ajar
                     </a>
-                    <a href="{{ $tabBase }}"
+                    <a href="{{ route('jadwal.detail', urlencode($kelas->nama_kelas)) }}"
                         class="text-center py-3 px-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition">
                         Jurnal Perkuliahan
                     </a>
-                    <a href="{{ $tabBase . '/rekap' }}"
+
+                    <a href="{{ route('jadwal.detail.rekap', urlencode($kelas->nama_kelas)) }}"
                         class="text-center py-3 px-4 bg-blue-100 text-blue-700 rounded-lg font-semibold hover:bg-blue-200 transition">
                         Rekap Jurnal Perkuliahan
                     </a>
+
                 </div>
             </div>
 

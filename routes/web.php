@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
         | 📌 Tagihan Mahasiswa (Fix error Route not defined)
         */
         Route::get('/tagihan', function () {
-            return view('Mahasiswa.tagihan_mahasiswa');
+            return view('tagihan.tagihan_mahasiwa');
         })->name('tagihan.tagihan_mahasiswa');
 
 

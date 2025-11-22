@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengumuman', function () {
         return view('pages.pengumuman');
     });
-    Route::get('/jadwal', [JurnalController::class, 'index'])->name('jadwal.index');
+    // Route::get('/jadwal', [JurnalController::class, 'index'])->name('jadwal.index');
     Route::get('/jadwal/detail/{kelas_id}', [JurnalController::class, 'show'])->name('jadwal.detail');
     Route::get('/jadwal/detail/{kelas_id}/rekap', [JurnalController::class, 'rekap'])->name('jadwal.rekap');
     // Mahasiswa Routes

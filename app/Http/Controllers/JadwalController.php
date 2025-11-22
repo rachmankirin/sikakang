@@ -12,10 +12,10 @@ class JadwalController extends Controller
     public function index()
     {
         $userId = Auth::id();
-        
+
         // Get mahasiswa detail
         $mahasiswaDetail = MahasiswaDetail::where('user_id', $userId)->with('user')->first();
-        
+
         if (!$mahasiswaDetail) {
             return redirect('/dashboard')->with('error', 'Data mahasiswa tidak ditemukan');
         }
@@ -26,10 +26,10 @@ class JadwalController extends Controller
             ->get();
 
         // Group by hari
-        $jadwalPerHari = $krsList->groupBy(function($krs) {
+        $jadwalPerHari = $krsList->groupBy(function ($krs) {
             return $krs->kelas->hari;
-        })->map(function($kelasPerHari) {
-            return $kelasPerHari->sortBy(function($krs) {
+        })->map(function ($kelasPerHari) {
+            return $kelasPerHari->sortBy(function ($krs) {
                 return $krs->kelas->jam_mulai;
             });
         });
@@ -37,10 +37,10 @@ class JadwalController extends Controller
         // Urutkan hari
         $urutanHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         $jadwalPerHari = collect($urutanHari)
-            ->mapWithKeys(function($hari) use ($jadwalPerHari) {
+            ->mapWithKeys(function ($hari) use ($jadwalPerHari) {
                 return [$hari => $jadwalPerHari->get($hari, collect())];
             })
-            ->filter(function($kelas) {
+            ->filter(function ($kelas) {
                 return $kelas->isNotEmpty();
             });
 

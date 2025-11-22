@@ -171,7 +171,7 @@
                         <li><a href="/hasil"
                                 class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
                                 Studi</a></li>
-                        <li><a href="#"
+                        <li class="hidden"><a href="#"
                                 class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
                                 Akhir</a></li>
                         <li><a href="/registration/detail"
@@ -183,7 +183,7 @@
                     </ul>
                 </li>
 
-                <!-- Tugas -->
+                <!-- Tugas
                 <li class="text-slate-500">
                     <button @click="openMenu === 2 ? openMenu = null : openMenu = 2"
                         class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
@@ -195,9 +195,9 @@
                         </svg>
                     </button>
                     <ul x-show="openMenu === 2" x-collapse class="pl-14 space-y-1 text-sm mt-1">
-                        <li><a href="/mycourse" class="block py-1 hover:text-[#FFE05E] {{ Request::is('mycourse*') || Request::is('incourse*') ? 'text-[#FFE05E] font-semibold' : '' }}">Tugas Kuliah</a></li>
+                        <li class="hidden"><a href="/mycourse" class="block py-1 hover:text-[#FFE05E] {{ Request::is('mycourse*') || Request::is('incourse*') ? 'text-[#FFE05E] font-semibold' : '' }}">Tugas Kuliah</a></li>
                     </ul>
-                </li>
+                </li> -->
 
                 <!-- Pengajuan Surat -->
                 <li class="text-slate-500">

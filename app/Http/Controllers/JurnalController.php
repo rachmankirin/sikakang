@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Krs;
 use App\Models\User;
 use App\Models\Kelas;
-
 use App\Models\Absensi;
 use App\Models\DosenDetail;
 use Illuminate\Http\Request;
@@ -16,73 +15,73 @@ use Illuminate\Support\Facades\Auth;
 
 class JurnalController extends Controller
 {
-    /**
-     * Tampilkan jadwal kuliah:
-     * - mahasiswa => kelas yg dambil (KRS)
-     * - dosen => kelas yg diajar
-     */
-    public function index()
+    public function jadwal()
     {
-        $user = Auth::user();
+        $user = auth()->user();
+        $role = $user->role;
 
-        if ($user->role === 'mahasiswa') {
-            $mahasiswa = MahasiswaDetail::where('user_id', $user->user_id)->firstOrFail();
+        $kelas = collect();
+        $mahasiswaDetail = $user->mahasiswaDetail;
+        $dosenDetail = $user->dosenDetail;
 
-            $kelas = Krs::where('mahasiswa_user_id', $user->user_id)
-                ->with(['kelas.mataKuliah', 'kelas.dosenPengampu'])
-                ->get()
-                ->pluck('kelas');
-        } elseif ($user->role === 'dosen') {
-            $dosen = DosenDetail::where('user_id', $user->user_id)->firstOrFail();
-
-            $kelas = Kelas::where('dosen_pengampu_id', $dosen->dosen_detail_id)
-                ->with(['mataKuliah', 'dosenPengampu'])
-                ->get();
-        } else {
-            abort(403, 'Role tidak valid');
+        if ($role === 'mahasiswa') {
+            if ($mahasiswaDetail) {
+                $kelas = Krs::with('kelas.mataKuliah', 'kelas.dosenPengampu')
+                    ->where('mahasiswa_user_id', $user->user_id)
+                    ->get()
+                    ->map(fn($k) => $k->kelas);
+            }
+        } elseif ($role === 'dosen') {
+            if ($dosenDetail) {
+                $kelas = Kelas::with('mataKuliah', 'dosenPengampu')
+                    ->where('dosen_pengampu_id', $user->user_id)
+                    ->get();
+            }
         }
 
-        return view('jadwal.index', compact('kelas'));
+        $totalMatkul = $kelas->count();
+        $jadwalPerHari = $kelas->groupBy('hari');
+
+        return view('Dashboard.jadwal_kuliah', compact(
+            'kelas',
+            'totalMatkul',
+            'jadwalPerHari',
+            'mahasiswaDetail',
+            'dosenDetail',
+            'role'
+        ));
     }
 
-    /**
-     * Tampilkan detail jurnal + daftar pertemuan
-     * Dosen = bisa input
-     * Mahasiswa = read only
-     */
-    public function show($kelas_id, Request $request)
+
+
+
+    public function detail($kode_mk, Request $request)
     {
         $user = Auth::user();
-        $idKelas = $kelas_id;
 
-        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])->findOrFail($kelas_id);
+        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])
+            ->whereHas('mataKuliah', fn($q) => $q->where('kode_mk', $kode_mk))
+            ->firstOrFail();
+
+        $kelas_id = $kelas->kelas_id;
 
         $jurnals = JurnalPerkuliahan::where('kelas_id', $kelas_id)
             ->orderBy('pertemuan_ke', 'asc')
             ->get();
 
         $selectedJurnalId = $request->query('jurnal') ?? ($jurnals->first()->jurnal_id ?? null);
+
         $selectedJurnal = $selectedJurnalId ?
-            JurnalPerkuliahan::with('absensi')->find($selectedJurnalId) : null;
+            JurnalPerkuliahan::with('absensi')->find($selectedJurnalId)
+            : null;
 
-        // Ambil peserta
-        $mahasiswaUserIds = Krs::where('kelas_id', $kelas_id)
-            ->pluck('mahasiswa_user_id')
-            ->unique()
-            ->toArray();
-
-        $peserta = MahasiswaDetail::whereIn('mahasiswa_details.user_id', $mahasiswaUserIds)
+        $peserta = Krs::where('kelas_id', $kelas_id)
+            ->join('mahasiswa_details', 'mahasiswa_details.user_id', '=', 'krs.mahasiswa_user_id')
             ->join('users', 'users.user_id', '=', 'mahasiswa_details.user_id')
-            ->select(
-                'mahasiswa_details.user_id',
-                'mahasiswa_details.nim',
-                'users.nama_lengkap as nama'
-            )
+            ->select('mahasiswa_details.user_id', 'mahasiswa_details.nim', 'users.nama_lengkap as nama')
             ->get()
             ->keyBy('user_id');
 
-
-        // Absensi pivot map
         $absensiMap = $selectedJurnal
             ? $selectedJurnal->absensi->keyBy('mahasiswa_user_id')
             : collect();
@@ -96,25 +95,32 @@ class JurnalController extends Controller
             'peserta',
             'absensiMap',
             'isDosen',
-            'idKelas'
+            'kode_mk',
+            'kelas_id'
         ));
     }
 
-
-    /**
-     * Rekap Absensi - Mahasiswa & Dosen bisa akses
-     */
-    public function rekap($idKelas)
+    public function showRps($kode_mk)
     {
-        $user = User::all();
-        $kelas = Kelas::where('kelas_id', $idKelas)->first(); // tambahkan first()
-        $jurnals = JurnalPerkuliahan::where('kelas_id', $idKelas)->get();
+        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])
+            ->whereHas('mataKuliah', fn($q) => $q->where('kode_mk', $kode_mk))
+            ->firstOrFail();
 
-        return view('Dashboard.jadwal_detail_rekap', compact('user', 'kelas', 'jurnals'));
+        return view('dashboard.jadwal_detail_rps', compact('kelas', 'kode_mk'));
     }
 
+    public function rekap($kode_mk)
+    {
+        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])
+            ->whereHas('mataKuliah', fn($q) => $q->where('kode_mk', $kode_mk))
+            ->firstOrFail();
 
+        $rekap = JurnalPerkuliahan::with('absensi')
+            ->where('kelas_id', $kelas->kelas_id)
+            ->get();
 
+        return view('dashboard.jadwal_detail_rekap', compact('kelas', 'rekap', 'kode_mk'));
+    }
 
     public function storeJurnal(Request $request, $kelas_id)
     {
@@ -144,14 +150,8 @@ class JurnalController extends Controller
     {
         if (Auth::user()->role !== 'dosen') abort(403);
 
-        $request->validate([
-            'mahasiswa_user_id' => 'required|array',
-            'status_kehadiran' => 'required|array',
-        ]);
-
         DB::transaction(function () use ($request, $jurnal_id) {
-            foreach ($request->mahasiswa_user_id as $userId => $user_id_value) {
-
+            foreach ($request->mahasiswa_user_id as $userId => $value) {
                 Absensi::updateOrCreate(
                     [
                         'jurnal_id' => $jurnal_id,
@@ -167,20 +167,5 @@ class JurnalController extends Controller
         });
 
         return back()->with('success', 'Absensi tersimpan');
-    }
-
-    public function showRps($kelas_id)
-    {
-        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])->findOrFail($kelas_id);
-
-        return view('dashboard.jadwal_detail_rps', compact('kelas', 'kelas_id'));
-    }
-
-    public function showRekap($kelas_id)
-    {
-        $kelas = Kelas::with(['mataKuliah', 'dosenPengampu'])->findOrFail($kelas_id);
-        $rekap = JurnalPerkuliahan::with('absensi')->where('kelas_id', $kelas_id)->get();
-
-        return view('dashboard.jadwal_detail_rekap', compact('kelas', 'rekap', 'kelas_id'));
     }
 }

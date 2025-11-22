@@ -75,6 +75,7 @@ class MataKuliahController extends Controller
                 'hari' => $request->input('waktu_hari_' . $kelasLetter),
                 'jam_mulai' => $request->input('waktu_mulai_' . $kelasLetter),
                 'jam_selesai' => $request->input('waktu_selesai_' . $kelasLetter),
+                'angkatan' => $request->input('angkatan'),
             ]);
         }
         
@@ -151,9 +152,11 @@ class MataKuliahController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $kode)
     {
-        $editMataKuliah = MataKuliah::with(['prodi', 'kelas.dosenPengampu'])->findOrFail($id);
+        $editMataKuliah = MataKuliah::with(['prodi', 'kelas.dosenPengampu'])
+            ->where('kode_mk', $kode)
+            ->firstOrFail();
         $prodi = Prodi::all();
         $dosen = \App\Models\User::where('role', 'dosen')->get();
         $allMataKuliah = MataKuliah::with(['prodi', 'kelas.dosenPengampu'])->get();
@@ -164,15 +167,15 @@ class MataKuliahController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $kode)
     {
         // Debug: log data yang diterima
         \Log::info('Update MataKuliah', [
-            'id' => $id,
+            'kode' => $kode,
             'request' => $request->all()
         ]);
         
-        $mataKuliah = MataKuliah::findOrFail($id);
+        $mataKuliah = MataKuliah::where('kode_mk', $kode)->firstOrFail();
         
         $validated = $request->validate([
             'nama_mk' => 'required',
@@ -185,6 +188,16 @@ class MataKuliahController extends Controller
         ]);
         
         \Log::info('Validated data', $validated);
+        
+        // Log status kelas yang dikirim
+        $statusKelas = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'status_kelas_') === 0) {
+                $statusKelas[$key] = $value;
+            }
+        }
+        \Log::info('Status Kelas yang dikirim', $statusKelas);
+        
         $semesterType = (intval($validated['semester']) % 2 === 1) ? 'ganjil' : 'genap';
         $angkatanBaru = $request->input('angkatan');
         
@@ -199,21 +212,61 @@ class MataKuliahController extends Controller
         
         // Update data kelas agar konsisten dengan perubahan mata kuliah
         if ($mataKuliah->kelas()->exists()) {
+            $kelasIndex = 0;
             foreach ($mataKuliah->kelas as $kelas) {
                 $kelasUpdateData = [
                     'semester' => $semesterType,
                 ];
 
+                // Update nama_kelas jika angkatan berubah (gunakan format SINGKATAN_HURUF+4digit)
                 if ($angkatanBaru !== null && $angkatanBaru !== '') {
-                    $kelasLetter = $kelas->nama_kelas ? substr($kelas->nama_kelas, 0, 1) : 'A'; // fallback jika nama belum ada
-                    $kelasUpdateData['nama_kelas'] = $kelasLetter . '-' . $angkatanBaru;
+                    // Update angkatan
+                    $kelasUpdateData['angkatan'] = $angkatanBaru;
+                    
+                    // Generate singkatan
+                    $singkatan = $this->generateSingkatan($mataKuliah->nama_mk);
+                    $kelasLetter = chr(65 + $kelasIndex); // A, B, C, ...
+                    
+                    // Extract 4 digit code dari nama_kelas yang lama (jika ada)
+                    $uniqueCode = null;
+                    if ($kelas->nama_kelas && strpos($kelas->nama_kelas, '_') !== false) {
+                        // Format: SINGKATAN_HURUF1234 -> ambil 1234
+                        $parts = explode('_', $kelas->nama_kelas);
+                        if (isset($parts[1]) && strlen($parts[1]) >= 5) {
+                            $uniqueCode = substr($parts[1], 1); // Ambil 4 digit setelah huruf
+                        }
+                    }
+                    
+                    // Jika tidak ada code, generate baru
+                    if (!$uniqueCode) {
+                        $uniqueCode = $this->generateUniqueCode();
+                    }
+                    
+                    $newNamaKelas = $singkatan . '_' . $kelasLetter . $uniqueCode;
+                    
+                    // Only update if different
+                    if ($kelas->nama_kelas !== $newNamaKelas) {
+                        $kelasUpdateData['nama_kelas'] = $newNamaKelas;
+                    }
                 }
 
+                // Update dosen jika diisi
                 if ($request->filled('dosen_pengampu_id')) {
                     $kelasUpdateData['dosen_pengampu_id'] = $request->dosen_pengampu_id;
                 }
+                
+                // Update status if provided
+                $statusKey = 'status_kelas_' . $kelas->kelas_id;
+                if ($request->has($statusKey)) {
+                    $kelasUpdateData['status'] = $request->input($statusKey);
+                }
 
-                $kelas->update($kelasUpdateData);
+                // Update kelas
+                if (!empty($kelasUpdateData)) {
+                    $kelas->update($kelasUpdateData);
+                }
+                
+                $kelasIndex++;
             }
         }
         
@@ -223,9 +276,9 @@ class MataKuliahController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $kode)
     {
-        $mataKuliah = MataKuliah::findOrFail($id);
+        $mataKuliah = MataKuliah::where('kode_mk', $kode)->firstOrFail();
         
         // Hapus semua kelas terkait
         $mataKuliah->kelas()->delete();
@@ -234,5 +287,23 @@ class MataKuliahController extends Controller
         $mataKuliah->delete();
         
         return redirect('/dashboard-admin/mk')->with('success', 'Mata Kuliah dan semua kelasnya berhasil dihapus');
+    }
+
+    /**
+     * Toggle status kelas between aktif and nonaktif
+     */
+    public function toggleStatus(string $id)
+    {
+        $kelas = Kelas::findOrFail($id);
+        
+        // Toggle status
+        $kelas->status = ($kelas->status === 'aktif') ? 'nonaktif' : 'aktif';
+        $kelas->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Status kelas berhasil diubah',
+            'status' => $kelas->status
+        ]);
     }
 }

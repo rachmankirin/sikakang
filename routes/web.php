@@ -46,12 +46,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Mahasiswa Routes
     Route::middleware(['role:mahasiswa'])->group(function () {
-        Route::get('/dashboard', function () {
-            // Contoh data dinamis untuk chart IPS
-            $labels = ['Semester 1', 'Semester 2', 'Semester 3'];
-            $ips    = [4.0, 4.0, 0.0];
-            return view('Dashboard.dashboard_mahasiswa', compact('labels', 'ips'));
-        })->name('dashboard');
+        Route::get('/dashboard', [\App\Http\Controllers\DashboardMahasiswaController::class, 'index'])->name('dashboard');
 
         Route::get('/krs', [KrsController::class, 'index'])->name('krs.index');
         Route::post('/krs/store', [KrsController::class, 'store'])->name('krs.store');

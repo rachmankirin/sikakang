@@ -171,7 +171,7 @@
                         <li><a href="/hasil"
                                 class="block py-1 hover:text-[#FFE05E] {{ Request::is('hasil') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Hasil
                                 Studi</a></li>
-                        <li><a href="#"
+                        <li class="hidden"><a href="#"
                                 class="block py-1 hover:text-[#FFE05E] {{ Request::is('tugasAkhir') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">Tugas
                                 Akhir</a></li>
                         <li><a href="/registration/detail"
@@ -184,7 +184,7 @@
                 </li>
 
                 <!-- Tugas -->
-                <li class="text-slate-500">
+                <li class="text-slate-500 hidden">
                     <button @click="openMenu === 2 ? openMenu = null : openMenu = 2"
                         class="flex items-center w-full p-2  rounded-lg hover:text-[#FFE05E] transition">
                         <img src="{{ url('images/tugas.svg') }}" alt="" width="20">

@@ -18,7 +18,7 @@
                         <div class="w-12 h-12 rounded-xl bg-yellow-200 grid place-content-center text-xl text-gray-800">{{ strtoupper(substr(Auth::user()->nama_lengkap ?? 'U', 0, 1)) }}</div>
                         <div class="leading-tight text-sm">
                             <p class="font-semibold text-gray-900">{{ Auth::user()->nama_lengkap ?? 'User' }}</p>
-                            <p class="text-yellow-700/80">Informatika</p>
+                            <p class="text-yellow-700/80">{{ $mahasiswaDetails->program_studi ?? 'Informatika' }}</p>
                         </div>
                     </div>
                 </div>
@@ -95,11 +95,11 @@
 
                 <div class="flex justify-center gap-3 mt-4 text-gray-700">
                     <div class="px-3 py-1.5 rounded-full bg-white/70 border border-yellow-200/80">
-                        <p class="text-sm font-semibold leading-none">64</p>
+                        <p class="text-sm font-semibold leading-none">{{ $totalSKS ?? 0 }}</p>
                         <p class="text-[11px] text-gray-500 leading-none mt-0.5">Total SKS</p>
                     </div>
                     <div class="px-3 py-1.5 rounded-full bg-white/70 border border-yellow-200/80">
-                        <p class="text-sm font-semibold leading-none">3</p>
+                        <p class="text-sm font-semibold leading-none">{{ $semesterCount ?? 1 }}</p>
                         <p class="text-[11px] text-gray-500 leading-none mt-0.5">Semester</p>
                     </div>
                 </div>
@@ -124,30 +124,23 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-yellow-100">
-                            <tr class="text-center hover:bg-yellow-50/60 transition-colors">
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">1</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">Pemrograman Web</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">3</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">10.00–12.30</td>
-                            </tr>
-                            <tr class="text-center hover:bg-yellow-50/60 transition-colors">
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">2</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">Basis Data</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">3</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">13.00–15.30</td>
-                            </tr>
-                            <tr class="text-center hover:bg-yellow-50/60 transition-colors">
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">3</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">Sistem Operasi</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">3</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">16.00–18.30</td>
-                            </tr>
-                            <tr class="text-center hover:bg-yellow-50/60 transition-colors">
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">4</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">Jaringan Komputer</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">3</td>
-                                <td class="border border-yellow-200 px-1 sm:px-2 py-1">19.00–21.30</td>
-                            </tr>
+                            @forelse ($jadwalHariIni as $index => $krs)
+                                <tr class="text-center hover:bg-yellow-50/60 transition-colors">
+                                    <td class="border border-yellow-200 px-1 sm:px-2 py-1">{{ $index + 1 }}</td>
+                                    <td class="border border-yellow-200 px-1 sm:px-2 py-1">{{ $krs->kelas->mataKuliah->nama_mk ?? '-' }}</td>
+                                    <td class="border border-yellow-200 px-1 sm:px-2 py-1">{{ $krs->kelas->mataKuliah->sks ?? '-' }}</td>
+                                    <td class="border border-yellow-200 px-1 sm:px-2 py-1">
+                                        {{ $krs->kelas->jam_mulai ? substr($krs->kelas->jam_mulai, 0, 5) : '' }}–{{ $krs->kelas->jam_selesai ? substr($krs->kelas->jam_selesai, 0, 5) : '' }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="border border-yellow-200 px-4 py-6 text-center text-gray-500">
+                                        <i class="fa-solid fa-calendar-xmark text-3xl mb-2 block text-gray-300"></i>
+                                        Tidak ada jadwal perkuliahan hari ini
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

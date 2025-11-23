@@ -11,12 +11,12 @@
     <?php
     // Data galeri produk
     $gallery = [
-        ['image' => '/images/minju1.jpg', 'alt' => 'minju'],
-        ['image' => '/images/minju2.jpg', 'alt' => 'minju'],
-        ['image' => '/images/minju3.jpg', 'alt' => 'minju'],
-        ['image' => '/images/minju4.jpg', 'alt' => 'minju'],
-        ['image' => '/images/minju5.jpg', 'alt' => 'minju'],
-        ['image' => '/images/minju6.jpg', 'alt' => 'minju']
+        ['image' => '/images/ftuntirta.jpg', 'alt' => 'minju'],
+        ['image' => '/images/s2.jpg', 'alt' => 'minju'],
+        ['image' => '/images/fkuntirta.png', 'alt' => 'minju'],
+        ['image' => '/images/fisip.webp', 'alt' => 'minju'],
+        ['image' => '/images/untir1.webp', 'alt' => 'minju'],
+        ['image' => '/images/fkip.jpeg', 'alt' => 'minju']
     ];
     ?>
 
@@ -30,41 +30,25 @@
         
         <!-- Top bar with logo and profile -->
         <div class="absolute top-0 left-0 right-0 z-20 bg-[#FFE05E] text-black">
-            <div class="mx-auto max-w-6xl px-4 py-3">
-                <div class="flex items-center justify-between">
-                    <!-- Logo on left side -->
-                    <div class="flex items-center gap-3 md:gap-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-10 h-10 md:w-12 md:h-12">
-                                <img src="/images/untirta.png" alt="Logo untirta" class="w-full h-full object-cover">
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-xs md:text-sm uppercase tracking-wide font-semibold">Universitas Sultan Ageng Tirtayasa</p>
+        <div class="mx-auto max-w-6xl px-4 py-3">
+            <div class="flex items-center justify-center">
+                <!-- Logo + text centered -->
+                <div class="flex items-center gap-3 md:gap-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 md:w-12 md:h-12">
+                            <img src="/images/untirta.png" alt="Logo untirta" class="w-full h-full object-cover">
                         </div>
                     </div>
-                    
-                    <!-- Profile dropdown on right side -->
-                    <div class="relative">
-                        <button class="flex items-center gap-2 bg-white/90 hover:bg-white px-4 py-2 rounded-full transition">
-                            <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                <span class="text-white text-sm font-semibold">U</span>
-                            </div>
-                            <span class="text-sm font-medium">Profile</span>
-                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
-                        </button>
-                        
-                        <!-- Dropdown menu -->
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
-                            <a href="/profile" class="block px-4 py-2 hover:bg-gray-100">My Profile</a>
-                            <a href="/settings" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                            <div class="border-t my-1"></div>
-                            <a href="/logout" class="block px-4 py-2 hover:bg-gray-100 text-red-600">Logout</a>
-                        </div>
+                    <div>
+                        <p class="text-xs md:text-sm uppercase tracking-wide font-semibold">
+                            Universitas Sultan Ageng Tirtayasa
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
 
         <!-- Hero content -->
         <div class="relative z-10 w-full text-white">
@@ -79,12 +63,9 @@
                     Jujur, Adil, Wibawa, Religius, dan Akuntabel
                 </p>
                 <div class="flex gap-4 flex-wrap justify-center">
-                    <a href="/tombol1" class="inline-flex items-center gap-2 rounded-full bg-white text-blue-600 px-8 py-4 hover:bg-gray-100 transition font-medium text-lg">
-                        ini tombol 
+                    <a href="/login" class="inline-flex items-center gap-2 rounded-full bg-white text-blue-600 px-8 py-4 hover:bg-gray-100 transition font-medium text-lg">
+                        Login Sekarang 
                         <i data-lucide="arrow-right" class="h-5 w-5"></i>
-                    </a>
-                    <a href="/tombol2" class="inline-flex items-center gap-2 rounded-full border border-white px-8 py-4 hover:bg-white hover:text-blue-600 transition font-medium text-lg">
-                        ini juga
                     </a>
                 </div>
             </div>
@@ -120,18 +101,19 @@
             <div class="grid md:grid-cols-2 gap-8 items-center">
                 <!-- Big Picture -->
                 <div class="h-80 md:h-96">
-                    <img src="/images/featured-product.jpg" alt="berita" class="w-full h-full object-cover">
+                    <img src="/images/uktuntirta.jpg" alt="berita" class="w-full h-full object-cover">
                 </div>
                 
                 <!-- Text Description -->
                 <div class="p-8 space-y-4">
-                    <h4 class="text-2xl font-bold text-gray-800">BERITA HOTTT SIAPA KETANGKEP HAYO</h4>
+                    <h4 class="text-2xl font-bold text-gray-800">Penyesuaian UKT Semester Genap 2025/2026</h4>
                     <p class="text-gray-600 leading-relaxed">
-                        ya ini intinya mah
+                        Universitas Sultan Ageng Tirtayasa kembali mengeluarkan kebijakan penyesuaian UKT untuk periode Semester Genap Tahun Akademik 2025/2026 berdasarkan Peraturan Rektor Universitas Sultan Ageng Tirtayasa Nomor 15 Tahun 2025.
                     </p>
-                    <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-medium">
+                    <br>
+                    <a href="https://untirta.ac.id/2025/11/20/penyesuaian-ukt-semester-genap-2025-2026/" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-medium">
                         Baca Sekarang
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -142,11 +124,10 @@
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="h-48">
-                        <img src="/images/product-1.jpg" alt="berita" class="w-full h-full object-cover">
+                        <img src="/images/gsuntirta.png" alt="berita" class="w-full h-full object-cover">
                     </div>
                     <div class="p-4 flex flex-col justify-center">
-                        <h5 class="font-bold text-gray-800 mb-2">berita 3</h5>
-                        <p class="text-sm text-gray-600 mb-3">syap</p>
+                        <a href="https://untirta.ac.id/2025/11/04/gs-sigret-2025-untirta-perkuat-kolaborasi-global-menuju-inovasi-hijau-dan-keberlanjutan/" class="font-bold text-gray-800 mb-2">GS-SIGRET 2025: Untirta Perkuat Kolaborasi Global Menuju Inovasi Hijau dan Keberlanjutan</a>
                     </div>
                 </div>
             </div>
@@ -155,11 +136,10 @@
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="h-48">
-                        <img src="/images/product-2.jpg" alt="berita" class="w-full h-full object-cover">
+                        <img src="/images/pltsuntir.jpeg" alt="berita" class="w-full h-full object-cover">
                     </div>
                     <div class="p-4 flex flex-col justify-center">
-                        <h5 class="font-bold text-gray-800 mb-2">berita 4</h5>
-                        <p class="text-sm text-gray-600 mb-3">ga seru yg ini</p>
+                        <a href="https://untirta.ac.id/2025/09/26/edukasi-dan-implementasi-plts-guna-menciptakan-energi-bersih-di-desa-pegandikan-lebak-wangi-banten/" class="font-bold text-gray-800 mb-2">Edukasi dan Implementasi PLTS Guna Menciptakan Energi Bersih di Desa Pegandikan, Lebak Wangi – Banten</a>
                     </div>
                 </div>
             </div>
@@ -168,11 +148,10 @@
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="grid grid-cols-2 gap-4">
                     <div class="h-48">
-                        <img src="/images/product-3.jpg" alt="berita" class="w-full h-full object-cover">
+                        <img src="/images/fgduntir.jpeg" alt="berita" class="w-full h-full object-cover">
                     </div>
                     <div class="p-4 flex flex-col justify-center">
-                        <h5 class="font-bold text-gray-800 mb-2">berita 2</h5>
-                        <p class="text-sm text-gray-600 mb-3">yang 2 maunya disini</p>
+                        <a href="https://untirta.ac.id/2025/09/11/untirta-gelar-fgd-hilirisasi-inovasi-penelitian-dan-business-matching-dengan-industri/" class="font-bold text-gray-800 mb-2">Untirta Gelar FGD Hilirisasi Inovasi Penelitian dan Business Matching dengan Industri</a>
                     </div>
                 </div>
             </div>
@@ -211,7 +190,7 @@
                     playsinline
                     class="w-full h-64 md:h-80 lg:h-96 object-cover"
                 >
-                    <source src="/videos/weverse_0-1032523.mp4" type="video/mp4">
+                    <source src="/videos/videountirta.mp4" type="video/mp4">
                     <source src="/videos/toko-resmi.webm" type="video/webm">
                     <img src="/images/minju1.jpg" alt="minju" class="w-full h-full object-cover">
                 </video>
@@ -220,7 +199,7 @@
                 <div class="absolute inset-0 flex items-center justify-center bg-black/40">
                     <div class="text-center text-white p-6">
                         <p class="text-xl mb-6 opacity-90">Video Profil Kami</p>
-                        <a href="/toko-resmi" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
+                        <a href="https://untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Kunjungi
                             <i data-lucide="arrow-right" class="h-5 w-5"></i>
                         </a>
@@ -240,11 +219,11 @@
                     <!-- Category 1 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/teknik.jpg" alt="teknik" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/ftuntirta.jpg" alt="teknik" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://ft.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Teknik
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 2 -->
@@ -252,29 +231,29 @@
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
                             <img src="/images/feb.jpg" alt="feb" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://feb.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Ekonomi dan Bisnis
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 3 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/fkip.jpg" alt="fkip" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/fkip.jpeg" alt="fkip" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://fkip.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Keguruan dan Ilmu Pendidikan
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 4 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/faperta.jpg" alt="faperta" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/faperta.png" alt="faperta" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://faperta.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Pertanian
-                        </button>
+                        </a>
                     </div>
                 </div>
 
@@ -283,31 +262,31 @@
                     <!-- Category 5 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/fisip.jpg" alt="fisip" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/fisip.webp" alt="fisip" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://fisip.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Ilmu Sosial dan Politik
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 6 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/fh.jpg" alt="fh" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/fh.webp" alt="fh" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://fh.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Hukum
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 7 -->
                     <div class="text-center group">
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
-                            <img src="/images/fkik.jpg" alt="fkik" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                            <img src="/images/fkuntirta.png" alt="fkik" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://fkik.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Fakultas Kedokteran dan Ilmu Kesehatan
-                        </button>
+                        </a>
                     </div>
 
                     <!-- Category 8 -->
@@ -315,9 +294,9 @@
                         <div class="aspect-square rounded-xl overflow-hidden bg-gray-100 mb-3 shadow-sm">
                             <img src="/images/s2.jpg" alt="s2" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
                         </div>
-                        <button class="w-full bg-[#FFE05E] hover:bg-[#FFD700] text-gray-800 font-semibold py-3 rounded-lg transition duration-200 shadow-sm hover:shadow-md">
+                        <a href="https://pascasarjana.untirta.ac.id/" class="inline-flex items-center gap-3 bg-[#FFE05E] text-gray-800 px-8 py-4 rounded-xl hover:bg-[#FFD700] transition font-bold text-lg shadow-lg">
                             Program Pascasarjana
-                        </button>
+                        </a>
                     </div>
                 </div>
         </section>
@@ -343,19 +322,19 @@
                         </div>
                     </div>
                     <p class="text-gray-300 text-sm leading-relaxed mb-6">
-                        Platform buat mahasiswa dan dosen gitu" pokoknya ini mah, ya nnti di ganti ya haziq.
+                        Platform buat mahasiswa dan dosen.
                     </p>
                     <div class="flex gap-3">
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-blue-600 rounded-lg flex items-center justify-center transition duration-300">
+                        <a href="https://www.facebook.com/untirtabantenofficial" class="w-10 h-10 bg-white/10 hover:bg-blue-600 rounded-lg flex items-center justify-center transition duration-300">
                             <i data-lucide="facebook" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-pink-600 rounded-lg flex items-center justify-center transition duration-300">
+                        <a href="https://www.instagram.com/untirta_official/" class="w-10 h-10 bg-white/10 hover:bg-pink-600 rounded-lg flex items-center justify-center transition duration-300">
                             <i data-lucide="instagram" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-blue-400 rounded-lg flex items-center justify-center transition duration-300">
+                        <a href="https://x.com/HumasUntirta" class="w-10 h-10 bg-white/10 hover:bg-blue-400 rounded-lg flex items-center justify-center transition duration-300">
                             <i data-lucide="twitter" class="h-5 w-5"></i>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/10 hover:bg-red-600 rounded-lg flex items-center justify-center transition duration-300">
+                        <a href="https://youtube.com/@untirtaofficial?si=EvDCtrTv6AqnDqSd" class="w-10 h-10 bg-white/10 hover:bg-red-600 rounded-lg flex items-center justify-center transition duration-300">
                             <i data-lucide="youtube" class="h-5 w-5"></i>
                         </a>
                     </div>
@@ -365,29 +344,19 @@
                 <div>
                     <h4 class="font-bold mb-6 text-lg border-l-4 border-[#FFE05E] pl-3">Fakultas</h4>
                     <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Teknik</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Ekonomi dan Bisnis</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Keguruan dan Ilmu Pendidikan</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Pertanian</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Ilmu Sosial dan Politik</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Hukum</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Kedokteran dan Ilmu Kesehatan</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Program Pascasarjana</a></li>
+                        <li><a href="https://ft.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Teknik</a></li>
+                        <li><a href="https://feb.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Ekonomi dan Bisnis</a></li>
+                        <li><a href="https://fkip.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Keguruan dan Ilmu Pendidikan</a></li>
+                        <li><a href="https://faperta.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Pertanian</a></li>
+                        <li><a href="https://fisip.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Ilmu Sosial dan Politik</a></li>
+                        <li><a href="https://fh.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Hukum</a></li>
+                        <li><a href="https://fkik.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Fakultas Kedokteran dan Ilmu Kesehatan</a></li>
+                        <li><a href="https://pascasarjana.untirta.ac.id/" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Program Pascasarjana</a></li>
                     </ul>
                 </div>
 
                 <!-- Company Links -->
-                <div>
-                    <h4 class="font-bold mb-6 text-lg border-l-4 border-[#FFE05E] pl-3">Perusahaan</h4>
-                    <ul class="space-y-3">
-                        <li><a href="/tentang" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Tentang Kami</a></li>
-                        <li><a href="/karir" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Karir</a></li>
-                        <li><a href="/blog" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Blog</a></li>
-                        <li><a href="/press" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Press</a></li>
-                        <li><a href="/partner" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Partnership</a></li>
-                        <li><a href="/affiliate" class="text-gray-300 hover:text-[#FFE05E] transition duration-200 text-sm flex items-center gap-2"><i data-lucide="chevron-right" class="h-3 w-3"></i> Affiliate</a></li>
-                    </ul>
-                </div>
+                
 
                 <!-- Contact & Support -->
                 <div>
@@ -428,7 +397,7 @@
             <!-- Bottom Copyright -->
             <div class="border-t border-gray-700 mt-12 pt-8 text-center">
                 <p class="text-gray-400 text-sm">
-                    &copy; 2024 <span class="text-[#FFE05E]">Sikakang</span> - Platform untirta ini bos. 
+                    &copy; 2024 <span class="text-[#FFE05E]">Sikakang</span> - Platform untirta. 
                     All rights reserved. | 
                     <span class="text-gray-300">Developed with love by kelompok berapa ini kita</span>
                 </p>

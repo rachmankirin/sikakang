@@ -57,7 +57,7 @@
                     </div>
                     <div class="space-y-1">
                         <label class="text-sm font-semibold text-slate-700">Email</label>
-                        <input type="email" name="email" value="{{ old('email', $d->email) }}" required
+                        <input type="email" name="email" value="{{ old('email', $d->email) }}" disabled
                                class="w-full rounded-xl border border-slate-200 px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400">
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div class="space-y-1">
                         <label class="text-sm font-semibold text-slate-700">NIDN</label>
-                        <input type="text" name="nidn" value="{{ old('nidn', $d->nidn) }}"
+                        <input type="text" name="nidn" value="{{ old('nidn', $d->nidn) }}" disabled
                                class="w-full rounded-xl border border-slate-200 px-3 py-2 focus:ring-yellow-400 focus:border-yellow-400">
                     </div>
                     <div class="space-y-1">

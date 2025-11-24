@@ -114,6 +114,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/jadwal"
+                       class="flex items-center w-full p-2 rounded-lg {{ Request::is('jadwal*') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
+                        <img src="{{ url('images/Group.svg') }}" alt="">
+                        <span class="ms-7 flex-1 text-left">Jadwal Mengajar</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/dosen"
                        class="flex items-center w-full p-2 rounded-lg {{ Request::is('dosen') ? 'text-[#FFE05E] font-semibold' : 'hover:text-[#FFE05E]' }}">
                         <img src="{{ url('images/profile.svg') }}" alt="">
